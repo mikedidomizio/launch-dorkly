@@ -60,7 +60,6 @@ export const Targets = ({ item, items2 }: {  item: Item, items2: Item[] }) => {
     return <>
         {Object.entries(item.environments).map(([ environmentKey, values ]) => {
             return <td className="text-center" key={environmentKey}>
-                <br/>
                 {valuesMatch(values.on, getOnValue(environmentKey, item.key)) ? <Match /> : <DoesNotMatch
                     onClick={() => handleMatchFirstProject(environmentKey, item.key, values.on)} />}
         </td>

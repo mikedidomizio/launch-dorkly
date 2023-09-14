@@ -1,5 +1,6 @@
 import Link from "next/link";
 import {CopyProjectsDropdowns} from "@/components/CopyProjectsDropdowns";
+import Layout from "@/components/Layout";
 
 const listProjects = async() => {
     if (!process.env.LAUNCH_DARKLY_PERSONAL_ACCESS_TOKEN) {
@@ -38,7 +39,7 @@ export default async function Page() {
     projects.items.sort(sortProjectsByName)
 
     return (
-        <main className="min-h-screen flex-col p-24">
+        <Layout>
             <h2>Projects</h2>
             <ul>
                 {projects.items.map((project: any) => {
@@ -50,6 +51,6 @@ export default async function Page() {
             <h2>Copy settings from one project to another</h2>
 
             <CopyProjectsDropdowns projects={projects.items}/>
-        </main>
+        </Layout>
     )
 }

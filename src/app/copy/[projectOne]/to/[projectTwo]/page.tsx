@@ -1,5 +1,6 @@
 import {ItemsProjects} from "@/components/ItemsProjects";
 import {Item, ListFlags} from "@/types/list-flags";
+import Layout from "@/components/Layout";
 
 const listFlags = async(projectKey: string) => {
     if (!process.env.LAUNCH_DARKLY_PERSONAL_ACCESS_TOKEN) {
@@ -37,10 +38,10 @@ export default async function Page({ params }: { params: { projectOne: string, p
   const [project1, project2]: [ListFlags, ListFlags] = await Promise.all([listFlags(params.projectOne), listFlags(params.projectTwo)])
 
   return (
-    <main className="min-h-screen flex-col p-24">
+    <Layout>
         <div className="flex flex-row">
             <ItemsProjects items1={project1.items.sort(sortItems)} items2={project2.items.sort(sortItems)} ></ItemsProjects>
         </div>
-    </main>
+    </Layout>
   )
 }
