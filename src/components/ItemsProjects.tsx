@@ -7,6 +7,8 @@ const flagsMatch = (item1: Item, item2: Item): boolean => {
 }
 
 export const ItemsProjects = ({ items1, items2}: { items1: Item[], items2: Item[] }) => {
+    const environments = Object.values(items1[0].environments).map(environment => environment._environmentName)
+
     // todo handle missing flags if one side is missing
     return <table className="border-spacing-1.5">
         <thead>
@@ -14,9 +16,18 @@ export const ItemsProjects = ({ items1, items2}: { items1: Item[], items2: Item[
                 <th>Flag name</th>
                 <th>Flag key</th>
                 <th>Name and Kind match</th>
-                <th colSpan={6}>Targets</th>
-                <th>Variation Off</th>
-                <th>Variation On</th>
+                <th colSpan={environments.length}>Targets</th>
+                <th colSpan={2}>Variations</th>
+            </tr>
+            <tr>
+                <th></th>
+                <th></th>
+                <th></th>
+                {environments.map(environment => {
+                        return <th>{environment}</th>
+                })}
+                <th>Off</th>
+                <th>On</th>
             </tr>
         </thead>
         <tbody>
