@@ -14,7 +14,7 @@ export const ItemsProjects = ({ items1, items2}: any) => {
     const [items2State, setItems2State] = useState(items2)
 
     const handleMatchFirstProject = async(environment: string, featureFlagKey: string, value: any) => {
-        const response = await fetch('/api/update-flag', {
+        const response = await fetch('/api/update-route', {
             method: 'PATCH',
             body: JSON.stringify({
                 environment,
