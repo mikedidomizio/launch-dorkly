@@ -1,4 +1,5 @@
 import {ItemsProjects} from "@/components/ItemsProjects";
+import {Item, ListFlags} from "@/types/list-flags";
 
 async function listFlagsProjectOne() {
     if (!process.env.LAUNCH_DARKLY_PERSONAL_ACCESS_TOKEN || !process.env.LD_PROJECT_ONE) {
@@ -36,7 +37,7 @@ const listFlags = async(projectKey: string) => {
     return resp.json();
 }
 
-const sortItems = (a: any, b: any) => {
+const sortItems = (a: Item, b: Item) => {
     if(a.name > b.name) {
         return 1
     }
@@ -49,7 +50,7 @@ const sortItems = (a: any, b: any) => {
 }
 
 export default async function Home() {
-  const [project1, project2] = await Promise.all([listFlagsProjectOne(), listFlagsProjectTwo()])
+  const [project1, project2]: [ListFlags, ListFlags] = await Promise.all([listFlagsProjectOne(), listFlagsProjectTwo()])
 
   return (
     <main className="min-h-screen flex-col p-24">

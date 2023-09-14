@@ -1,14 +1,15 @@
 'use client'
 import {useState} from "react";
+import {Item} from "@/types/list-flags";
 
-const valuesMatch = (item1Val: any, item2Val: any): boolean => {
+const valuesMatch = (item1Val: boolean, item2Val: boolean): boolean => {
     return item1Val === item2Val
 }
 
-export const Targets = ({ item, items2 }: any) => {
+export const Targets = ({ item, items2 }: {  item: Item, items2: Item[] }) => {
     const [items2State, setItems2State] = useState(items2)
 
-    const handleMatchFirstProject = async(environment: string, featureFlagKey: string, value: any) => {
+    const handleMatchFirstProject = async(environment: string, featureFlagKey: string, value: boolean) => {
         const response = await fetch('/api/update-target', {
             method: 'PATCH',
             body: JSON.stringify({
@@ -26,7 +27,7 @@ export const Targets = ({ item, items2 }: any) => {
         }
 
         // update the state to reflect the new changes, this is just handled locally
-        const newMappedValues = items2State.map((item: any) => {
+        const newMappedValues = items2State.map((item) => {
             if (item.key === featureFlagKey) {
                 item.environments[environment].on = value
             }
@@ -37,18 +38,21 @@ export const Targets = ({ item, items2 }: any) => {
         setItems2State(newMappedValues)
     }
 
-
     // todo not efficient at all but works
     const getOnValue = (environmentKey: string, featureFlagKey: string) => {
         const filteredItem = items2State.find((item) => {
             return item.key === featureFlagKey
         })
 
-        return filteredItem.environments[environmentKey].on
+        if (filteredItem) {
+            return filteredItem.environments[environmentKey].on
+        }
+
+        throw new Error('Could not find item')
     }
 
     return <>
-        {Object.entries(item.environments).map(([ environmentKey, values ]: any) => {
+        {Object.entries(item.environments).map(([ environmentKey, values ]) => {
             return <td key={environmentKey}>
                 <b>{values._environmentName}</b>
                 <br/>

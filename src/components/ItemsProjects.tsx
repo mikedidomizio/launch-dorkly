@@ -1,10 +1,11 @@
 import {Targets} from "@/components/Targets";
+import {Item} from "@/types/list-flags";
 
-const flagsMatch = (item1: any, item2: any): boolean => {
+const flagsMatch = (item1: Item, item2: Item): boolean => {
     return item1.name === item2.name && item1.kind === item2.kind
 }
 
-export const ItemsProjects = ({ items1, items2}: any) => {
+export const ItemsProjects = ({ items1, items2}: { items1: Item[], items2: Item[] }) => {
     // todo handle missing flags if one side is missing
     return <table className="border-spacing-1.5">
         <thead>
@@ -16,7 +17,7 @@ export const ItemsProjects = ({ items1, items2}: any) => {
             </tr>
         </thead>
         <tbody>
-        {items1.map((item: any, index: number) => {
+        {items1.map((item, index: number) => {
             return <tr key={index}>
                 <td>
                     {item.name}
