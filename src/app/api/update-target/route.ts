@@ -5,13 +5,17 @@ export async function PATCH(req: Request) {
     throw new Error('No PAT set')
   }
 
-  const { environment, featureFlagKey, value } = await req.json()
+  const { environment, featureFlagKey, project, value } = await req.json()
+
+  if (!environment || !featureFlagKey || (!project && value !== undefined)) {
+    return NextResponse.json({ error: 'Bad request' }, { status: 400 })
+  }
 
   // this turns on/off targeting
   const kindFlag = value ? 'turnFlagOn' : 'turnFlagOff'
 
   const resp = await fetch(
-    `https://app.launchdarkly.com/api/v2/flags/${process.env.LD_PROJECT_TWO}/${featureFlagKey}`,
+    `https://app.launchdarkly.com/api/v2/flags/${project}/${featureFlagKey}`,
     {
       method: 'PATCH',
       headers: {

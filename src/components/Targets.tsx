@@ -3,13 +3,19 @@ import { useState } from 'react'
 import { Item } from '@/types/list-flags'
 import { DoesNotMatch } from '@/components/DoesNotMatch'
 import { Match } from '@/components/Match'
+import { useParams } from 'next/navigation'
 
 const valuesMatch = (item1Val: boolean, item2Val: boolean): boolean => {
   return item1Val === item2Val
 }
 
 export const Targets = ({ item, items2 }: { item: Item; items2: Item[] }) => {
+  const params = useParams()
   const [items2State, setItems2State] = useState(items2)
+
+  if (!params.projectTwo) {
+    throw new Error('expects to be under route with parameter')
+  }
 
   const handleMatchFirstProject = async (
     environment: string,
@@ -25,6 +31,7 @@ export const Targets = ({ item, items2 }: { item: Item; items2: Item[] }) => {
       body: JSON.stringify({
         environment,
         featureFlagKey,
+        project: params.projectTwo,
         value,
       }),
       headers: {

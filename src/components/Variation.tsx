@@ -3,9 +3,15 @@ import { useState } from 'react'
 import { Item, Kind, VariationElement } from '@/types/list-flags'
 import { Match } from '@/components/Match'
 import { DoesNotMatch } from '@/components/DoesNotMatch'
+import { useParams } from 'next/navigation'
 
 export const Variation = ({ item, items2 }: { item: Item; items2: Item[] }) => {
+  const params = useParams()
   const [items2State, setItems2State] = useState(items2)
+
+  if (!params.projectTwo) {
+    throw new Error('expects to be under route with parameter')
+  }
 
   const handleMatchFirstProjectVariation = async (
     featureFlagKey: string,
@@ -16,6 +22,7 @@ export const Variation = ({ item, items2 }: { item: Item; items2: Item[] }) => {
       method: 'PATCH',
       body: JSON.stringify({
         featureFlagKey,
+        project: params.projectTwo,
         variation,
         value,
       }),
