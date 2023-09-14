@@ -1,4 +1,5 @@
 import Link from "next/link";
+import {CopyProjectsDropdowns} from "@/components/CopyProjectsDropdowns";
 
 const listProjects = async() => {
     if (!process.env.LAUNCH_DARKLY_PERSONAL_ACCESS_TOKEN) {
@@ -38,11 +39,17 @@ export default async function Page() {
 
     return (
         <main className="min-h-screen flex-col p-24">
+            <h2>Projects</h2>
             <ul>
                 {projects.items.map((project: any) => {
-                    return <li><Link href={`/project/${project.key}`}>{project.name}</Link></li>
+                    return <li key={project.key}><Link prefetch href={`/project/${project.key}`}>{project.name}</Link></li>
                 })}
             </ul>
+
+            <br/>
+            <h2>Copy settings from one project to another</h2>
+
+            <CopyProjectsDropdowns projects={projects.items}/>
         </main>
     )
 }

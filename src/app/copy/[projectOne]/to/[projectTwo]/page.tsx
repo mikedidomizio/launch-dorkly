@@ -1,22 +1,6 @@
 import {ItemsProjects} from "@/components/ItemsProjects";
 import {Item, ListFlags} from "@/types/list-flags";
 
-async function listFlagsProjectOne() {
-    if (!process.env.LAUNCH_DARKLY_PERSONAL_ACCESS_TOKEN || !process.env.LD_PROJECT_ONE) {
-        throw new Error('Need LD PAT')
-    }
-
-    return listFlags(process.env.LD_PROJECT_ONE)
-}
-
-async function listFlagsProjectTwo() {
-    if (!process.env.LAUNCH_DARKLY_PERSONAL_ACCESS_TOKEN || !process.env.LD_PROJECT_TWO) {
-        throw new Error('Need LD PAT')
-    }
-
-    return listFlags(process.env.LD_PROJECT_TWO)
-}
-
 const listFlags = async(projectKey: string) => {
     if (!process.env.LAUNCH_DARKLY_PERSONAL_ACCESS_TOKEN) {
         throw new Error('Need LD PAT')
@@ -49,8 +33,8 @@ const sortItems = (a: Item, b: Item) => {
     return 0
 }
 
-export default async function Page() {
-  const [project1, project2]: [ListFlags, ListFlags] = await Promise.all([listFlagsProjectOne(), listFlagsProjectTwo()])
+export default async function Page({ params }: { params: { projectOne: string, projectTwo: string }}) {
+  const [project1, project2]: [ListFlags, ListFlags] = await Promise.all([listFlags(params.projectOne), listFlags(params.projectTwo)])
 
   return (
     <main className="min-h-screen flex-col p-24">

@@ -38,7 +38,7 @@ export const Variation = ({ item, items2 }: {  item: Item, items2: Item[] }) => 
     }
 
     if (item.kind !== Kind.Boolean) {
-        // todo too complicated at this time to do this properly
+        // todo too complicated at this time to do this for any other type
         return null
     }
 
