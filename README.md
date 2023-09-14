@@ -1,6 +1,6 @@
 # LaunchDorkly
 
-For the LaunchDarkly expert
+A different approach to a LaunchDarkly UI
 
 ## Description
 
@@ -21,5 +21,3 @@ Use this project at your own risk.
 - Launch the application
 
 ℹ️ The Token can have either Reader/Writer access, the application should work fine with Reader although some actions may return errors (expected)
-
-
