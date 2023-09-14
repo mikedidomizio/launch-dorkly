@@ -115,6 +115,6 @@ export interface VariationElement {
     _id:          string;
     name?:        string;
     // todo this may be additional types
-    value:        boolean | number;
+    value:        boolean;
     description?: string;
 }

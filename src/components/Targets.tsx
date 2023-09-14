@@ -1,6 +1,8 @@
 'use client'
 import {useState} from "react";
 import {Item} from "@/types/list-flags";
+import {DoesNotMatch} from "@/components/DoesNotMatch";
+import {Match} from "@/components/Match";
 
 const valuesMatch = (item1Val: boolean, item2Val: boolean): boolean => {
     return item1Val === item2Val
@@ -10,6 +12,10 @@ export const Targets = ({ item, items2 }: {  item: Item, items2: Item[] }) => {
     const [items2State, setItems2State] = useState(items2)
 
     const handleMatchFirstProject = async(environment: string, featureFlagKey: string, value: boolean) => {
+        if (environment === "production") {
+            throw new Error('Will not do production')
+        }
+
         const response = await fetch('/api/update-target', {
             method: 'PATCH',
             body: JSON.stringify({
@@ -53,11 +59,11 @@ export const Targets = ({ item, items2 }: {  item: Item, items2: Item[] }) => {
 
     return <>
         {Object.entries(item.environments).map(([ environmentKey, values ]) => {
-            return <td key={environmentKey}>
+            return <td className="text-center" key={environmentKey}>
                 <b>{values._environmentName}</b>
                 <br/>
-                {valuesMatch(values.on, getOnValue(environmentKey, item.key)) ? <button>✅</button> : <button
-                    onClick={() => handleMatchFirstProject(environmentKey, item.key, values.on)}>❌</button>}
+                {valuesMatch(values.on, getOnValue(environmentKey, item.key)) ? <Match /> : <DoesNotMatch
+                    onClick={() => handleMatchFirstProject(environmentKey, item.key, values.on)} />}
         </td>
         })}
     </>
