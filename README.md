@@ -8,7 +8,7 @@ The purpose of this project is to give easier control of LaunchDarkly project co
 
 ## ⚠️ Before using
 
-This project is takes zero responsibility of any adverse changes to your LaunchDarkly setup.
+This project takes zero responsibility of unintended or destructive changes to your LaunchDarkly setup.
 This project isn't intended to manage everything LaunchDarkly but just a UI on top of the API calls.
 <br/>
 <br/>
