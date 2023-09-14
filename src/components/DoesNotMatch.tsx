@@ -1,3 +1,3 @@
-export const DoesNotMatch = ({ onClick }: { onClick?: () => {}}) => {
-    return <button onClick={onClick}>❌</button>
+export const DoesNotMatch = ({ onClick }: { onClick?: () => {} }) => {
+  return <button onClick={onClick}>❌</button>
 }
