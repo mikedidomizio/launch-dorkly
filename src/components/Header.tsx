@@ -2,7 +2,7 @@ import Link from 'next/link'
 
 export const Header = () => {
   return (
-    <header className="p-12">
+    <header className="p-6 pl-12">
       <h1 className="heading-1 mb-0 ">
         <Link className="no-underline" href="/">
           LaunchDorkly

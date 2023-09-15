@@ -2,6 +2,7 @@
 import { Item } from '@/types/listFlags.types'
 import { useParams } from 'next/navigation'
 import { useState } from 'react'
+import { ColouredBoolean } from '@/components/ColouredBoolean'
 
 export const Targets = ({ item }: { item: Item }) => {
   const [itemState, setItemState] = useState(item)
@@ -57,7 +58,9 @@ export const Targets = ({ item }: { item: Item }) => {
                   toggleFlag(environmentKey, itemState.key, !values.on)
                 }
               >
-                {'' + values.on}
+                <ColouredBoolean bool={values.on}>
+                  {'' + values.on}
+                </ColouredBoolean>
               </button>
             </td>
           )
