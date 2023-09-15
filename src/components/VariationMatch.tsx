@@ -5,7 +5,13 @@ import { Match } from '@/components/Match'
 import { DoesNotMatch } from '@/components/DoesNotMatch'
 import { useParams } from 'next/navigation'
 
-export const Variation = ({ item, items2 }: { item: Item; items2: Item[] }) => {
+export const VariationMatch = ({
+  item,
+  items2,
+}: {
+  item: Item
+  items2: Item[]
+}) => {
   const params = useParams()
   const [items2State, setItems2State] = useState(items2)
 
