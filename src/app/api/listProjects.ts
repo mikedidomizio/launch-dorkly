@@ -1,15 +1,17 @@
-import { ListFlagsTypes } from '@/types/listFlags.types'
 import { cookies } from 'next/headers'
+import { redirect } from 'next/navigation'
 
-export const listProjectFlags = async (
-  projectKey: string,
-): Promise<ListFlagsTypes> => {
+export const listProjects = async () => {
   const cookieStore = cookies()
   const token = cookieStore.get('LD_TOKEN')
 
-  const resp = await fetch(
+  if (!token) {
+    redirect('/start')
+  }
+
+  return fetch(
     // date appended seemed to properly break cache responses
-    `https://app.launchdarkly.com/api/v2/flags/${projectKey}?d=${new Date().getTime()}`,
+    `https://app.launchdarkly.com/api/v2/projects`,
     {
       method: 'GET',
       headers: {
@@ -19,6 +21,4 @@ export const listProjectFlags = async (
       },
     },
   )
-
-  return resp.json()
 }

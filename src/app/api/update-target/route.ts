@@ -1,13 +1,18 @@
 import { NextResponse } from 'next/server'
+import { cookies } from 'next/headers'
 
 export async function PATCH(req: Request) {
-  if (!process.env.LAUNCH_DARKLY_PERSONAL_ACCESS_TOKEN) {
-    throw new Error('No PAT set')
-  }
+  const cookieStore = cookies()
+  const token = cookieStore.get('LD_TOKEN')
 
   const { environment, featureFlagKey, project, value } = await req.json()
 
-  if (!environment || !featureFlagKey || (!project && value !== undefined)) {
+  if (
+    !environment ||
+    !featureFlagKey ||
+    (!project && value !== undefined) ||
+    !token
+  ) {
     return NextResponse.json({ error: 'Bad request' }, { status: 400 })
   }
 
@@ -21,7 +26,7 @@ export async function PATCH(req: Request) {
       headers: {
         'Content-Type':
           'application/json; domain-model=launchdarkly.semanticpatch',
-        Authorization: process.env.LAUNCH_DARKLY_PERSONAL_ACCESS_TOKEN,
+        Authorization: token?.value as string,
         'cache-control': 'no-cache',
       },
       body: JSON.stringify({

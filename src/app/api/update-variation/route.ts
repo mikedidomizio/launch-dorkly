@@ -1,9 +1,9 @@
 import { NextResponse } from 'next/server'
+import { cookies } from 'next/headers'
 
 export async function PATCH(req: Request) {
-  if (!process.env.LAUNCH_DARKLY_PERSONAL_ACCESS_TOKEN) {
-    return NextResponse.json({ error: 'Error' }, { status: 500 })
-  }
+  const cookieStore = cookies()
+  const token = cookieStore.get('LD_TOKEN')
 
   const { featureFlagKey, project, variation, value } = await req.json()
 
@@ -21,7 +21,7 @@ export async function PATCH(req: Request) {
       headers: {
         'Content-Type':
           'application/json; domain-model=launchdarkly.semanticpatch',
-        Authorization: process.env.LAUNCH_DARKLY_PERSONAL_ACCESS_TOKEN,
+        Authorization: token?.value as string,
         'cache-control': 'no-cache',
       },
       body: JSON.stringify({
