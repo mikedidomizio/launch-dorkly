@@ -46,7 +46,7 @@ export const Variation = ({ item }: { item: Item }) => {
       [updatedValue]: +value,
     }
 
-    // upload local view
+    // update local view
     setItemState({
       ...itemState,
       defaults: defaultsObject,

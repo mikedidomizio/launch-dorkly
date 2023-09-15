@@ -6,6 +6,7 @@ export const ProjectFlags = ({ items }: { items: Item[] }) => {
   const environments = Object.values(items[0].environments).map(
     (environment) => environment._environmentName,
   )
+
   return (
     <table className="border-spacing-1.5 table">
       <thead>

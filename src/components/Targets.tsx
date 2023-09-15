@@ -34,7 +34,7 @@ export const Targets = ({ item }: { item: Item }) => {
       throw new Error('Could not update')
     }
 
-    // upload local view
+    // update local view
     setItemState({
       ...itemState,
       environments: {
@@ -57,7 +57,7 @@ export const Targets = ({ item }: { item: Item }) => {
                 type="checkbox"
                 className="toggle toggle-success"
                 checked={values.on}
-                onClick={() =>
+                onChange={() =>
                   toggleFlag(environmentKey, itemState.key, !values.on)
                 }
               />

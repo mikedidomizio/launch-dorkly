@@ -8,7 +8,6 @@ import { listProjects } from '@/app/api/listProjects'
 export default async function Page() {
   const response = await listProjects()
 
-  console.log('>>>', response)
   if (response) {
     const projects = await response.json()
     projects.items.sort(sortItemsByName)
