@@ -53,15 +53,14 @@ export const Targets = ({ item }: { item: Item }) => {
         ([environmentKey, values]) => {
           return (
             <td className="text-center" key={environmentKey}>
-              <button
+              <input
+                type="checkbox"
+                className="toggle toggle-success"
+                checked={values.on}
                 onClick={() =>
                   toggleFlag(environmentKey, itemState.key, !values.on)
                 }
-              >
-                <ColouredBoolean bool={values.on}>
-                  {'' + values.on}
-                </ColouredBoolean>
-              </button>
+              />
             </td>
           )
         },
