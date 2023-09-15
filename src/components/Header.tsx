@@ -10,14 +10,23 @@ export const Header = () => {
   }
 
   return (
-    <header className="p-6 pl-12">
-      <h1 className="heading-1 mb-0 ">
-        <Link className="no-underline" href="/">
-          LaunchDorkly
+    <header className="p-6 pl-12 flex flex-row space-between justify-between items-center">
+      <div className="flex items-center space-x-4">
+        <h1 className="heading-1 mb-0 ">
+          <Link className="no-underline" href="/">
+            LaunchDorkly
+          </Link>
+        </h1>
+        <Link
+          target="_blank"
+          href="https://github.com/mikedidomizio/launch-dorkly"
+        >
+          GitHub
         </Link>
-      </h1>
+      </div>
+
       <form action={removeCookie}>
-        <button type="submit">Remove cookie</button>
+        <button type="submit">Remove cookie (logout)</button>
       </form>
     </header>
   )
