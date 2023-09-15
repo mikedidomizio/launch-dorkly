@@ -1,5 +1,6 @@
 import { Item } from '@/types/list-flags'
 import { Targets } from '@/components/Targets'
+import { Variation } from '@/components/Variation'
 
 export const ProjectFlags = ({ items }: { items: Item[] }) => {
   const environments = Object.values(items[0].environments).map(
@@ -35,6 +36,7 @@ export const ProjectFlags = ({ items }: { items: Item[] }) => {
               <td>{item.name}</td>
               <td>{item.key}</td>
               <Targets item={item} />
+              <Variation item={item} />
             </tr>
           )
         })}
