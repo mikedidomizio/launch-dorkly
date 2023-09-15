@@ -13,7 +13,7 @@ export const CopyProjectsDropdowns = ({ projects }: any) => {
   }, [copyFrom, copyTo])
 
   return (
-    <>
+    <div className="space-x-2 flex flex-row">
       <select
         className="select select-bordered w-full max-w-xs"
         onChange={(e) => setCopyFrom(e.target.value)}
@@ -29,9 +29,7 @@ export const CopyProjectsDropdowns = ({ projects }: any) => {
           )
         })}
       </select>
-
-      <br />
-
+      <div className="flex self-center">➡</div>
       <select
         className="select select-bordered w-full max-w-xs"
         onChange={(e) => setCopyTo(e.target.value)}
@@ -47,6 +45,6 @@ export const CopyProjectsDropdowns = ({ projects }: any) => {
           )
         })}
       </select>
-    </>
+    </div>
   )
 }
