@@ -1,6 +1,7 @@
 import { ItemsProjects } from '@/components/ItemsProjects'
 import { Item, ListFlags } from '@/types/list-flags'
 import Layout from '@/components/Layout'
+import { CopyProjectToProjectHeader } from '@/components/CopyProjectToProjectHeader'
 
 const listFlags = async (projectKey: string) => {
   if (!process.env.LAUNCH_DARKLY_PERSONAL_ACCESS_TOKEN) {
@@ -22,6 +23,29 @@ const listFlags = async (projectKey: string) => {
   return resp.json()
 }
 
+const getProject = async (projectKey: string) => {
+  const resp = await fetch(
+    `https://app.launchdarkly.com/api/v2/projects/${projectKey}`,
+    {
+      method: 'GET',
+      headers: {
+        Authorization: 'api-b8c3492a-6920-4535-b57e-d8fb151a230c',
+      },
+    },
+  )
+
+  // if (resp.status === 404) {
+  //   throw new Error('Could not update')
+  // }
+
+  const json = await resp.json()
+
+  return {
+    status: resp.status,
+    response: json,
+  }
+}
+
 const sortItems = (a: Item, b: Item) => {
   if (a.name > b.name) {
     return 1
@@ -39,6 +63,20 @@ export default async function Page({
 }: {
   params: { projectOne: string; projectTwo: string }
 }) {
+  const [project1Data, project2Data] = await Promise.allSettled([
+    getProject(params.projectOne),
+    getProject(params.projectTwo),
+  ])
+
+  if (
+    project1Data.status !== 'fulfilled' ||
+    project1Data.value.status === 404 ||
+    project2Data.status !== 'fulfilled' ||
+    project2Data.value.status === 404
+  ) {
+    return <>Could not find one project or other</>
+  }
+
   const [project1, project2]: [ListFlags, ListFlags] = await Promise.all([
     listFlags(params.projectOne),
     listFlags(params.projectTwo),
@@ -46,6 +84,10 @@ export default async function Page({
 
   return (
     <Layout>
+      <CopyProjectToProjectHeader
+        projectCopyFromName={project1Data.value.response.name}
+        projectCopyToName={project2Data.value.response.name}
+      />
       <div className="flex flex-row">
         <ItemsProjects
           items1={project1.items.sort(sortItems)}
