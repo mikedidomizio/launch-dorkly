@@ -1,5 +1,5 @@
 'use client'
-import { Defaults, Item } from '@/types/list-flags'
+import { Defaults, Item } from '@/types/listFlags.types'
 import { useParams } from 'next/navigation'
 import { useState } from 'react'
 
@@ -46,7 +46,7 @@ export const Variation = ({ item }: { item: Item }) => {
       [updatedValue]: +value,
     }
 
-    // upload local view
+    // update local view
     setItemState({
       ...itemState,
       defaults: defaultsObject,
