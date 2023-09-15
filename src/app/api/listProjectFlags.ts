@@ -1,4 +1,8 @@
-export const listProjectFlags = async (projectKey: string) => {
+import { ListFlagsTypes } from '@/types/listFlags.types'
+
+export const listProjectFlags = async (
+  projectKey: string,
+): Promise<ListFlagsTypes> => {
   if (!process.env.LAUNCH_DARKLY_PERSONAL_ACCESS_TOKEN) {
     throw new Error('Need LD PAT')
   }

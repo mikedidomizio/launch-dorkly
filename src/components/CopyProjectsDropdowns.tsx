@@ -1,8 +1,13 @@
 'use client'
 import { useEffect, useState } from 'react'
 import { redirect } from 'next/navigation'
+import { Project } from '@/types/listProjects.types'
 
-export const CopyProjectsDropdowns = ({ projects }: any) => {
+export const CopyProjectsDropdowns = ({
+  projects,
+}: {
+  projects: Project[]
+}) => {
   const [copyFrom, setCopyFrom] = useState<string | null>(null)
   const [copyTo, setCopyTo] = useState<string | null>(null)
 
@@ -21,7 +26,7 @@ export const CopyProjectsDropdowns = ({ projects }: any) => {
         <option disabled selected>
           Project to copy from
         </option>
-        {projects.map((project: any) => {
+        {projects.map((project) => {
           return (
             <option key={project.key} value={project.key}>
               {project.name}
@@ -37,7 +42,7 @@ export const CopyProjectsDropdowns = ({ projects }: any) => {
         <option disabled selected>
           Project to copy to
         </option>
-        {projects.map((project: any) => {
+        {projects.map((project) => {
           return (
             <option key={project.key} value={project.key}>
               {project.name}

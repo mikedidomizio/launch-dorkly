@@ -40,7 +40,7 @@ export default async function Page({
     project2Data.status !== 'fulfilled' ||
     project2Data.value.status === 404
   ) {
-    return <Layout>Could not find one project or other</Layout>
+    return <Layout>Issues with from/to project</Layout>
   }
 
   const [project1, project2]: [ListFlagsTypes, ListFlagsTypes] =

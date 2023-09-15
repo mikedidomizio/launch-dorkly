@@ -1,8 +1,10 @@
 import Link from 'next/link'
 import { CopyProjectsDropdowns } from '@/components/CopyProjectsDropdowns'
 import Layout from '@/components/Layout'
+import { ListProjects } from '@/types/listProjects.types'
+import { sortItemsByName } from '@/helpers/sortItemsByName'
 
-const listProjects = async () => {
+const listProjects = async (): Promise<ListProjects> => {
   if (!process.env.LAUNCH_DARKLY_PERSONAL_ACCESS_TOKEN) {
     throw new Error('Need LD PAT')
   }
@@ -22,27 +24,15 @@ const listProjects = async () => {
   return resp.json()
 }
 
-const sortProjectsByName = (a: any, b: any) => {
-  if (a.name > b.name) {
-    return 1
-  }
-
-  if (a.name < b.name) {
-    return -1
-  }
-
-  return 0
-}
-
 export default async function Page() {
   const projects = await listProjects()
-  projects.items.sort(sortProjectsByName)
+  projects.items.sort(sortItemsByName)
 
   return (
     <Layout>
       <h2>Projects</h2>
       <ul>
-        {projects.items.map((project: any) => {
+        {projects.items.map((project) => {
           return (
             <li key={project.key}>
               <Link prefetch href={`/project/${project.key}`}>
@@ -53,9 +43,7 @@ export default async function Page() {
         })}
       </ul>
 
-      <br />
       <h2>Copy settings from one project to another</h2>
-
       <CopyProjectsDropdowns projects={projects.items} />
     </Layout>
   )
