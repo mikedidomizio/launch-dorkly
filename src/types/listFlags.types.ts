@@ -1,4 +1,4 @@
-export interface ListFlags {
+export interface ListFlagsTypes {
   _links: ListFlagsLinks
   items: Item[]
   totalCount: number

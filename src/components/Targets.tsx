@@ -1,7 +1,8 @@
 'use client'
-import { Item } from '@/types/list-flags'
+import { Item } from '@/types/listFlags.types'
 import { useParams } from 'next/navigation'
 import { useState } from 'react'
+import { ColouredBoolean } from '@/components/ColouredBoolean'
 
 export const Targets = ({ item }: { item: Item }) => {
   const [itemState, setItemState] = useState(item)
@@ -33,7 +34,7 @@ export const Targets = ({ item }: { item: Item }) => {
       throw new Error('Could not update')
     }
 
-    // upload local view
+    // update local view
     setItemState({
       ...itemState,
       environments: {
@@ -52,13 +53,14 @@ export const Targets = ({ item }: { item: Item }) => {
         ([environmentKey, values]) => {
           return (
             <td className="text-center" key={environmentKey}>
-              <button
-                onClick={() =>
+              <input
+                type="checkbox"
+                className="toggle toggle-success"
+                checked={values.on}
+                onChange={() =>
                   toggleFlag(environmentKey, itemState.key, !values.on)
                 }
-              >
-                {'' + values.on}
-              </button>
+              />
             </td>
           )
         },
