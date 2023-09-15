@@ -1,7 +1,7 @@
 import { Item } from '@/types/list-flags'
+import { Targets } from '@/components/Targets'
 
 export const ProjectFlags = ({ items }: { items: Item[] }) => {
-  console.log(items)
   const environments = Object.values(items[0].environments).map(
     (environment) => environment._environmentName,
   )
@@ -11,7 +11,6 @@ export const ProjectFlags = ({ items }: { items: Item[] }) => {
         <tr>
           <th>Flag name</th>
           <th>Flag key</th>
-          <th>Name and Kind match</th>
           <th className="text-center" colSpan={environments.length}>
             Targets
           </th>
@@ -20,7 +19,6 @@ export const ProjectFlags = ({ items }: { items: Item[] }) => {
           </th>
         </tr>
         <tr className="text-center">
-          <th></th>
           <th></th>
           <th></th>
           {environments.map((environment) => {
@@ -36,6 +34,7 @@ export const ProjectFlags = ({ items }: { items: Item[] }) => {
             <tr key={index}>
               <td>{item.name}</td>
               <td>{item.key}</td>
+              <Targets item={item} />
             </tr>
           )
         })}
