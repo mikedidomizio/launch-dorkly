@@ -16,23 +16,23 @@ const readableErrorMessage = (error: string) => {
 export default function Page({
   searchParams,
 }: {
-  searchParams: { error: string }
+  searchParams: { error?: string }
 }) {
   async function setCookie(formData: FormData) {
     'use server'
     const token = formData.get('accessToken')
 
-    if (token) {
-      cookies().set({
-        name: 'LD_TOKEN',
-        value: token as string,
-        path: '/',
-      })
-
+    if (token && typeof token === 'string') {
       // the purpose of the following is that if we can't get the projects, the token is probably not good
-      const projects = await listProjects()
+      const projects = await listProjects(token)
 
-      if (projects.status === 200) {
+      if (projects?.status === 200) {
+        cookies().set({
+          name: 'LD_TOKEN',
+          value: token as string,
+          path: '/',
+        })
+
         redirect('/')
       }
 
@@ -70,7 +70,7 @@ export default function Page({
                   placeholder="LaunchDarkly Access Token"
                   className="input input-bordered w-full max-w-xs"
                   name="accessToken"
-                  autocomplete="off"
+                  autoComplete="off"
                 />
                 <br />
                 (This is set as a cookie in your browser,
