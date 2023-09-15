@@ -1,23 +1,10 @@
-import { TargetsMatch } from '@/components/TargetsMatch'
 import { Item } from '@/types/list-flags'
-import { VariationMatch } from '@/components/VariationMatch'
 
-const flagsMatch = (item1: Item, item2: Item): boolean => {
-  return item1.name === item2.name && item1.kind === item2.kind
-}
-
-export const ItemsProjects = ({
-  items1,
-  items2,
-}: {
-  items1: Item[]
-  items2: Item[]
-}) => {
-  const environments = Object.values(items1[0].environments).map(
+export const ProjectFlags = ({ items }: { items: Item[] }) => {
+  console.log(items)
+  const environments = Object.values(items[0].environments).map(
     (environment) => environment._environmentName,
   )
-
-  // todo handle missing flags if one side is missing
   return (
     <table className="border-spacing-1.5 table">
       <thead>
@@ -44,14 +31,11 @@ export const ItemsProjects = ({
         </tr>
       </thead>
       <tbody>
-        {items1.map((item, index: number) => {
+        {items.map((item, index: number) => {
           return (
             <tr key={index}>
               <td>{item.name}</td>
               <td>{item.key}</td>
-              <td>{'' + flagsMatch(item, items2[index])}</td>
-              <TargetsMatch item={item} items2={items2} />
-              <VariationMatch item={item} items2={items2} />
             </tr>
           )
         })}

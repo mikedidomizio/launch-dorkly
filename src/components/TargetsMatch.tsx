@@ -9,7 +9,13 @@ const valuesMatch = (item1Val: boolean, item2Val: boolean): boolean => {
   return item1Val === item2Val
 }
 
-export const Targets = ({ item, items2 }: { item: Item; items2: Item[] }) => {
+export const TargetsMatch = ({
+  item,
+  items2,
+}: {
+  item: Item
+  items2: Item[]
+}) => {
   const params = useParams()
   const [items2State, setItems2State] = useState(items2)
 
