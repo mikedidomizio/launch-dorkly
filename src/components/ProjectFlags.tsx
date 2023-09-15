@@ -1,4 +1,4 @@
-import { Item } from '@/types/list-flags'
+import { Item } from '@/types/listFlags.types'
 import { Targets } from '@/components/Targets'
 import { Variation } from '@/components/Variation'
 

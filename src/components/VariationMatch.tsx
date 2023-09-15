@@ -1,6 +1,6 @@
 'use client'
 import { useState } from 'react'
-import { Item, Kind, VariationElement } from '@/types/list-flags'
+import { Item, Kind, VariationElement } from '@/types/listFlags.types'
 import { Match } from '@/components/Match'
 import { DoesNotMatch } from '@/components/DoesNotMatch'
 import { useParams } from 'next/navigation'

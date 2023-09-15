@@ -1,5 +1,5 @@
 'use client'
-import { Item } from '@/types/list-flags'
+import { Item } from '@/types/listFlags.types'
 import { useParams } from 'next/navigation'
 import { useState } from 'react'
 

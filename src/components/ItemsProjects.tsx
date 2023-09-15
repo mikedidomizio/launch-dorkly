@@ -1,5 +1,5 @@
 import { TargetsMatch } from '@/components/TargetsMatch'
-import { Item } from '@/types/list-flags'
+import { Item } from '@/types/listFlags.types'
 import { VariationMatch } from '@/components/VariationMatch'
 
 const flagsMatch = (item1: Item, item2: Item): boolean => {

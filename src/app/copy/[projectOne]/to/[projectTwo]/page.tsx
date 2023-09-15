@@ -1,27 +1,9 @@
 import { ItemsProjects } from '@/components/ItemsProjects'
-import { Item, ListFlags } from '@/types/list-flags'
+import { Item, ListFlagsTypes } from '@/types/listFlags.types'
 import Layout from '@/components/Layout'
 import { CopyProjectToProjectHeader } from '@/components/CopyProjectToProjectHeader'
-
-const listFlags = async (projectKey: string) => {
-  if (!process.env.LAUNCH_DARKLY_PERSONAL_ACCESS_TOKEN) {
-    throw new Error('Need LD PAT')
-  }
-  const resp = await fetch(
-    // date appended seemed to properly break cache responses
-    `https://app.launchdarkly.com/api/v2/flags/${projectKey}?d=${new Date().getTime()}`,
-    {
-      method: 'GET',
-      headers: {
-        Authorization: process.env.LAUNCH_DARKLY_PERSONAL_ACCESS_TOKEN,
-        'cache-control': 'no-cache',
-        cache: 'no-store',
-      },
-    },
-  )
-
-  return resp.json()
-}
+import { listProjectFlags } from '@/app/api/listProjectFlags'
+import { sortItemsByName } from '@/helpers/sortItemsByName'
 
 const getProject = async (projectKey: string) => {
   const resp = await fetch(
@@ -34,28 +16,12 @@ const getProject = async (projectKey: string) => {
     },
   )
 
-  // if (resp.status === 404) {
-  //   throw new Error('Could not update')
-  // }
-
   const json = await resp.json()
 
   return {
     status: resp.status,
     response: json,
   }
-}
-
-const sortItems = (a: Item, b: Item) => {
-  if (a.name > b.name) {
-    return 1
-  }
-
-  if (b.name > a.name) {
-    return -1
-  }
-
-  return 0
 }
 
 export default async function Page({
@@ -74,13 +40,14 @@ export default async function Page({
     project2Data.status !== 'fulfilled' ||
     project2Data.value.status === 404
   ) {
-    return <>Could not find one project or other</>
+    return <Layout>Could not find one project or other</Layout>
   }
 
-  const [project1, project2]: [ListFlags, ListFlags] = await Promise.all([
-    listFlags(params.projectOne),
-    listFlags(params.projectTwo),
-  ])
+  const [project1, project2]: [ListFlagsTypes, ListFlagsTypes] =
+    await Promise.all([
+      listProjectFlags(params.projectOne),
+      listProjectFlags(params.projectTwo),
+    ])
 
   return (
     <Layout>
@@ -90,8 +57,8 @@ export default async function Page({
       />
       <div className="flex flex-row">
         <ItemsProjects
-          items1={project1.items.sort(sortItems)}
-          items2={project2.items.sort(sortItems)}
+          items1={project1.items.sort(sortItemsByName)}
+          items2={project2.items.sort(sortItemsByName)}
         ></ItemsProjects>
       </div>
     </Layout>
