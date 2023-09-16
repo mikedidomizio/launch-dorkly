@@ -41,7 +41,7 @@ If it's not listed above, this project cannot do it.
 
 ## How to use this?
 
-You can visit [here](https://launch-dorkly.vercel.app/) which is the production deployed version of this app.
+You can visit [here](https://launchdorkly.vercel.app/) which is the production deployed version of this app.
 
 Otherwise, clone the project, and run the following
 

@@ -19,7 +19,7 @@ export const Header = () => {
         </h1>
         <Link
           target="_blank"
-          href="https://github.com/mikedidomizio/launch-dorkly"
+          href="https://github.com/mikedidomizio/launchdorkly"
         >
           GitHub
         </Link>
