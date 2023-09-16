@@ -2,7 +2,7 @@ import Link from 'next/link'
 import { cookies } from 'next/headers'
 import { redirect } from 'next/navigation'
 import { listProjects } from '@/app/api/listProjects'
-import { Error } from '@/components/Error'
+import { ErrorAlert } from '@/components/ErrorAlert'
 
 const readableErrorMessage = (error: string) => {
   switch (error) {
@@ -50,7 +50,7 @@ export default function Page({
       <div className="text-center">
         <h1 className="heading-1">LaunchDorkly</h1>
         {searchParams.error ? (
-          <Error>{readableErrorMessage(searchParams.error)}</Error>
+          <ErrorAlert>{readableErrorMessage(searchParams.error)}</ErrorAlert>
         ) : (
           <h2>Let&apos;s Go!</h2>
         )}

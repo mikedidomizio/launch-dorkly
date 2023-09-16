@@ -7,7 +7,7 @@ const flagsMatch = (item1: Item, item2: Item): boolean => {
   return item1.name === item2.name && item1.kind === item2.kind
 }
 
-export const ItemsProjects = ({
+export const FlagsComparisonTable = ({
   items1,
   items2,
 }: {

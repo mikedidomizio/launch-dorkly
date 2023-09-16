@@ -1,6 +1,6 @@
 import { ReactNode } from 'react'
 
-export const Error = ({ children }: { children: ReactNode }) => {
+export const ErrorAlert = ({ children }: { children: ReactNode }) => {
   return (
     <div className="alert alert-error">
       <svg

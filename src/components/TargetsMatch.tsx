@@ -2,7 +2,7 @@
 import { useState } from 'react'
 import { Item } from '@/types/listFlags.types'
 import { DoesNotMatch } from '@/components/DoesNotMatch'
-import { Match } from '@/components/Match'
+import { DoesMatch } from '@/components/DoesMatch'
 import { useParams } from 'next/navigation'
 
 const valuesMatch = (item1Val: boolean, item2Val: boolean): boolean => {
@@ -16,10 +16,10 @@ export const TargetsMatch = ({
   item: Item
   items2: Item[]
 }) => {
-  const params = useParams()
+  const { projectTwo, test } = useParams()
   const [items2State, setItems2State] = useState(items2)
 
-  if (!params.projectTwo) {
+  if (!projectTwo) {
     throw new Error('expects to be under route with parameter')
   }
 
@@ -33,7 +33,7 @@ export const TargetsMatch = ({
       body: JSON.stringify({
         environment,
         featureFlagKey,
-        project: params.projectTwo,
+        project: projectTwo,
         value,
       }),
       headers: {
@@ -76,7 +76,7 @@ export const TargetsMatch = ({
         return (
           <td className="text-center" key={environmentKey}>
             {valuesMatch(values.on, getOnValue(environmentKey, item.key)) ? (
-              <Match />
+              <DoesMatch />
             ) : (
               <DoesNotMatch
                 onClick={() =>

@@ -2,7 +2,7 @@ import { Item } from '@/types/listFlags.types'
 import { Targets } from '@/components/Targets'
 import { Variation } from '@/components/Variation'
 
-export const ProjectFlags = ({ items }: { items: Item[] }) => {
+export const ProjectFlagsTable = ({ items }: { items: Item[] }) => {
   const environments = Object.values(items[0].environments).map(
     (environment) => environment._environmentName,
   )

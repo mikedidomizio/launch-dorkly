@@ -1,5 +1,5 @@
 import Layout from '@/components/Layout'
-import { ProjectFlags } from '@/components/ProjectFlags'
+import { ProjectFlagsTable } from '@/components/ProjectFlagsTable'
 import { listProjectFlags } from '@/app/api/listProjectFlags'
 import { sortItemsByName } from '@/helpers/sortItemsByName'
 
@@ -14,7 +14,7 @@ export default async function Page({
   return (
     <Layout>
       <h2 className="heading-2">{params.project}</h2>
-      <ProjectFlags items={flags.items} />
+      <ProjectFlagsTable items={flags.items} />
     </Layout>
   )
 }

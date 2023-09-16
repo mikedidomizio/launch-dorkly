@@ -10,7 +10,7 @@ export const Header = () => {
   }
 
   return (
-    <header className="p-6 pl-12 flex flex-row space-between justify-between items-center">
+    <header className="p-6 pl-12 flex flex-row space-between items-center">
       <div className="flex items-center space-x-4">
         <h1 className="heading-1 mb-0 ">
           <Link className="no-underline" href="/">
@@ -23,11 +23,10 @@ export const Header = () => {
         >
           GitHub
         </Link>
+        <form action={removeCookie}>
+          <button type="submit">Remove cookie (logout)</button>
+        </form>
       </div>
-
-      <form action={removeCookie}>
-        <button type="submit">Remove cookie (logout)</button>
-      </form>
     </header>
   )
 }

@@ -1,7 +1,7 @@
 'use client'
 import { useState } from 'react'
 import { Item, Kind, VariationElement } from '@/types/listFlags.types'
-import { Match } from '@/components/Match'
+import { DoesMatch } from '@/components/DoesMatch'
 import { DoesNotMatch } from '@/components/DoesNotMatch'
 import { useParams } from 'next/navigation'
 
@@ -87,7 +87,7 @@ export const VariationMatch = ({
     <>
       <td className="text-center">
         {item.defaults.offVariation === offVariation ? (
-          <Match />
+          <DoesMatch />
         ) : (
           <DoesNotMatch
             onClick={() =>
@@ -105,7 +105,7 @@ export const VariationMatch = ({
       </td>
       <td className="text-center">
         {item.defaults.onVariation === onVariation ? (
-          <Match />
+          <DoesMatch />
         ) : (
           <DoesNotMatch
             onClick={() =>

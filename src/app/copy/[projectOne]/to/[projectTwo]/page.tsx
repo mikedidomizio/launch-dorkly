@@ -1,4 +1,4 @@
-import { ItemsProjects } from '@/components/ItemsProjects'
+import { FlagsComparisonTable } from '@/components/FlagsComparisonTable'
 import { ListFlagsTypes } from '@/types/listFlags.types'
 import Layout from '@/components/Layout'
 import { CopyProjectToProjectHeader } from '@/components/CopyProjectToProjectHeader'
@@ -50,7 +50,7 @@ export default async function Page({
     project2Data.status !== 'fulfilled' ||
     project2Data.value.status === 404
   ) {
-    return <Layout>Issues with from/to project</Layout>
+    return <Layout>Issues fetching one or both of the projects</Layout>
   }
 
   const [project1, project2]: [ListFlagsTypes, ListFlagsTypes] =
@@ -65,10 +65,10 @@ export default async function Page({
         projectCopyFromName={project1Data.value.response.name}
         projectCopyToName={project2Data.value.response.name}
       />
-      <ItemsProjects
+      <FlagsComparisonTable
         items1={project1.items.sort(sortItemsByName)}
         items2={project2.items.sort(sortItemsByName)}
-      ></ItemsProjects>
+      ></FlagsComparisonTable>
     </Layout>
   )
 }
