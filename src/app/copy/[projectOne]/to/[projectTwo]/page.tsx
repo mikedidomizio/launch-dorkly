@@ -1,5 +1,5 @@
 import { ItemsProjects } from '@/components/ItemsProjects'
-import { Item, ListFlagsTypes } from '@/types/listFlags.types'
+import { ListFlagsTypes } from '@/types/listFlags.types'
 import Layout from '@/components/Layout'
 import { CopyProjectToProjectHeader } from '@/components/CopyProjectToProjectHeader'
 import { listProjectFlags } from '@/app/api/listProjectFlags'
@@ -10,12 +10,18 @@ const getProject = async (projectKey: string) => {
   const cookieStore = cookies()
   const token = cookieStore.get('LD_TOKEN')
 
+  if (!token || !token.value) {
+    return {
+      status: 403,
+    }
+  }
+
   const resp = await fetch(
     `https://app.launchdarkly.com/api/v2/projects/${projectKey}`,
     {
       method: 'GET',
       headers: {
-        Authorization: token?.value as string,
+        Authorization: token.value,
       },
     },
   )
@@ -59,12 +65,10 @@ export default async function Page({
         projectCopyFromName={project1Data.value.response.name}
         projectCopyToName={project2Data.value.response.name}
       />
-      <div className="flex flex-row">
-        <ItemsProjects
-          items1={project1.items.sort(sortItemsByName)}
-          items2={project2.items.sort(sortItemsByName)}
-        ></ItemsProjects>
-      </div>
+      <ItemsProjects
+        items1={project1.items.sort(sortItemsByName)}
+        items2={project2.items.sort(sortItemsByName)}
+      ></ItemsProjects>
     </Layout>
   )
 }

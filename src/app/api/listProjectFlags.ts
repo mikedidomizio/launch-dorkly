@@ -1,11 +1,13 @@
-import { ListFlagsTypes } from '@/types/listFlags.types'
 import { cookies } from 'next/headers'
+import { NextResponse } from 'next/server'
 
-export const listProjectFlags = async (
-  projectKey: string,
-): Promise<ListFlagsTypes> => {
+export const listProjectFlags = async (projectKey: string) => {
   const cookieStore = cookies()
   const token = cookieStore.get('LD_TOKEN')
+
+  if (!token || !token.value) {
+    return NextResponse.json({ error: 'Bad request' }, { status: 400 })
+  }
 
   const resp = await fetch(
     // date appended seemed to properly break cache responses
@@ -13,7 +15,7 @@ export const listProjectFlags = async (
     {
       method: 'GET',
       headers: {
-        Authorization: token?.value as string,
+        Authorization: token.value,
         'cache-control': 'no-cache',
         cache: 'no-store',
       },

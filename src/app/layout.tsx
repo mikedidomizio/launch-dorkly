@@ -6,7 +6,7 @@ const inter = Inter({ subsets: ['latin'] })
 
 export const metadata: Metadata = {
   title: 'LaunchDorkly',
-  description: 'Advanced LaunchDarkly handling',
+  description: 'An attempted different approach to a LaunchDarkly UI',
 }
 
 export default function RootLayout({

@@ -13,7 +13,8 @@ export async function PATCH(req: Request) {
     !environment ||
     !featureFlagKey ||
     (!project && value !== undefined) ||
-    !token
+    !token ||
+    !token.value
   ) {
     return NextResponse.json({ error: 'Bad request' }, { status: 400 })
   }
@@ -32,7 +33,7 @@ export async function PATCH(req: Request) {
       headers: {
         'Content-Type':
           'application/json; domain-model=launchdarkly.semanticpatch',
-        Authorization: token?.value as string,
+        Authorization: token.value,
         'cache-control': 'no-cache',
       },
       body: JSON.stringify({

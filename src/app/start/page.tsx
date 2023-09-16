@@ -32,6 +32,7 @@ export default function Page({
         cookies().set({
           name: 'LD_TOKEN',
           value: token,
+          // the token is set for one hour just because if someone were to use this
           expires: Date.now() + oneHour,
           path: '/',
         })
