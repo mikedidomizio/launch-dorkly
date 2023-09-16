@@ -13,6 +13,8 @@ const readableErrorMessage = (error: string) => {
   }
 }
 
+const oneHour = 60 * 60 * 1000
+
 export default function Page({
   searchParams,
 }: {
@@ -29,7 +31,8 @@ export default function Page({
       if (projects?.status === 200) {
         cookies().set({
           name: 'LD_TOKEN',
-          value: token as string,
+          value: token,
+          expires: Date.now() + oneHour,
           path: '/',
         })
 
@@ -61,6 +64,7 @@ export default function Page({
                 >
                   LaunchDarkly
                 </Link>
+                , or use an existing one
               </li>
               <li>
                 Put that access token in the input below!
@@ -73,8 +77,9 @@ export default function Page({
                   autoComplete="off"
                 />
                 <br />
-                (This is set as a cookie in your browser,
-                <br /> it is not saved anywhere in the application)
+                (This is set as a cookie in your browser that expires after 1
+                hour,
+                <br /> it is not saved anywhere in the application.)
               </li>
               <li>
                 Click the{' '}
