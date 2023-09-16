@@ -28,10 +28,6 @@ export const TargetsMatch = ({
     featureFlagKey: string,
     value: boolean,
   ) => {
-    if (environment === 'production') {
-      throw new Error('Will not do production')
-    }
-
     const response = await fetch('/api/update-target', {
       method: 'PATCH',
       body: JSON.stringify({

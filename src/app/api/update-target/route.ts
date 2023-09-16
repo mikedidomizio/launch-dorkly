@@ -1,6 +1,8 @@
 import { NextResponse } from 'next/server'
 import { cookies } from 'next/headers'
 
+const forbiddenEnvironments = ['production', 'prod']
+
 export async function PATCH(req: Request) {
   const cookieStore = cookies()
   const token = cookieStore.get('LD_TOKEN')
@@ -14,6 +16,10 @@ export async function PATCH(req: Request) {
     !token
   ) {
     return NextResponse.json({ error: 'Bad request' }, { status: 400 })
+  }
+
+  if (forbiddenEnvironments.includes(environment)) {
+    return NextResponse.json({ error: 'Forbidden' }, { status: 403 })
   }
 
   // this turns on/off targeting
