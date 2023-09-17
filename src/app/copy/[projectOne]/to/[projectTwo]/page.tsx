@@ -2,6 +2,7 @@ import { FlagsComparisonTable } from '@/components/FlagsComparisonTable'
 import { ListFlagsTypes } from '@/types/listFlags.types'
 import Layout from '@/components/Layout'
 import { CopyProjectToProjectHeader } from '@/components/CopyProjectToProjectHeader'
+import { CompareAvailableFlagsBetweenProjects } from '@/components/CompareAvailableFlagsBetweenProjects'
 import { listProjectFlags } from '@/app/api/listProjectFlags'
 import { sortItemsByName } from '@/helpers/sortItemsByName'
 import { cookies } from 'next/headers'
@@ -59,15 +60,24 @@ export default async function Page({
       listProjectFlags(params.projectTwo),
     ])
 
+  project1.items.sort(sortItemsByName)
+  project2.items.sort(sortItemsByName)
+
   return (
     <Layout>
       <CopyProjectToProjectHeader
         projectCopyFromName={project1Data.value.response.name}
         projectCopyToName={project2Data.value.response.name}
       />
+      <CompareAvailableFlagsBetweenProjects
+        projectOneItems={project1.items}
+        projectOneName={project1Data.value.response.name}
+        projectTwoItems={project2.items}
+        projectTwoName={project2Data.value.response.name}
+      />
       <FlagsComparisonTable
-        items1={project1.items.sort(sortItemsByName)}
-        items2={project2.items.sort(sortItemsByName)}
+        items1={project1.items}
+        items2={project2.items}
       ></FlagsComparisonTable>
     </Layout>
   )
