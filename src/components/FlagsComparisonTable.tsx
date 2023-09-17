@@ -1,13 +1,9 @@
 import { TargetsMatch } from '@/components/TargetsMatch'
 import { Item } from '@/types/listFlags.types'
 import { VariationMatch } from '@/components/VariationMatch'
-import { ColouredBoolean } from '@/components/ColouredBoolean'
 import { DoesMatch } from '@/components/DoesMatch'
 import { DoesNotMatch } from '@/components/DoesNotMatch'
-
-const flagsMatch = (item1: Item, item2: Item): boolean => {
-  return item1.name === item2.name && item1.kind === item2.kind
-}
+import { ManageFlagDescription } from '@/components/ManageFlagDescription'
 
 const CannotCompare = ({ key }: { key: string }) => {
   return <>Could not compare for FF key: {key}</>
@@ -43,9 +39,9 @@ export const FlagsComparisonTable = ({
         </tr>
         <tr className="text-center">
           <th></th>
-          <th>Name</th>
-          <th>Description</th>
-          <th>Kind</th>
+          <th className="text-center">Name</th>
+          <th className="text-center">Description</th>
+          <th className="text-center">Kind</th>
           <th></th>
           {environments.map((environment) => {
             return <th key={environment}>{environment}</th>
@@ -72,7 +68,7 @@ export const FlagsComparisonTable = ({
           return (
             <tr key={item.key}>
               <td title={item.description}>{item.name}</td>
-              <td>
+              <td className="text-center">
                 {item.name === items2[index].name ? (
                   <div title={`${item.name} - ${items2[index].name}`}>
                     <DoesMatch />
@@ -81,18 +77,21 @@ export const FlagsComparisonTable = ({
                   <DoesNotMatch />
                 )}
               </td>
-              <td>
-                {item.description === items2[index].description ? (
-                  <DoesMatch />
-                ) : (
-                  <div
-                    title={`${item.description} - ${items2[index].description}`}
-                  >
-                    <DoesNotMatch />
-                  </div>
-                )}
+              <td className="text-center">
+                <span
+                  title={`${item.description} - ${items2[index].description}`}
+                >
+                  {item.description === items2[index].description ? (
+                    <DoesMatch />
+                  ) : (
+                    <ManageFlagDescription
+                      description={item.description}
+                      featureFlagKey={item.key}
+                    />
+                  )}
+                </span>
               </td>
-              <td>
+              <td className="text-center">
                 {item.kind === items2[index].kind ? (
                   <DoesMatch />
                 ) : (
