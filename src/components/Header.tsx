@@ -11,7 +11,7 @@ export const Header = () => {
   }
 
   return (
-    <header className="p-6 pl-12 flex flex-row justify-between items-center">
+    <header className="p-6 px-12 flex flex-row justify-between items-center">
       <div className="flex items-center space-x-4">
         <h1 className="heading-1 mb-0 ">
           <Link className="no-underline" href="/">
