@@ -3,18 +3,14 @@ import { redirect } from 'next/navigation'
 import { NextResponse } from 'next/server'
 
 const fetchFn = (token: string) => {
-  return fetch(
-    // date appended seemed to properly break cache responses
-    `https://app.launchdarkly.com/api/v2/projects`,
-    {
-      method: 'GET',
-      headers: {
-        Authorization: token,
-        'cache-control': 'no-cache',
-        cache: 'no-store',
-      },
+  return fetch(`https://app.launchdarkly.com/api/v2/projects`, {
+    method: 'GET',
+    headers: {
+      Authorization: token,
+      'cache-control': 'no-cache',
+      cache: 'no-store',
     },
-  )
+  })
 }
 
 export const listProjects = async (cookie?: string) => {
