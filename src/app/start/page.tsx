@@ -54,44 +54,42 @@ export default function Page({
         ) : (
           <h2>Let&apos;s Go!</h2>
         )}
-        <p>
-          <form action={setCookie}>
-            <ol>
-              <li>
-                Create an access token in{' '}
-                <Link
-                  target="_blank"
-                  href="https://app.launchdarkly.com/settings/authorization"
-                >
-                  LaunchDarkly
-                </Link>
-                , or use an existing one
-              </li>
-              <li>
-                Put that access token in the input below!
-                <br />
-                <input
-                  type="password"
-                  placeholder="LaunchDarkly Access Token"
-                  className="input input-bordered w-full max-w-xs"
-                  name="accessToken"
-                  autoComplete="off"
-                />
-                <br />
-                (This is set as a cookie in your browser that expires after 1
-                hour,
-                <br /> it is not saved anywhere in the application.)
-              </li>
-              <li>
-                Click the{' '}
-                <button type="submit" className="btn btn-primary">
-                  Submit
-                </button>{' '}
-                button
-              </li>
-            </ol>
-          </form>
-        </p>
+        <form action={setCookie}>
+          <ol>
+            <li>
+              Create an access token in{' '}
+              <Link
+                target="_blank"
+                href="https://app.launchdarkly.com/settings/authorization"
+              >
+                LaunchDarkly
+              </Link>
+              , or use an existing one
+            </li>
+            <li>
+              Put that access token in the input below!
+              <br />
+              <input
+                type="password"
+                placeholder="LaunchDarkly Access Token"
+                className="input input-bordered w-full max-w-xs"
+                name="accessToken"
+                autoComplete="off"
+              />
+              <br />
+              (This is set as a cookie in your browser that expires after 1
+              hour,
+              <br /> it is not saved anywhere in the application.)
+            </li>
+            <li>
+              Click the{' '}
+              <button type="submit" className="btn btn-primary">
+                Submit
+              </button>{' '}
+              button
+            </li>
+          </ol>
+        </form>
       </div>
     </div>
   )
