@@ -2,9 +2,15 @@ import { TargetsMatch } from '@/components/TargetsMatch'
 import { Item } from '@/types/listFlags.types'
 import { VariationMatch } from '@/components/VariationMatch'
 import { ColouredBoolean } from '@/components/ColouredBoolean'
+import { DoesMatch } from '@/components/DoesMatch'
+import { DoesNotMatch } from '@/components/DoesNotMatch'
 
 const flagsMatch = (item1: Item, item2: Item): boolean => {
   return item1.name === item2.name && item1.kind === item2.kind
+}
+
+const CannotCompare = ({ key }: { key: string }) => {
+  return <>Could not compare for FF key: {key}</>
 }
 
 export const FlagsComparisonTable = ({
@@ -24,8 +30,10 @@ export const FlagsComparisonTable = ({
       <thead>
         <tr>
           <th>Flag name</th>
+          <th className="text-center" colSpan={3}>
+            Compare metadata
+          </th>
           <th>Flag key</th>
-          <th>Name and Kind match</th>
           <th className="text-center" colSpan={environments.length}>
             Targets
           </th>
@@ -35,7 +43,9 @@ export const FlagsComparisonTable = ({
         </tr>
         <tr className="text-center">
           <th></th>
-          <th></th>
+          <th>Name</th>
+          <th>Description</th>
+          <th>Kind</th>
           <th></th>
           {environments.map((environment) => {
             return <th key={environment}>{environment}</th>
@@ -46,15 +56,50 @@ export const FlagsComparisonTable = ({
       </thead>
       <tbody>
         {items1.map((item, index: number) => {
+          if (
+            item.key !== items2[index].key ||
+            item.kind !== items2[index].kind
+          ) {
+            return (
+              <tr key={item.key}>
+                <td>
+                  <CannotCompare key={item.key} />
+                </td>
+              </tr>
+            )
+          }
+
           return (
-            <tr key={index}>
-              <td>{item.name}</td>
-              <td>{item.key}</td>
+            <tr key={item.key}>
+              <td title={item.description}>{item.name}</td>
               <td>
-                <ColouredBoolean bool={flagsMatch(item, items2[index])}>
-                  {'' + flagsMatch(item, items2[index])}
-                </ColouredBoolean>
+                {item.name === items2[index].name ? (
+                  <div title={`${item.name} - ${items2[index].name}`}>
+                    <DoesMatch />
+                  </div>
+                ) : (
+                  <DoesNotMatch />
+                )}
               </td>
+              <td>
+                {item.description === items2[index].description ? (
+                  <DoesMatch />
+                ) : (
+                  <div
+                    title={`${item.description} - ${items2[index].description}`}
+                  >
+                    <DoesNotMatch />
+                  </div>
+                )}
+              </td>
+              <td>
+                {item.kind === items2[index].kind ? (
+                  <DoesMatch />
+                ) : (
+                  <DoesNotMatch />
+                )}
+              </td>
+              <td>{item.key}</td>
               <TargetsMatch item={item} items2={items2} />
               <VariationMatch item={item} items2={items2} />
             </tr>
