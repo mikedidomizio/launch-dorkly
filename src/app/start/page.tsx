@@ -3,6 +3,7 @@ import { cookies } from 'next/headers'
 import { redirect } from 'next/navigation'
 import { listProjects } from '@/app/api/listProjects'
 import { ErrorAlert } from '@/components/ErrorAlert'
+import { GitHubImage } from '@/components/GitHubLink'
 
 const readableErrorMessage = (error: string) => {
   switch (error) {
@@ -48,11 +49,21 @@ export default function Page({
   return (
     <div className="flex justify-content min-h-screen min-w-screen prose max-w-none items-center justify-center">
       <div className="text-center">
-        <h1 className="heading-1">LaunchDorkly</h1>
+        <div className="flex gap-2 justify-center items-center">
+          <h1 className="heading-1 mb-0">LaunchDorkly </h1>
+
+          <Link
+            target="_blank"
+            href="https://github.com/mikedidomizio/launchdorkly"
+          >
+            <GitHubImage />
+          </Link>
+        </div>
+
         {searchParams.error ? (
           <ErrorAlert>{readableErrorMessage(searchParams.error)}</ErrorAlert>
         ) : (
-          <h2>Let&apos;s Go!</h2>
+          <h2 className="heading-2 mt-6">Let&apos;s Go!</h2>
         )}
         <form action={setCookie}>
           <ol>
@@ -65,6 +76,8 @@ export default function Page({
                 LaunchDarkly
               </Link>
               , or use an existing one
+              <br />
+              (It can be a <strong>READER</strong> access token)
             </li>
             <li>
               Put that access token in the input below!
@@ -77,9 +90,8 @@ export default function Page({
                 autoComplete="off"
               />
               <br />
-              (This is set as a cookie in your browser that expires after 1
-              hour,
-              <br /> it is not saved anywhere in the application.)
+              This is set as a cookie in your browser that expires after 1 hour,
+              <br /> it is not saved anywhere in the application.
             </li>
             <li>
               Click the{' '}
