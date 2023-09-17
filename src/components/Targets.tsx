@@ -2,7 +2,6 @@
 import { Item } from '@/types/listFlags.types'
 import { useParams } from 'next/navigation'
 import { useState } from 'react'
-import { ColouredBoolean } from '@/components/ColouredBoolean'
 
 export const Targets = ({ item }: { item: Item }) => {
   const [itemState, setItemState] = useState(item)
