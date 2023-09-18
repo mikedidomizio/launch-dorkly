@@ -17,7 +17,7 @@ export async function PATCH(req: Request) {
   }
 
   const resp = await fetch(
-    `https://app.launchdarkly.com/api/v2/flags/${project}/${featureFlagKey}?ignoreConflicts=true`,
+    `https://app.launchdarkly.com/api/v2/flags/${project}/${featureFlagKey}`,
     {
       method: 'PATCH',
       headers: {
