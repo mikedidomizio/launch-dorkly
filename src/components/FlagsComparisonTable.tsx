@@ -4,6 +4,7 @@ import { VariationMatch } from '@/components/VariationMatch'
 import { DoesMatch } from '@/components/DoesMatch'
 import { DoesNotMatch } from '@/components/DoesNotMatch'
 import { ManageFlagDescription } from '@/components/ManageFlagDescription'
+import { TagsMatch } from '@/components/TagsMatch'
 
 const CannotCompare = ({ key }: { key: string }) => {
   return <>Could not compare for FF key: {key}</>
@@ -26,6 +27,9 @@ export const FlagsComparisonTable = ({
       <thead>
         <tr>
           <th>Flag name</th>
+          <th title="Blue means it exists in both.  Red means it is missing in the second project.  Lighter red is a flag missing from the first project">
+            Tags
+          </th>
           <th className="text-center" colSpan={3}>
             Compare metadata
           </th>
@@ -38,6 +42,7 @@ export const FlagsComparisonTable = ({
           </th>
         </tr>
         <tr className="text-center">
+          <th></th>
           <th></th>
           <th className="text-center">Name</th>
           <th className="text-center">Description</th>
@@ -68,6 +73,13 @@ export const FlagsComparisonTable = ({
           return (
             <tr key={item.key}>
               <td title={item.description}>{item.name}</td>
+              <td>
+                <TagsMatch
+                  featureFlagKey={item.key}
+                  projectFromTags={item.tags}
+                  projectToTags={items2[index].tags}
+                />
+              </td>
               <td className="text-center">
                 {item.name === items2[index].name ? (
                   <div title={`${item.name} - ${items2[index].name}`}>
