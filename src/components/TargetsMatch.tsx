@@ -4,6 +4,12 @@ import { Item } from '@/types/listFlags.types'
 import { DoesNotMatch } from '@/components/DoesNotMatch'
 import { DoesMatch } from '@/components/DoesMatch'
 import { useParams } from 'next/navigation'
+import { clsx } from 'clsx'
+import {
+  tableBackground,
+  tableLeftSideBorder,
+  tableRightSideBorder,
+} from '@/helpers/table-columns.constants'
 
 const valuesMatch = (item1Val: boolean, item2Val: boolean): boolean => {
   return item1Val === item2Val
@@ -70,11 +76,21 @@ export const TargetsMatch = ({
     throw new Error('Could not find item')
   }
 
+  const environments = Object.entries(item.environments)
+
   return (
     <>
-      {Object.entries(item.environments).map(([environmentKey, values]) => {
+      {environments.map(([environmentKey, values], index) => {
         return (
-          <td className="text-center" key={environmentKey}>
+          <td
+            className={clsx(
+              'text-center',
+              index % 2 === 0 ? tableBackground : null,
+              index === 0 ? tableLeftSideBorder : null,
+              environments.length - 1 === index ? tableRightSideBorder : null,
+            )}
+            key={environmentKey}
+          >
             {valuesMatch(values.on, getOnValue(environmentKey, item.key)) ? (
               <DoesMatch />
             ) : (
