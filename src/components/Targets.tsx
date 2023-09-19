@@ -3,6 +3,9 @@ import { Item } from '@/types/listFlags.types'
 import { useParams } from 'next/navigation'
 import { useState } from 'react'
 import { clsx } from 'clsx'
+import { DoesMatch } from '@/components/DoesMatch'
+import { DoesNotMatch } from '@/components/DoesNotMatch'
+import { EnvironmentsColumns } from '@/components/EnvironmentsColumns'
 
 export const Targets = ({ item }: { item: Item }) => {
   const [itemState, setItemState] = useState(item)
@@ -47,23 +50,12 @@ export const Targets = ({ item }: { item: Item }) => {
     })
   }
 
-  const environments = Object.entries(itemState.environments)
-
   return (
     <>
-      {environments.map(([environmentKey, values], index) => {
-        return (
-          <td
-            className={clsx(
-              'text-center',
-              index % 2 === 0 ? 'bg-gray-100' : null,
-              index === 0 ? 'border-gray-300 border-l-[1px]' : null,
-              environments.length - 1 === index
-                ? 'border-gray-300 border-r-[1px]'
-                : null,
-            )}
-            key={environmentKey}
-          >
+      <EnvironmentsColumns
+        environments={item.environments}
+        column={(environmentKey, values) => {
+          return (
             <input
               type="checkbox"
               className="toggle toggle-success"
@@ -72,9 +64,9 @@ export const Targets = ({ item }: { item: Item }) => {
                 toggleFlag(environmentKey, itemState.key, !values.on)
               }
             />
-          </td>
-        )
-      })}
+          )
+        }}
+      ></EnvironmentsColumns>
     </>
   )
 }
