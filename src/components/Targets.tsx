@@ -2,6 +2,7 @@
 import { Item } from '@/types/listFlags.types'
 import { useParams } from 'next/navigation'
 import { useState } from 'react'
+import { clsx } from 'clsx'
 
 export const Targets = ({ item }: { item: Item }) => {
   const [itemState, setItemState] = useState(item)
@@ -46,24 +47,34 @@ export const Targets = ({ item }: { item: Item }) => {
     })
   }
 
+  const environments = Object.entries(itemState.environments)
+
   return (
     <>
-      {Object.entries(itemState.environments).map(
-        ([environmentKey, values]) => {
-          return (
-            <td className="text-center" key={environmentKey}>
-              <input
-                type="checkbox"
-                className="toggle toggle-success"
-                checked={values.on}
-                onChange={() =>
-                  toggleFlag(environmentKey, itemState.key, !values.on)
-                }
-              />
-            </td>
-          )
-        },
-      )}
+      {environments.map(([environmentKey, values], index) => {
+        return (
+          <td
+            className={clsx(
+              'text-center',
+              index % 2 === 0 ? 'bg-gray-100' : null,
+              index === 0 ? 'border-gray-300 border-l-[1px]' : null,
+              environments.length - 1 === index
+                ? 'border-gray-300 border-r-[1px]'
+                : null,
+            )}
+            key={environmentKey}
+          >
+            <input
+              type="checkbox"
+              className="toggle toggle-success"
+              checked={values.on}
+              onChange={() =>
+                toggleFlag(environmentKey, itemState.key, !values.on)
+              }
+            />
+          </td>
+        )
+      })}
     </>
   )
 }

@@ -5,15 +5,6 @@ import { DoesNotMatch } from '@/components/DoesNotMatch'
 import { DoesMatch } from '@/components/DoesMatch'
 import { useParams } from 'next/navigation'
 import { clsx } from 'clsx'
-import {
-  tableBackground,
-  tableLeftSideBorder,
-  tableRightSideBorder,
-} from '@/helpers/table-columns.constants'
-
-const valuesMatch = (item1Val: boolean, item2Val: boolean): boolean => {
-  return item1Val === item2Val
-}
 
 export const TargetsMatch = ({
   item,
@@ -85,13 +76,15 @@ export const TargetsMatch = ({
           <td
             className={clsx(
               'text-center',
-              index % 2 === 0 ? tableBackground : null,
-              index === 0 ? tableLeftSideBorder : null,
-              environments.length - 1 === index ? tableRightSideBorder : null,
+              index % 2 === 0 ? 'bg-gray-100' : null,
+              index === 0 ? 'border-gray-300 border-l-[1px]' : null,
+              environments.length - 1 === index
+                ? 'border-gray-300 border-r-[1px]'
+                : null,
             )}
             key={environmentKey}
           >
-            {valuesMatch(values.on, getOnValue(environmentKey, item.key)) ? (
+            {values.on === getOnValue(environmentKey, item.key) ? (
               <DoesMatch />
             ) : (
               <DoesNotMatch
