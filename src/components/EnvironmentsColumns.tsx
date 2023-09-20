@@ -24,7 +24,7 @@ export const EnvironmentsColumns = ({
                 ? 'border-gray-300 border-r-[1px]'
                 : null,
             )}
-            key={environmentKey}
+            key={index}
           >
             {column(environmentKey, values)}
           </td>

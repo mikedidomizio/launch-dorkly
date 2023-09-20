@@ -2,10 +2,8 @@
 import { Item } from '@/types/listFlags.types'
 import { useParams } from 'next/navigation'
 import { useState } from 'react'
-import { clsx } from 'clsx'
-import { DoesMatch } from '@/components/DoesMatch'
-import { DoesNotMatch } from '@/components/DoesNotMatch'
 import { EnvironmentsColumns } from '@/components/EnvironmentsColumns'
+import { updateTarget } from '@/app/api/updateTarget'
 
 export const Targets = ({ item }: { item: Item }) => {
   const [itemState, setItemState] = useState(item)
@@ -20,18 +18,12 @@ export const Targets = ({ item }: { item: Item }) => {
     featureFlagKey: string,
     value: boolean,
   ) => {
-    const response = await fetch('/api/update-target', {
-      method: 'PATCH',
-      body: JSON.stringify({
-        environment,
-        featureFlagKey,
-        project: params.project,
-        value,
-      }),
-      headers: {
-        'Content-type': 'application/json; charset=UTF-8',
-      },
-    })
+    const response = await updateTarget(
+      environment,
+      featureFlagKey,
+      params.project as string,
+      value,
+    )
 
     if (response.status !== 200) {
       throw new Error('Could not update')
@@ -53,7 +45,7 @@ export const Targets = ({ item }: { item: Item }) => {
   return (
     <>
       <EnvironmentsColumns
-        environments={item.environments}
+        environments={itemState.environments}
         column={(environmentKey, values) => {
           return (
             <input

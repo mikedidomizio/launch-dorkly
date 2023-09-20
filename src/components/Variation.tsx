@@ -2,6 +2,7 @@
 import { Defaults, Item } from '@/types/listFlags.types'
 import { useParams } from 'next/navigation'
 import { useState } from 'react'
+import { updateVariation } from '@/app/api/updateVariation'
 
 export const Variation = ({ item }: { item: Item }) => {
   const [itemState, setItemState] = useState(item)
@@ -21,18 +22,12 @@ export const Variation = ({ item }: { item: Item }) => {
     variation: 'onVariationValue' | 'offVariationValue',
     value: boolean,
   ) => {
-    const response = await fetch('/api/update-variation', {
-      method: 'PATCH',
-      body: JSON.stringify({
-        featureFlagKey,
-        project: params.project,
-        variation,
-        value: !value,
-      }),
-      headers: {
-        'Content-type': 'application/json; charset=UTF-8',
-      },
-    })
+    const response = await updateVariation(
+      params.project as string,
+      featureFlagKey,
+      variation,
+      value,
+    )
 
     if (response.status !== 200) {
       throw new Error('Could not update')

@@ -4,6 +4,7 @@ import { Item, Kind, VariationElement } from '@/types/listFlags.types'
 import { DoesMatch } from '@/components/DoesMatch'
 import { DoesNotMatch } from '@/components/DoesNotMatch'
 import { useParams } from 'next/navigation'
+import { updateVariation } from '@/app/api/updateVariation'
 
 export const VariationMatch = ({
   item,
@@ -24,18 +25,12 @@ export const VariationMatch = ({
     variation: 'onVariationValue' | 'offVariationValue',
     value: boolean,
   ) => {
-    const response = await fetch('/api/update-variation', {
-      method: 'PATCH',
-      body: JSON.stringify({
-        featureFlagKey,
-        project: params.projectTwo,
-        variation,
-        value,
-      }),
-      headers: {
-        'Content-type': 'application/json; charset=UTF-8',
-      },
-    })
+    const response = await updateVariation(
+      params.projectTwo as string,
+      featureFlagKey,
+      variation,
+      value,
+    )
 
     if (response.status !== 200) {
       throw new Error('Could not update')
