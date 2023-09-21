@@ -51,8 +51,8 @@ export const FlagsComparisonTable = ({
           {environments.map((environment) => {
             return <th key={environment}>{environment}</th>
           })}
-          <th>Off</th>
           <th>On</th>
+          <th>Off</th>
         </tr>
       </thead>
       <tbody>

@@ -81,24 +81,6 @@ export const VariationMatch = ({
   return (
     <>
       <td className="text-center">
-        {item.defaults.offVariation === offVariation ? (
-          <DoesMatch />
-        ) : (
-          <DoesNotMatch
-            onClick={() =>
-              handleMatchFirstProjectVariation(
-                item.key,
-                'offVariationValue',
-                getMappedVariationValue(
-                  item.defaults.offVariation,
-                  item.variations,
-                ),
-              )
-            }
-          />
-        )}
-      </td>
-      <td className="text-center">
         {item.defaults.onVariation === onVariation ? (
           <DoesMatch />
         ) : (
@@ -109,6 +91,24 @@ export const VariationMatch = ({
                 'onVariationValue',
                 getMappedVariationValue(
                   item.defaults.onVariation,
+                  item.variations,
+                ),
+              )
+            }
+          />
+        )}
+      </td>
+      <td className="text-center">
+        {item.defaults.offVariation === offVariation ? (
+          <DoesMatch />
+        ) : (
+          <DoesNotMatch
+            onClick={() =>
+              handleMatchFirstProjectVariation(
+                item.key,
+                'offVariationValue',
+                getMappedVariationValue(
+                  item.defaults.offVariation,
                   item.variations,
                 ),
               )

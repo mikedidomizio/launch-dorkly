@@ -4,6 +4,8 @@ import { useParams } from 'next/navigation'
 import { useState } from 'react'
 import { EnvironmentsColumns } from '@/components/EnvironmentsColumns'
 import { updateTarget } from '@/app/api/updateTarget'
+import toast from 'react-hot-toast'
+import { fetchToPromise } from '@/helpers/fetchToPromise'
 
 export const Targets = ({ item }: { item: Item }) => {
   const [itemState, setItemState] = useState(item)
@@ -18,18 +20,26 @@ export const Targets = ({ item }: { item: Item }) => {
     featureFlagKey: string,
     value: boolean,
   ) => {
-    const response = await updateTarget(
-      environment,
-      featureFlagKey,
-      params.project as string,
-      value,
+    await toast.promise(
+      fetchToPromise(
+        updateTarget(
+          environment,
+          featureFlagKey,
+          params.project as string,
+          value,
+        ),
+        200,
+      ),
+      {
+        loading: 'Changing',
+        success: `"${featureFlagKey}" is now "${value}" in "${itemState.environments[environment]._environmentName}"`,
+        error: 'Error changing',
+      },
+      {
+        position: 'bottom-right',
+      },
     )
 
-    if (response.status !== 200) {
-      throw new Error('Could not update')
-    }
-
-    // update local view
     setItemState({
       ...itemState,
       environments: {
