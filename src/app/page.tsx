@@ -7,17 +7,17 @@ import { listProjects } from '@/app/api/listProjects'
 import { redirect } from 'next/navigation'
 
 export default async function Page() {
-  const response = await listProjects()
+  const listOfProjectsResponse = await listProjects()
 
-  if (response) {
-    const projects = await response.json()
-    projects.items.sort(sortItemsByName)
+  if (listOfProjectsResponse) {
+    const listOfProjects = await listOfProjectsResponse.json()
+    listOfProjects.items.sort(sortItemsByName)
 
     return (
       <Layout>
         <h2>Projects</h2>
         <ul>
-          {projects.items.map((project: Project) => {
+          {listOfProjects.items.map((project: Project) => {
             return (
               <li key={project.key}>
                 <Link prefetch href={`/project/${project.key}`}>
@@ -29,7 +29,7 @@ export default async function Page() {
         </ul>
 
         <h2>Copy settings from one project to another</h2>
-        <CopyProjectsDropdowns projects={projects.items} />
+        <CopyProjectsDropdowns projects={listOfProjects.items} />
       </Layout>
     )
   }

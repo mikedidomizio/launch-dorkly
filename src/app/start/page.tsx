@@ -50,7 +50,7 @@ export default function Page({
     <div className="flex justify-content min-h-screen min-w-screen prose max-w-none items-center justify-center">
       <div className="text-center">
         <div className="flex gap-2 justify-center items-center">
-          <h1 className="heading-1 mb-0">LaunchDorkly </h1>
+          <h1 className="heading-1 mb-0">LaunchDorkly</h1>
 
           <Link
             target="_blank"
