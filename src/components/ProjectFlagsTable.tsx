@@ -26,8 +26,8 @@ export const ProjectFlagsTable = ({ items }: { items: Item[] }) => {
           {environments.map((environment) => {
             return <th key={environment}>{environment}</th>
           })}
-          <th>Off</th>
           <th>On</th>
+          <th>Off</th>
         </tr>
       </thead>
       <tbody>

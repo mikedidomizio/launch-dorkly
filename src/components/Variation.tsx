@@ -3,6 +3,9 @@ import { Defaults, Item } from '@/types/listFlags.types'
 import { useParams } from 'next/navigation'
 import { useState } from 'react'
 import { updateVariation } from '@/app/api/updateVariation'
+import toast from 'react-hot-toast'
+import { fetchToPromise } from '@/helpers/fetchToPromise'
+import { updateTarget } from '@/app/api/updateTarget'
 
 export const Variation = ({ item }: { item: Item }) => {
   const [itemState, setItemState] = useState(item)
@@ -22,16 +25,28 @@ export const Variation = ({ item }: { item: Item }) => {
     variation: 'onVariationValue' | 'offVariationValue',
     value: boolean,
   ) => {
-    const response = await updateVariation(
-      params.project as string,
-      featureFlagKey,
-      variation,
-      value,
-    )
+    const variationMessage = variation === 'onVariationValue' ? 'on' : 'off'
 
-    if (response.status !== 200) {
-      throw new Error('Could not update')
-    }
+    await toast.promise(
+      fetchToPromise(
+        updateVariation(
+          params.project as string,
+          featureFlagKey,
+          variation,
+          value,
+        ),
+        200,
+      ),
+      {
+        loading: 'Changing',
+        success: `Variation "${variationMessage}" is now "${!value}" for flag "${featureFlagKey}"`,
+        error: 'Error changing',
+      },
+      {
+        position: 'bottom-right',
+        duration: 20000,
+      },
+    )
 
     const updatedValue =
       variation === 'onVariationValue' ? 'onVariation' : 'offVariation'
@@ -59,12 +74,12 @@ export const Variation = ({ item }: { item: Item }) => {
           onClick={() =>
             toggleVariation(
               itemState.key,
-              'offVariationValue',
-              getMappedVariationValue(itemState.defaults.offVariation),
+              'onVariationValue',
+              getMappedVariationValue(itemState.defaults.onVariation),
             )
           }
         >
-          {'' + getMappedVariationValue(itemState.defaults.offVariation)}
+          {'' + getMappedVariationValue(itemState.defaults.onVariation)}
         </button>
       </td>
       <td className="text-center">
@@ -72,12 +87,12 @@ export const Variation = ({ item }: { item: Item }) => {
           onClick={() =>
             toggleVariation(
               itemState.key,
-              'onVariationValue',
-              getMappedVariationValue(itemState.defaults.onVariation),
+              'offVariationValue',
+              getMappedVariationValue(itemState.defaults.offVariation),
             )
           }
         >
-          {'' + getMappedVariationValue(itemState.defaults.onVariation)}
+          {'' + getMappedVariationValue(itemState.defaults.offVariation)}
         </button>
       </td>
     </>
