@@ -6,6 +6,8 @@ import { DoesMatch } from '@/components/DoesMatch'
 import { useParams } from 'next/navigation'
 import { EnvironmentsColumns } from '@/components/EnvironmentsColumns'
 import { updateTarget } from '@/app/api/updateTarget'
+import toast from 'react-hot-toast'
+import { fetchToPromise } from '@/helpers/fetchToPromise'
 
 export const TargetsMatch = ({
   item,
@@ -26,16 +28,19 @@ export const TargetsMatch = ({
     featureFlagKey: string,
     value: boolean,
   ) => {
-    const response = await updateTarget(
-      environment,
-      featureFlagKey,
-      projectTwo as string,
-      value,
+    await toast.promise(
+      fetchToPromise(
+        updateTarget(environment, featureFlagKey, projectTwo as string, value),
+      ),
+      {
+        loading: 'Changing',
+        success: `"${featureFlagKey}" is now "${value}" in "${environment}"`,
+        error: 'Error changing',
+      },
+      {
+        position: 'bottom-right',
+      },
     )
-
-    if (response.status !== 200) {
-      throw new Error('Could not update')
-    }
 
     // update the state to reflect the new changes, this is just handled locally
     const newMappedValues = items2State.map((item) => {

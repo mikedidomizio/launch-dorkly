@@ -5,6 +5,9 @@ import { DoesMatch } from '@/components/DoesMatch'
 import { DoesNotMatch } from '@/components/DoesNotMatch'
 import { useParams } from 'next/navigation'
 import { updateVariation } from '@/app/api/updateVariation'
+import toast from 'react-hot-toast'
+import { updateTarget } from '@/app/api/updateTarget'
+import { fetchToPromise } from '@/helpers/fetchToPromise'
 
 export const VariationMatch = ({
   item,
@@ -25,16 +28,26 @@ export const VariationMatch = ({
     variation: 'onVariationValue' | 'offVariationValue',
     value: boolean,
   ) => {
-    const response = await updateVariation(
-      params.projectTwo as string,
-      featureFlagKey,
-      variation,
-      value,
-    )
+    const variationMessage = variation === 'onVariationValue' ? 'on' : 'off'
 
-    if (response.status !== 200) {
-      throw new Error('Could not update')
-    }
+    await toast.promise(
+      fetchToPromise(
+        updateVariation(
+          params.projectTwo as string,
+          featureFlagKey,
+          variation,
+          value,
+        ),
+      ),
+      {
+        loading: 'Changing',
+        success: `Variation "${variationMessage}" is now "${!value}" for flag "${featureFlagKey}"`,
+        error: 'Error changing',
+      },
+      {
+        position: 'bottom-right',
+      },
+    )
 
     const newMappedValues = items2State.map((item) => {
       if (item.key === featureFlagKey) {
