@@ -1,4 +1,5 @@
 import { defineConfig } from 'next/experimental/testmode/playwright'
+import path from 'path'
 
 export default defineConfig({
   webServer: {

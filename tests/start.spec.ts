@@ -1,7 +1,6 @@
-import { test, rest } from 'next/experimental/testmode/playwright/msw'
+import { rest, test } from './mocks/global.mocks'
 import { ListProjects } from '@/types/listProjects.types'
-import { expect } from '@playwright/test'
-import { mockListProjects } from './mocks/listProjects'
+import { mockListProjects } from './mocks/listProjects.mocks'
 
 test.use({
   mswHandlers: [

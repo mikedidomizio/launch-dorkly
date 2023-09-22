@@ -17,6 +17,7 @@ const getProject = async (projectKey: string) => {
     }
   }
 
+  // todo maybe move this API call to ./app/api as well to keep things clean
   const resp = await fetch(
     `https://app.launchdarkly.com/api/v2/projects/${projectKey}`,
     {
@@ -44,6 +45,8 @@ export default async function Page({
     getProject(params.projectOne),
     getProject(params.projectTwo),
   ])
+
+  console.log(project1Data, project2Data)
 
   if (
     project1Data.status !== 'fulfilled' ||
