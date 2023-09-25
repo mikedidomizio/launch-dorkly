@@ -1,5 +1,6 @@
 import { Item } from '@/types/listFlags.types'
-import { WarningAlert } from '@/components/WarningAlert'
+
+import { WarningAlert } from '@/components/Alerts'
 
 function getMissingKeys(projectOneItems: Item[], projectTwoItems: Item[]) {
   const projectOneKeys = projectOneItems.map((item) => {
