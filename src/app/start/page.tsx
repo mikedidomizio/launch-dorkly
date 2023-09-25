@@ -25,9 +25,13 @@ export default function Page({
     'use server'
     const token = formData.get('accessToken')
 
+    console.log('token', token)
+
     if (token && typeof token === 'string') {
       // the purpose of the following is that if we can't get the projects, the token is probably not good
       const projects = await listProjects(token)
+
+      console.log(projects)
 
       if (projects?.status === 200) {
         cookies().set({

@@ -11,6 +11,8 @@ export const metadata: Metadata = {
 }
 
 export default function RootLayout({ children }: { children: ReactNode }) {
+  // Start the Mock Service Worker
+
   return (
     <html lang="en" data-theme="light">
       <body className={`${inter.className}`}>{children}</body>

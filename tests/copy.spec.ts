@@ -2,6 +2,8 @@ import { mockProjectFlags } from './mocks/listFlags.mocks'
 import { rest, test } from './mocks/global.mocks'
 import { mockListProjects } from './mocks/listProjects.mocks'
 
+import { produce } from 'immer'
+
 test.use({
   mswHandlers: [
     rest.get(
@@ -24,7 +26,12 @@ test.use({
         if (projectKey === 'my-project') {
           return res(ctx.status(200), ctx.json(mockProjectFlags))
         } else if (projectKey === 'my-second-project') {
-          return res(ctx.status(200), ctx.json(mockProjectFlags))
+          const changedFlags = produce(mockProjectFlags, (draft) => {
+            draft.items[0].environments.test.on = false
+          })
+
+          console.log(changedFlags.items[0].environments)
+          return res(ctx.status(200), ctx.json(changedFlags))
         }
       },
     ),
