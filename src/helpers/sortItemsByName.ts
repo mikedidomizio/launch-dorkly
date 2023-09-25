@@ -1,7 +1,7 @@
-import { Item } from '@/types/listFlags.types'
-import { Project } from '@/types/listProjects.types'
-
-export const sortItemsByName = (a: Item | Project, b: Item | Project) => {
+export const sortItemsByName = (
+  a: Record<'name', string>,
+  b: Record<'name', string>,
+) => {
   if (a.name > b.name) {
     return 1
   }

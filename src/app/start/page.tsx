@@ -2,8 +2,8 @@ import Link from 'next/link'
 import { cookies } from 'next/headers'
 import { redirect } from 'next/navigation'
 import { listProjects } from '@/app/api/listProjects'
-import { ErrorAlert } from '@/components/ErrorAlert'
 import { GitHubImage } from '@/components/GitHubLink'
+import { ErrorAlert } from '@/components/Alerts'
 
 const readableErrorMessage = (error: string) => {
   switch (error) {
