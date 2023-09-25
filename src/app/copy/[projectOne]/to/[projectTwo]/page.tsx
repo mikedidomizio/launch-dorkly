@@ -5,35 +5,7 @@ import { CopyProjectToProjectHeader } from '@/components/CopyProjectToProjectHea
 import { CompareAvailableFlagsBetweenProjects } from '@/components/CompareAvailableFlagsBetweenProjects'
 import { listProjectFlags } from '@/app/api/listProjectFlags'
 import { sortItemsByName } from '@/helpers/sortItemsByName'
-import { cookies } from 'next/headers'
-
-const getProject = async (projectKey: string) => {
-  const cookieStore = cookies()
-  const token = cookieStore.get('LD_TOKEN')
-
-  if (!token || !token.value) {
-    return {
-      status: 403,
-    }
-  }
-
-  const resp = await fetch(
-    `https://app.launchdarkly.com/api/v2/projects/${projectKey}`,
-    {
-      method: 'GET',
-      headers: {
-        Authorization: token.value,
-      },
-    },
-  )
-
-  const json = await resp.json()
-
-  return {
-    status: resp.status,
-    response: json,
-  }
-}
+import { getProject } from '@/app/api/getProject'
 
 export default async function Page({
   params,
