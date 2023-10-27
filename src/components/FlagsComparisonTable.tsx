@@ -58,6 +58,7 @@ export const FlagsComparisonTable = ({
       <tbody>
         {items1.map((item, index: number) => {
           if (
+            !items2[index] ||
             item.key !== items2[index].key ||
             item.kind !== items2[index].kind
           ) {
