@@ -44,5 +44,7 @@ export async function PATCH(req: Request) {
     },
   )
 
-  return NextResponse.json(resp)
+  return NextResponse.json(resp, {
+    status: resp.status,
+  })
 }

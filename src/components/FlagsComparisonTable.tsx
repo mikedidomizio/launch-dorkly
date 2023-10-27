@@ -10,6 +10,10 @@ const CannotCompare = ({ featureFlagKey }: { featureFlagKey: string }) => {
   return <>Could not compare for FF key: {featureFlagKey}</>
 }
 
+const getItemByKey = (items: Item[], key: string) => {
+  return items.find((item) => item.key === key)
+}
+
 export const FlagsComparisonTable = ({
   items1,
   items2,
@@ -57,10 +61,12 @@ export const FlagsComparisonTable = ({
       </thead>
       <tbody>
         {items1.map((item, index: number) => {
+          const foundItem2 = getItemByKey(items2, item.key)
+
           if (
-            !items2[index] ||
-            item.key !== items2[index].key ||
-            item.kind !== items2[index].kind
+            !foundItem2 ||
+            item.key !== foundItem2.key ||
+            item.kind !== foundItem2.kind
           ) {
             return (
               <tr key={item.key}>
@@ -78,12 +84,12 @@ export const FlagsComparisonTable = ({
                 <TagsMatch
                   featureFlagKey={item.key}
                   projectFromTags={item.tags}
-                  projectToTags={items2[index].tags}
+                  projectToTags={foundItem2.tags}
                 />
               </td>
               <td className="text-center">
-                {item.name === items2[index].name ? (
-                  <div title={`${item.name} - ${items2[index].name}`}>
+                {item.name === foundItem2.name ? (
+                  <div title={`${item.name} - ${foundItem2.name}`}>
                     <DoesMatch />
                   </div>
                 ) : (
@@ -91,10 +97,8 @@ export const FlagsComparisonTable = ({
                 )}
               </td>
               <td className="text-center">
-                <span
-                  title={`${item.description} - ${items2[index].description}`}
-                >
-                  {item.description === items2[index].description ? (
+                <span title={`${item.description} - ${foundItem2.description}`}>
+                  {item.description === foundItem2.description ? (
                     <DoesMatch />
                   ) : (
                     <ManageFlagDescription
@@ -105,7 +109,7 @@ export const FlagsComparisonTable = ({
                 </span>
               </td>
               <td className="text-center">
-                {item.kind === items2[index].kind ? (
+                {item.kind === foundItem2.kind ? (
                   <DoesMatch />
                 ) : (
                   <DoesNotMatch />
