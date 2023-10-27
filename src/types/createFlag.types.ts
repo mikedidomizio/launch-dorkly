@@ -9,7 +9,7 @@ export type CreateFlagParams = {
     usingEnvironmentId: boolean
     usingMobileKey: boolean
   }
-  customProperties: CustomProperties
+  customProperties?: CustomProperties
   defaults: Defaults
   description?: string
   key: string
