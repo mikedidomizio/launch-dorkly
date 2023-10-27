@@ -4,7 +4,6 @@ import { CreateFlagParams } from '@/types/createFlag.types'
 import { useRouter } from 'next/navigation'
 import toast from 'react-hot-toast'
 import { fetchToPromise } from '@/helpers/fetchToPromise'
-import { updateTarget } from '@/app/api/updateTarget'
 import { handleLdErrorResponse } from '@/helpers/handleLdErrorResponse'
 
 export const CreateFlagButton = ({
@@ -35,7 +34,7 @@ export const CreateFlagButton = ({
         success: () => {
           // todo should remove it from the list but the table needs to be told to update as well
           router.refresh()
-          return ''
+          return 'Refreshing page'
         },
         error: handleLdErrorResponse,
       },
