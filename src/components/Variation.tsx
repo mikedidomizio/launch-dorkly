@@ -12,7 +12,7 @@ export const Variation = ({ item }: { item: Item }) => {
     throw new Error('expects to be under route with parameter')
   }
 
-  // todo too complicated for now
+  // todo too complicated for now to handle non boolean types
   if (itemState.kind !== 'boolean') {
     return null
   }
