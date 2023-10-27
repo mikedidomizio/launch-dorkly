@@ -2,12 +2,14 @@ import { NextResponse } from 'next/server'
 import { cookies } from 'next/headers'
 import { allSet } from '@/helpers/allSet'
 
-// todo not currently used
 export async function POST(req: Request) {
   const cookieStore = cookies()
   const token = cookieStore.get('LD_TOKEN')
 
   const reqParams = await req.json()
+
+  console.log('return quick', reqParams)
+  return
 
   if (!allSet(reqParams) || !token) {
     return NextResponse.json({ error: 'Bad request' }, { status: 400 })
