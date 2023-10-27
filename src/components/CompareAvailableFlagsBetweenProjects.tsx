@@ -1,6 +1,7 @@
 import { Item } from '@/types/listFlags.types'
 
 import { WarningAlert } from '@/components/Alerts'
+import { AddFlagButton } from '@/components/AddFlagButton'
 
 function getMissingKeys(projectOneItems: Item[], projectTwoItems: Item[]) {
   const projectOneKeys = projectOneItems.map((item) => {
@@ -43,7 +44,11 @@ const ListMissingFlags = ({
       The following flag(s) exists in {existIn} and are missing in {projectName}
       <ul>
         {missingFlags.map((item) => {
-          return <li key={item}>{item}</li>
+          return (
+            <li key={item}>
+              {item} - <AddFlagButton>Add flag to {projectName}</AddFlagButton>
+            </li>
+          )
         })}
       </ul>
     </WarningAlert>
