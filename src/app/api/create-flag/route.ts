@@ -27,5 +27,7 @@ export async function POST(req: Request) {
     },
   )
 
-  return NextResponse.json(resp)
+  return NextResponse.json(resp, {
+    status: resp.status,
+  })
 }
