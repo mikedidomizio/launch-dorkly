@@ -39,7 +39,7 @@ To quickly give you an idea on what this project can do
 - Update targets for kind boolean
 - Update variations for kind boolean
 - Update description of a feature flag
-- Create a feature flag (currently not used)
+- Create a feature flag
 
 If it's not listed above, this project cannot do it.
 
