@@ -6,6 +6,7 @@ import { EnvironmentsColumns } from '@/components/EnvironmentsColumns'
 import { updateTarget } from '@/app/api/updateTarget'
 import toast from 'react-hot-toast'
 import { fetchToPromise } from '@/helpers/fetchToPromise'
+import { handleLdErrorResponse } from '@/helpers/handleLdErrorResponse'
 
 export const Targets = ({ item }: { item: Item }) => {
   const [itemState, setItemState] = useState(item)
@@ -33,7 +34,7 @@ export const Targets = ({ item }: { item: Item }) => {
       {
         loading: 'Changing',
         success: `"${featureFlagKey}" is now "${value}" in "${itemState.environments[environment]._environmentName}"`,
-        error: 'Error changing',
+        error: handleLdErrorResponse,
       },
       {
         position: 'bottom-right',
