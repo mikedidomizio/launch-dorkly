@@ -64,7 +64,7 @@ export const CompareAvailableFlagsBetweenProjects = ({
   const results = getMissingKeys(projectOneItems, projectTwoItems)
 
   return (
-    <>
+    <div className="grid gap-y-6">
       <ListMissingFlags
         projectName={projectOneName}
         existIn={projectTwoName}
@@ -75,6 +75,6 @@ export const CompareAvailableFlagsBetweenProjects = ({
         existIn={projectOneName}
         missingFlags={results.missingFromProjectTwo}
       />
-    </>
+    </div>
   )
 }
