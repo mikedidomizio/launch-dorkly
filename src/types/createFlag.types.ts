@@ -4,6 +4,7 @@ import {
   VariationElement,
 } from '@/types/listFlags.types'
 
+// https://apidocs.launchdarkly.com/tag/Feature-flags#operation/postFeatureFlag
 export type CreateFlagParams = {
   clientSideAvailability: {
     usingEnvironmentId: boolean
