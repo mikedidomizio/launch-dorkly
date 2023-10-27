@@ -6,6 +6,7 @@ import { updateVariation } from '@/app/api/updateVariation'
 import toast from 'react-hot-toast'
 import { fetchToPromise } from '@/helpers/fetchToPromise'
 import { updateTarget } from '@/app/api/updateTarget'
+import { handleLdErrorResponse } from '@/helpers/handleLdErrorResponse'
 
 export const Variation = ({ item }: { item: Item }) => {
   const [itemState, setItemState] = useState(item)
@@ -40,7 +41,7 @@ export const Variation = ({ item }: { item: Item }) => {
       {
         loading: 'Changing',
         success: `Variation "${variationMessage}" is now "${!value}" for flag "${featureFlagKey}"`,
-        error: 'Error changing',
+        error: handleLdErrorResponse,
       },
       {
         position: 'bottom-right',

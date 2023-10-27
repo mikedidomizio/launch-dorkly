@@ -8,6 +8,8 @@ import { EnvironmentsColumns } from '@/components/EnvironmentsColumns'
 import { updateTarget } from '@/app/api/updateTarget'
 import toast from 'react-hot-toast'
 import { fetchToPromise } from '@/helpers/fetchToPromise'
+import { Response } from 'next/dist/compiled/@edge-runtime/primitives'
+import { handleLdErrorResponse } from '@/helpers/handleLdErrorResponse'
 
 export const TargetsMatch = ({
   item,
@@ -35,7 +37,7 @@ export const TargetsMatch = ({
       {
         loading: 'Changing',
         success: `"${featureFlagKey}" is now "${value}" in "${environment}"`,
-        error: 'Error changing',
+        error: handleLdErrorResponse,
       },
       {
         position: 'bottom-right',
