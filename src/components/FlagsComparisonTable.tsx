@@ -6,8 +6,8 @@ import { DoesNotMatch } from '@/components/DoesNotMatch'
 import { ManageFlagDescription } from '@/components/ManageFlagDescription'
 import { TagsMatch } from '@/components/TagsMatch'
 
-const CannotCompare = ({ key }: { key: string }) => {
-  return <>Could not compare for FF key: {key}</>
+const CannotCompare = ({ featureFlagKey }: { featureFlagKey: string }) => {
+  return <>Could not compare for FF key: {featureFlagKey}</>
 }
 
 export const FlagsComparisonTable = ({
@@ -65,7 +65,7 @@ export const FlagsComparisonTable = ({
             return (
               <tr key={item.key}>
                 <td>
-                  <CannotCompare key={item.key} />
+                  <CannotCompare featureFlagKey={item.key} />
                 </td>
               </tr>
             )
