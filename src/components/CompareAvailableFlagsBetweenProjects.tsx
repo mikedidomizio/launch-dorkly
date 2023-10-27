@@ -49,7 +49,8 @@ const ListMissingFlags = ({
                   description: item.description,
                   key: item.key,
                   name: item.name,
-                  tags: item.tags,
+                  // although we could copy tags over with `item.tags`, this allows the user to determine if they want them copied over
+                  tags: [],
                   temporary: item.temporary,
                   variations: item.variations,
                 }}
