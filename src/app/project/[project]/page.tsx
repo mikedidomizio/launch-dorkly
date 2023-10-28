@@ -3,6 +3,16 @@ import { ProjectFlagsTable } from '@/components/ProjectFlagsTable'
 import { listProjectFlags } from '@/app/api/listProjectFlags'
 import { sortItemsByName } from '@/helpers/sortItemsByName'
 
+export async function generateMetadata({
+  params,
+}: {
+  params: { project: string }
+}) {
+  return {
+    title: `LaunchDorkly | ${params.project}`,
+  }
+}
+
 export default async function Page({
   params,
 }: {
