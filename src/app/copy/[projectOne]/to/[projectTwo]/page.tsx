@@ -7,6 +7,16 @@ import { listProjectFlags } from '@/app/api/listProjectFlags'
 import { sortItemsByName } from '@/helpers/sortItemsByName'
 import { getProject } from '@/app/api/getProject'
 
+export async function generateMetadata({
+  params,
+}: {
+  params: { projectOne: string; projectTwo: string }
+}) {
+  return {
+    title: `LaunchDorkly | ${params.projectOne} ➡ ${params.projectTwo}`,
+  }
+}
+
 export default async function Page({
   params,
 }: {
