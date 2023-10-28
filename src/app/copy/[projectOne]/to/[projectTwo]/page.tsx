@@ -29,9 +29,9 @@ export default async function Page({
 
   if (
     project1Data.status !== 'fulfilled' ||
-    project1Data.value.status === 404 ||
+    !project1Data.value ||
     project2Data.status !== 'fulfilled' ||
-    project2Data.value.status === 404
+    !project2Data.value
   ) {
     return <Layout>Issues fetching one or both of the projects</Layout>
   }
@@ -48,16 +48,16 @@ export default async function Page({
   return (
     <Layout>
       <CopyProjectToProjectHeader
-        projectCopyFromName={project1Data.value.response.name}
-        projectCopyToName={project2Data.value.response.name}
+        projectCopyFromName={project1Data.value.name}
+        projectCopyToName={project2Data.value.name}
       />
       <CompareAvailableFlagsBetweenProjects
         projectOneKey={params.projectOne}
         projectOneItems={project1.items}
-        projectOneName={project1Data.value.response.name}
+        projectOneName={project1Data.value.name}
         projectTwoKey={params.projectTwo}
         projectTwoItems={project2.items}
-        projectTwoName={project2Data.value.response.name}
+        projectTwoName={project2Data.value.name}
       />
       <FlagsComparisonTable
         items1={project1.items}

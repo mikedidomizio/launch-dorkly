@@ -3,7 +3,8 @@ const LaunchDarklyApi = require('launchdarkly-api')
 export const LaunchDarklyPromise = async <T>(
   token: string,
   ldApi: 'AccessTokensApi' | 'ProjectsApi',
-  method: 'getTokens' | 'getProjects',
+  method: 'getProjects' | 'getProject' | 'getTokens',
+  param: string,
   options: unknown = {},
 ): Promise<T> => {
   return new Promise((resolve, reject) => {
@@ -14,8 +15,24 @@ export const LaunchDarklyPromise = async <T>(
 
     const api = new LaunchDarklyApi[ldApi]()
 
-    api[method](options, (error: Error, data: T) => {
+    if (!api) {
+      throw new Error('Could not get api', api)
+    }
+
+    if (method === 'getProject') {
+      return api[method](param, options, (error: Error, data: T) => {
+        if (error) {
+          console.log(error)
+          reject(error)
+        } else {
+          resolve(data)
+        }
+      })
+    }
+
+    api[method](param, (error: Error, data: T) => {
       if (error) {
+        console.log(error)
         reject(error)
       } else {
         resolve(data)

@@ -30,7 +30,7 @@ export default function Page({
       // the purpose of the following is that if we can't get the projects, the token is probably not good
       const projects = await listProjects(token)
 
-      if (projects?.status === 200) {
+      if (projects) {
         cookies().set({
           name: 'LD_TOKEN',
           value: token,
