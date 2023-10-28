@@ -20,6 +20,7 @@
     "clsx": "^2.0.0",
     "eslint": "8.49.0",
     "eslint-config-next": "^13.5.2",
+    "launchdarkly-api": "^13.0.0",
     "next": "^14.0.1",
     "postcss": "8.4.31",
     "react": "^18.2.0",
