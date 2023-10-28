@@ -25,7 +25,6 @@ export const FlagsComparisonTable = ({
     (environment) => environment._environmentName,
   )
 
-  // todo handle missing flags if one side is missing
   return (
     <table className="border-spacing-1.5 table">
       <thead>
