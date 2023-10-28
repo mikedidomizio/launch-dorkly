@@ -21,6 +21,11 @@ export const FlagsComparisonTable = ({
   items1: Item[]
   items2: Item[]
 }) => {
+
+  if (!items1.length) {
+    return <>No flags for first project</>
+  }
+
   const environments = Object.values(items1[0].environments).map(
     (environment) => environment._environmentName,
   )
