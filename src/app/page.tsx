@@ -7,10 +7,9 @@ import { listProjects } from '@/app/api/listProjects'
 import { redirect } from 'next/navigation'
 
 export default async function Page() {
-  const response = await listProjects()
+  const projects = await listProjects()
 
-  if (response) {
-    const projects = await response.json()
+  if (projects) {
     projects.items.sort(sortItemsByName)
 
     return (

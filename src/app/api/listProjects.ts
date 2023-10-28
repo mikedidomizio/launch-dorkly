@@ -1,14 +1,13 @@
 import { cookies } from 'next/headers'
+import { LaunchDarklyPromise } from '@/app/api/launch-darkly-promise'
+import { ListProjects } from '@/types/listProjects.types'
 
-const fetchFn = (token: string) => {
-  return fetch(`https://app.launchdarkly.com/api/v2/projects`, {
-    method: 'GET',
-    headers: {
-      Authorization: token,
-      'cache-control': 'no-cache',
-      cache: 'no-store',
-    },
-  })
+const fetchFn = async (token: string): Promise<ListProjects> => {
+  return LaunchDarklyPromise<null, ListProjects>(
+    token,
+    'ProjectsApi',
+    'getProjects',
+  )
 }
 
 export const listProjects = async (cookie?: string) => {
@@ -20,7 +19,7 @@ export const listProjects = async (cookie?: string) => {
   const token = cookieStore.get('LD_TOKEN')
 
   if (token) {
-    return fetchFn(token.value as string)
+    return fetchFn(token.value)
   }
 
   return null
