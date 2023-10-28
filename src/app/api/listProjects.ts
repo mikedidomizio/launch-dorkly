@@ -3,11 +3,7 @@ import { LaunchDarklyPromise } from '@/app/api/launch-darkly-promise'
 import { ListProjects } from '@/types/listProjects.types'
 
 const fetchFn = async (token: string): Promise<ListProjects> => {
-  return LaunchDarklyPromise<null, ListProjects>(
-    token,
-    'ProjectsApi',
-    'getProjects',
-  )
+  return LaunchDarklyPromise<ListProjects>(token, 'ProjectsApi', 'getProjects')
 }
 
 export const listProjects = async (cookie?: string) => {

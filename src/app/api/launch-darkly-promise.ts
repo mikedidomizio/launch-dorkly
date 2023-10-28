@@ -1,11 +1,11 @@
 const LaunchDarklyApi = require('launchdarkly-api')
 
-export const LaunchDarklyPromise = async <T, T2>(
+export const LaunchDarklyPromise = async <T>(
   token: string,
   ldApi: 'AccessTokensApi' | 'ProjectsApi',
   method: 'getTokens' | 'getProjects',
   options: unknown = {},
-): Promise<T2> => {
+): Promise<T> => {
   return new Promise((resolve, reject) => {
     const defaultClient = LaunchDarklyApi.ApiClient.instance
 
