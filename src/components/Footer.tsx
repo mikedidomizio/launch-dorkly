@@ -1,20 +1,33 @@
 import { getCommitSha } from '@/helpers/getCommitSha'
+import Link from 'next/link'
+import { GitHubImage } from '@/components/GitHubLink'
 
 export const Footer = () => {
   const sha = getCommitSha()
 
   return (
     <footer className="p-12">
-      {sha ? (
-        <a
-          href={`https://github.com/mikedidomizio/launchdorkly/commit/${sha}`}
+      <div className="flex">
+        <Link
+          className="mr-2"
           target="_blank"
+          href="https://github.com/mikedidomizio/launchdorkly"
         >
-          {sha}
-        </a>
-      ) : (
-        'Running locally or could not get SHA'
-      )}
+          <GitHubImage width={24} height={24.5} />
+        </Link>
+        {sha ? (
+          <>
+            <Link
+              href={`https://github.com/mikedidomizio/launchdorkly/commit/${sha}`}
+              target="_blank"
+            >
+              Last Commit
+            </Link>
+          </>
+        ) : (
+          'Running locally or could not get SHA'
+        )}
+      </div>
     </footer>
   )
 }
