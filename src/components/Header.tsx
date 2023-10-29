@@ -22,12 +22,6 @@ export const Header = () => {
           <button type="submit">Remove cookie (logout)</button>
         </form>
       </div>
-      <Link
-        target="_blank"
-        href="https://github.com/mikedidomizio/launchdorkly"
-      >
-        <GitHubImage />
-      </Link>
     </header>
   )
 }
