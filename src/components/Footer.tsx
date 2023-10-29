@@ -21,7 +21,7 @@ export const Footer = () => {
               href={`https://github.com/mikedidomizio/launchdorkly/commit/${sha}`}
               target="_blank"
             >
-              Last Commit
+              Latest Commit
             </Link>
           </>
         ) : (
