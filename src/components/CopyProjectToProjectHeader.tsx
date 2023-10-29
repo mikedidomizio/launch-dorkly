@@ -6,7 +6,7 @@ export const CopyProjectToProjectHeader = ({
   projectCopyToName: string
 }) => {
   return (
-    <h2>
+    <h2 className="prose prose-lg">
       {projectCopyFromName} ➡ {projectCopyToName}
     </h2>
   )

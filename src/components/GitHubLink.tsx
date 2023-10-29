@@ -9,7 +9,7 @@ export const GitHubImage = ({
 }) => {
   return (
     <Image
-      className="prose m-0 p-0"
+      className="m-0 p-0"
       src="/github-mark.png"
       alt="Link to GitHub project"
       width={width}

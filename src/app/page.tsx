@@ -15,7 +15,7 @@ export default async function Page() {
 
     return (
       <Layout>
-        <h2>Projects</h2>
+        <h2 className="prose prose-lg">Projects</h2>
         <ul>
           {projects.items.map((project: Project) => {
             return (
@@ -28,7 +28,9 @@ export default async function Page() {
           })}
         </ul>
 
-        <h2>Copy settings from one project to another</h2>
+        <h2 className="prose prose-lg">
+          Copy settings from one project to another
+        </h2>
         <CopyProjectsDropdowns projects={projects.items} />
       </Layout>
     )

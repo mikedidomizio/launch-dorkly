@@ -23,7 +23,7 @@ export default async function Page({
 
   return (
     <Layout>
-      <h2 className="heading-2">{params.project}</h2>
+      <h2 className="heading-2 prose prose-lg">{params.project}</h2>
       <ProjectFlagsTable items={flags.items} />
     </Layout>
   )
