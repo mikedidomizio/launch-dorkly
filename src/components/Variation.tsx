@@ -45,7 +45,6 @@ export const Variation = ({ item }: { item: Item }) => {
       },
       {
         position: 'bottom-right',
-        duration: 20000,
       },
     )
 
