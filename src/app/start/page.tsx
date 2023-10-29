@@ -66,7 +66,7 @@ export default function Page({
           <h2 className="heading-2 mt-6">Let&apos;s Go!</h2>
         )}
         <form action={setCookie}>
-          <ol>
+          <ol className="list-decimal list-inside">
             <li>
               Create an access token in{' '}
               <Link
