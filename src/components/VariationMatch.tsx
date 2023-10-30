@@ -41,7 +41,7 @@ export const VariationMatch = ({
           params.projectTwo as string,
           featureFlagKey,
           variation,
-          !value,
+          value,
         ),
       ),
       {
@@ -93,6 +93,7 @@ export const VariationMatch = ({
     variation: number,
     variations: VariationElement[],
   ): VariationElementValue => {
+    console.log(variations[variation].value)
     return variations[variation].value
   }
 
