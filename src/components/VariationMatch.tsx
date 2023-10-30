@@ -1,12 +1,16 @@
 'use client'
 import { useState } from 'react'
-import { Item, Kind, VariationElement } from '@/types/listFlags.types'
+import {
+  Item,
+  Kind,
+  VariationElement,
+  VariationElementValue,
+} from '@/types/listFlags.types'
 import { DoesMatch } from '@/components/DoesMatch'
 import { DoesNotMatch } from '@/components/DoesNotMatch'
 import { useParams } from 'next/navigation'
 import { updateVariation } from '@/app/api/updateVariation'
 import toast from 'react-hot-toast'
-import { updateTarget } from '@/app/api/updateTarget'
 import { fetchToPromise } from '@/helpers/fetchToPromise'
 import { handleLdErrorResponse } from '@/helpers/handleLdErrorResponse'
 
@@ -27,7 +31,7 @@ export const VariationMatch = ({
   const handleMatchFirstProjectVariation = async (
     featureFlagKey: string,
     variation: 'onVariationValue' | 'offVariationValue',
-    value: boolean,
+    value: VariationElementValue,
   ) => {
     const variationMessage = variation === 'onVariationValue' ? 'on' : 'off'
 
@@ -88,7 +92,7 @@ export const VariationMatch = ({
   const getMappedVariationValue = (
     variation: number,
     variations: VariationElement[],
-  ): boolean => {
+  ): VariationElementValue => {
     return variations[variation].value
   }
 
