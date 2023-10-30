@@ -2,7 +2,7 @@ export const updateVariation = async (
   project: string,
   featureFlagKey: string,
   variation: string,
-  value: boolean,
+  value: unknown,
 ) => {
   return fetch('/api/update-variation', {
     method: 'PATCH',
@@ -10,7 +10,7 @@ export const updateVariation = async (
       featureFlagKey,
       project,
       variation,
-      value: !value,
+      value,
     }),
     headers: {
       'Content-type': 'application/json; charset=UTF-8',

@@ -34,7 +34,7 @@ export const Variation = ({ item }: { item: Item }) => {
           params.project as string,
           featureFlagKey,
           variation,
-          value,
+          !value,
         ),
         200,
       ),

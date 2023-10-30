@@ -37,7 +37,7 @@ export const VariationMatch = ({
           params.projectTwo as string,
           featureFlagKey,
           variation,
-          value,
+          !value,
         ),
       ),
       {
