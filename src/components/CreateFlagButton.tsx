@@ -27,7 +27,7 @@ export const CreateFlagButton = ({
             'Content-type': 'application/json; charset=UTF-8',
           },
         }),
-        201,
+        [201],
       ),
       {
         loading: 'Changing',
