@@ -29,7 +29,7 @@ export const Targets = ({ item }: { item: Item }) => {
           params.project as string,
           value,
         ),
-        200,
+        [200],
       ),
       {
         loading: 'Changing',

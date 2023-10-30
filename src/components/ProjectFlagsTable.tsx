@@ -3,6 +3,10 @@ import { Targets } from '@/components/Targets'
 import { Variation } from '@/components/Variation'
 
 export const ProjectFlagsTable = ({ items }: { items: Item[] }) => {
+  if (!items[0]) {
+    return <>No flags for this project</>
+  }
+
   const environments = Object.values(items[0].environments).map(
     (environment) => environment._environmentName,
   )
