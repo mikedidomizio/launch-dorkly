@@ -24,7 +24,7 @@ export const VariationMultivariate = ({ item }: { item: Item }) => {
   const changeVariation = async (
     featureFlagKey: string,
     variation: 'onVariationValue' | 'offVariationValue',
-    value: string,
+    stringValue: string,
   ) => {
     const variationMessage = variation === 'onVariationValue' ? 'on' : 'off'
 
@@ -34,13 +34,13 @@ export const VariationMultivariate = ({ item }: { item: Item }) => {
           params.project as string,
           featureFlagKey,
           variation,
-          value,
+          stringValue,
         ),
         [200],
       ),
       {
         loading: 'Changing',
-        success: `Variation "${variationMessage}" is now "${value}" for flag "${featureFlagKey}"`,
+        success: `Variation "${variationMessage}" is now "${stringValue}" "${stringValue}" for flag "${featureFlagKey}"`,
         error: handleLdErrorResponse,
       },
       {
@@ -49,9 +49,9 @@ export const VariationMultivariate = ({ item }: { item: Item }) => {
     )
 
     if (variation === 'onVariationValue') {
-      setOnState(value)
+      setOnState(stringValue)
     } else {
-      setOffState(value)
+      setOffState(stringValue)
     }
   }
 
