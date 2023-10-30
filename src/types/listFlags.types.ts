@@ -107,13 +107,14 @@ export interface Experiments {
 
 export enum Kind {
   Boolean = 'boolean',
-  Multivariate = 'multivariate',
+  Multivariate = 'multivariate', // string
 }
 
 export interface VariationElement {
   _id: string
   name?: string
-  // todo this may be additional types
-  value: boolean
+  value: VariationElementValue
   description?: string
 }
+
+export type VariationElementValue = boolean | string
