@@ -8,7 +8,6 @@ import { EnvironmentsColumns } from '@/components/EnvironmentsColumns'
 import { updateTarget } from '@/app/api/updateTarget'
 import toast from 'react-hot-toast'
 import { fetchToPromise } from '@/helpers/fetchToPromise'
-import { Response } from 'next/dist/compiled/@edge-runtime/primitives'
 import { handleLdErrorResponse } from '@/helpers/handleLdErrorResponse'
 
 export const TargetsMatch = ({
@@ -69,6 +68,8 @@ export const TargetsMatch = ({
     throw new Error('Could not find item')
   }
 
+  const boolToLabel = (bool: boolean) => (bool ? 'On' : 'Off')
+
   return (
     <>
       <EnvironmentsColumns
@@ -77,11 +78,19 @@ export const TargetsMatch = ({
           return values.on === getOnValue(environmentKey, item.key) ? (
             <DoesMatch />
           ) : (
-            <DoesNotMatch
-              onClick={() =>
-                handleMatchFirstProject(environmentKey, item.key, values.on)
-              }
-            />
+            <div
+              title={`The value in project one is '${boolToLabel(
+                values.on,
+              )}', the value in project two is '${boolToLabel(
+                getOnValue(environmentKey, item.key),
+              )}`}
+            >
+              <DoesNotMatch
+                onClick={() =>
+                  handleMatchFirstProject(environmentKey, item.key, values.on)
+                }
+              />
+            </div>
           )
         }}
       ></EnvironmentsColumns>

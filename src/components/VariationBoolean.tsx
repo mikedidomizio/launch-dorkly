@@ -6,7 +6,6 @@ import { handleLdErrorResponse } from '@/helpers/handleLdErrorResponse'
 import { Defaults, Item } from '@/types/listFlags.types'
 import { useState } from 'react'
 import { useParams } from 'next/navigation'
-import { boolean } from 'zod'
 
 export const VariationBoolean = ({ item }: { item: Item }) => {
   const params = useParams()
@@ -30,7 +29,7 @@ export const VariationBoolean = ({ item }: { item: Item }) => {
           variation,
           !value,
         ),
-        200,
+        [200],
       ),
       {
         loading: 'Changing',

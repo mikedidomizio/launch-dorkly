@@ -1,8 +1,6 @@
-import { NextResponse } from 'next/server'
-
 export const fetchToPromise = async (
   fetchCallFn: Promise<Response>,
-  ...successHttpStatusCode: number[]
+  successHttpStatusCode: number[] = [200],
 ) => {
   const result: Response = await fetchCallFn
 

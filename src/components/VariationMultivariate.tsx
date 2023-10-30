@@ -36,7 +36,7 @@ export const VariationMultivariate = ({ item }: { item: Item }) => {
           variation,
           value,
         ),
-        200,
+        [200],
       ),
       {
         loading: 'Changing',
