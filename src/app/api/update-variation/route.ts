@@ -9,9 +9,11 @@ export async function PATCH(req: Request) {
 
   if (
     !project ||
+    // todo support more than two variations for non boolean types
     (variation !== 'onVariationValue' && variation !== 'offVariationValue') ||
     !token ||
-    !token.value
+    !token.value ||
+    value === undefined
   ) {
     return NextResponse.json({ error: 'Bad request' }, { status: 400 })
   }
