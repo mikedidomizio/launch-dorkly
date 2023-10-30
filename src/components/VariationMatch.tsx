@@ -96,42 +96,64 @@ export const VariationMatch = ({
     return variations[variation].value
   }
 
+  const getVariationNameFromIndex = (
+    variationIndex: number,
+  ): VariationElementValue => {
+    return item.variations[variationIndex].value
+  }
+
   return (
     <>
       <td className="text-center">
         {item.defaults.onVariation === onVariation ? (
           <DoesMatch />
         ) : (
-          <DoesNotMatch
-            onClick={() =>
-              handleMatchFirstProjectVariation(
-                item.key,
-                'onVariationValue',
-                getMappedVariationValue(
-                  item.defaults.onVariation,
-                  item.variations,
-                ),
-              )
-            }
-          />
+          <div
+            title={`The value in project one is '${getVariationNameFromIndex(
+              item.defaults.onVariation,
+            )}', the value in project two is '${getVariationNameFromIndex(
+              onVariation,
+            )}'`}
+          >
+            <DoesNotMatch
+              onClick={() =>
+                handleMatchFirstProjectVariation(
+                  item.key,
+                  'onVariationValue',
+                  getMappedVariationValue(
+                    item.defaults.onVariation,
+                    item.variations,
+                  ),
+                )
+              }
+            />
+          </div>
         )}
       </td>
       <td className="text-center">
         {item.defaults.offVariation === offVariation ? (
           <DoesMatch />
         ) : (
-          <DoesNotMatch
-            onClick={() =>
-              handleMatchFirstProjectVariation(
-                item.key,
-                'offVariationValue',
-                getMappedVariationValue(
-                  item.defaults.offVariation,
-                  item.variations,
-                ),
-              )
-            }
-          />
+          <div
+            title={`The value in project one is '${getVariationNameFromIndex(
+              item.defaults.offVariation,
+            )}', the value in project two is '${getVariationNameFromIndex(
+              offVariation,
+            )}'`}
+          >
+            <DoesNotMatch
+              onClick={() =>
+                handleMatchFirstProjectVariation(
+                  item.key,
+                  'offVariationValue',
+                  getMappedVariationValue(
+                    item.defaults.offVariation,
+                    item.variations,
+                  ),
+                )
+              }
+            />
+          </div>
         )}
       </td>
     </>
