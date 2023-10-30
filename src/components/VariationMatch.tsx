@@ -46,7 +46,7 @@ export const VariationMatch = ({
       ),
       {
         loading: 'Changing',
-        success: `Variation "${variationMessage}" is now "${!value}" for flag "${featureFlagKey}"`,
+        success: `Variation "${variationMessage}" is now "${value}" for flag "${featureFlagKey}"`,
         error: handleLdErrorResponse,
       },
       {
@@ -70,8 +70,8 @@ export const VariationMatch = ({
     setItems2State(newMappedValues)
   }
 
-  if (item.kind !== Kind.Boolean) {
-    // todo too complicated at this time to do this for any other type
+  // todo only fully supporting boolean/string
+  if (item.kind !== Kind.Boolean && item.kind !== Kind.Multivariate) {
     return null
   }
 
