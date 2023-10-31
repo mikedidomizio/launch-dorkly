@@ -108,4 +108,4 @@ export interface VariationElement {
   description?: string
 }
 
-export type VariationElementValue = boolean | string
+export type VariationElementValue = boolean | string | number

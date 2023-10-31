@@ -1,6 +1,6 @@
-import { mockProjectFlags } from './mocks/listFlags.mocks'
-import { googleFontsHandler, rest, test } from './mocks/global.mocks'
-import { mockListProjects } from './mocks/listProjects.mocks'
+import { mockProjectFlags } from './__mocks__/listFlags.mocks'
+import { googleFontsHandler, rest, test } from './__mocks__/global.mocks'
+import { mockListProjects } from './__mocks__/listProjects.mocks'
 
 import { produce } from 'immer'
 import { expect } from '@playwright/test'
