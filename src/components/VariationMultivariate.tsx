@@ -27,6 +27,8 @@ export const VariationMultivariate = ({ item }: { item: Item }) => {
     variation: 'onVariationValue' | 'offVariationValue',
     stringValue: string,
   ) => {
+    // seems to be a way to differentiate between string and number types, even if string is "1"
+    const isNumber = !isNaN(item.variations[0].value as any)
     const variationMessage = variation === 'onVariationValue' ? 'on' : 'off'
 
     await toast.promise(
@@ -35,13 +37,13 @@ export const VariationMultivariate = ({ item }: { item: Item }) => {
           params.project as string,
           featureFlagKey,
           variation,
-          stringValue,
+          isNumber ? parseInt(stringValue) : stringValue,
         ),
         [200],
       ),
       {
         loading: 'Changing',
-        success: `Variation "${variationMessage}" is now "${stringValue}" "${stringValue}" for flag "${featureFlagKey}"`,
+        success: `Variation "${variationMessage}" is now "${stringValue}" for flag "${featureFlagKey}"`,
         error: handleLdErrorResponse,
       },
       {
@@ -61,6 +63,7 @@ export const VariationMultivariate = ({ item }: { item: Item }) => {
       <td className="text-center max-w-[50px]">
         {/** On **/}
         <select
+          data-testid={`${item.key}-onVariation`}
           value={'' + onState}
           className="select select-bordered w-full max-w-xs"
           onChange={(e) =>
@@ -79,6 +82,7 @@ export const VariationMultivariate = ({ item }: { item: Item }) => {
       <td className="text-center max-w-[50px]">
         {/** Off **/}
         <select
+          data-testid={`${item.key}-offVariation`}
           value={'' + offState}
           className="select select-bordered w-full max-w-xs"
           onChange={(e) =>

@@ -1,6 +1,6 @@
-import { rest, test } from './mocks/global.mocks'
+import { rest, test } from './__mocks__/global.mocks'
 import { ListProjects } from '@/types/listProjects.types'
-import { mockListProjects } from './mocks/listProjects.mocks'
+import { mockListProjects } from './__mocks__/listProjects.mocks'
 
 test.use({
   mswHandlers: [
