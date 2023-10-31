@@ -5,5 +5,5 @@ export const handleLdErrorResponse = (response: Response) => {
     return '403: Does this LD token have the correct permissions?'
   }
 
-  return 'Error changing'
+  return 'Error making update'
 }
