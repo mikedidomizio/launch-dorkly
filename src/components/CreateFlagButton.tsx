@@ -36,7 +36,14 @@ export const CreateFlagButton = ({
           router.refresh()
           return 'Refreshing page'
         },
-        error: handleLdErrorResponse,
+        error: (e) => {
+          // if we get a conflict error, it's possibly because the flag exists for this project
+          if (e.status === 409) {
+            return '409: Cannot create flag, possibly exists or archived. Flag can only be created once it does not exist'
+          }
+
+          return handleLdErrorResponse(e)
+        },
       },
       {
         position: 'bottom-right',
