@@ -18,6 +18,17 @@ export async function PATCH(req: Request) {
     return NextResponse.json({ error: 'Bad request' }, { status: 400 })
   }
 
+  console.log(
+    `https://app.launchdarkly.com/api/v2/flags/${project}/${featureFlagKey}`,
+  )
+
+  console.log(
+    JSON.stringify({
+      comment: '',
+      instructions: [{ kind: 'updateDefaultVariation', [variation]: value }],
+    }),
+  )
+
   const resp = await fetch(
     `https://app.launchdarkly.com/api/v2/flags/${project}/${featureFlagKey}`,
     {

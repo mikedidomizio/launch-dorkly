@@ -96,12 +96,15 @@ export const VariationMatch = ({
     return variations[variation].value
   }
 
-  const getVariationNameFromIndex = (
-    variationIndex: number,
-  ): VariationElementValue => {
-    return item.variations[variationIndex].name
+  const getVariationNameFromIndex = (variationIndex: number): string => {
+    if (item.variations[variationIndex].name) {
+      return item.variations[variationIndex].name as string
+    }
+
+    throw new Error('Could not get name from index')
   }
 
+  // todo cannot match on the onVariation and the offVariation because the defaults might be different, these are just index numbers
   return (
     <>
       <td className="text-center">
