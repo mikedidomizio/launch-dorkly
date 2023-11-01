@@ -7,29 +7,43 @@ import { updateVariation } from '@/app/api/updateVariation'
 import { handleLdErrorResponse } from '@/helpers/handleLdErrorResponse'
 
 export const VariationMultivariate = ({ item }: { item: Item }) => {
-  const getMappedVariationValue = (
-    variationArrayIndex: number,
-  ): VariationElementValue => {
-    return itemState.variations[variationArrayIndex].value
+  const getMappedVariationName = (variationArrayIndex: number): string => {
+    return item.variations[variationArrayIndex].name as string
   }
 
   const params = useParams()
-  const [itemState, setItemState] = useState(item)
   const [onState, setOnState] = useState(() =>
-    getMappedVariationValue(item.defaults.onVariation),
+    getMappedVariationName(item.defaults.onVariation),
   )
   const [offState, setOffState] = useState(() =>
-    getMappedVariationValue(item.defaults.offVariation),
+    getMappedVariationName(item.defaults.offVariation),
   )
+
+  const getVariationValueFromName = (
+    variationName: string,
+  ): VariationElementValue => {
+    const foundValue = item.variations.find(
+      (variation) => variation.name === variationName,
+    )
+
+    if (foundValue) {
+      return foundValue.value
+    }
+
+    throw new Error('Could not find variation by name')
+  }
 
   const changeVariation = async (
     featureFlagKey: string,
     variation: 'onVariationValue' | 'offVariationValue',
-    stringValue: string,
+    // the reason why we use variationName instead of just passing the value directly in is because name is always string
+    // where value can be boolean, or even object, which aren't supported as a value of select[option]
+    variationName: string,
   ) => {
     // seems to be a way to differentiate between string and number types, even if string is "1"
     const isNumber = !isNaN(item.variations[0].value as any)
     const variationMessage = variation === 'onVariationValue' ? 'on' : 'off'
+    const variationValue = getVariationValueFromName(variationName)
 
     await toast.promise(
       fetchToPromise(
@@ -37,13 +51,13 @@ export const VariationMultivariate = ({ item }: { item: Item }) => {
           params.project as string,
           featureFlagKey,
           variation,
-          isNumber ? parseInt(stringValue) : stringValue,
+          variationValue,
         ),
         [200],
       ),
       {
         loading: 'Changing',
-        success: `Variation "${variationMessage}" is now "${stringValue}" for flag "${featureFlagKey}"`,
+        success: `Variation "${variationMessage}" is now "${variationName}" for flag "${featureFlagKey}"`,
         error: handleLdErrorResponse,
       },
       {
@@ -52,9 +66,9 @@ export const VariationMultivariate = ({ item }: { item: Item }) => {
     )
 
     if (variation === 'onVariationValue') {
-      setOnState(stringValue)
+      setOnState(variationName)
     } else {
-      setOffState(stringValue)
+      setOffState(variationName)
     }
   }
 
@@ -67,12 +81,12 @@ export const VariationMultivariate = ({ item }: { item: Item }) => {
           value={'' + onState}
           className="select select-bordered w-full max-w-xs"
           onChange={(e) =>
-            changeVariation(itemState.key, 'onVariationValue', e.target.value)
+            changeVariation(item.key, 'onVariationValue', e.target.value)
           }
         >
-          {itemState.variations.map((variation) => {
+          {item.variations.map((variation) => {
             return (
-              <option key={variation._id} value={'' + variation.value}>
+              <option key={variation._id} value={'' + variation.name}>
                 {variation.name}
               </option>
             )
@@ -86,12 +100,12 @@ export const VariationMultivariate = ({ item }: { item: Item }) => {
           value={'' + offState}
           className="select select-bordered w-full max-w-xs"
           onChange={(e) =>
-            changeVariation(itemState.key, 'offVariationValue', e.target.value)
+            changeVariation(item.key, 'offVariationValue', e.target.value)
           }
         >
-          {itemState.variations.map((variation) => {
+          {item.variations.map((variation) => {
             return (
-              <option key={variation._id} value={'' + variation.value}>
+              <option key={variation._id} value={'' + variation.name}>
                 {variation.name}
               </option>
             )

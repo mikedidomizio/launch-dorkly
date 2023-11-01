@@ -99,7 +99,7 @@ export const VariationMatch = ({
   const getVariationNameFromIndex = (
     variationIndex: number,
   ): VariationElementValue => {
-    return item.variations[variationIndex].value
+    return item.variations[variationIndex].name
   }
 
   return (
