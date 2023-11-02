@@ -30,7 +30,6 @@ test.use({
             draft.items[0].environments.test.on = false
           })
 
-          console.log(changedFlags.items[0].environments)
           return res(ctx.status(200), ctx.json(changedFlags))
         }
       },
@@ -42,7 +41,7 @@ test.describe('copy page', () => {
   test.beforeEach(async ({ page, context }, testInfo) => {
     // todo don't need to commit
     page.on('console', (msg) => {
-      console.log(`Error text: "${msg.text()}"`)
+      console.log(`Console text: "${msg.text()}"`)
     })
 
     await context.addCookies([
