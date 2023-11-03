@@ -1,53 +1,46 @@
 import { mockProjectFlags } from './mocks/listFlags.mocks'
-import { rest, test } from './mocks/global.mocks'
+import { googleFontsHandler, rest, test } from './mocks/global.mocks'
 import { mockListProjects } from './mocks/listProjects.mocks'
 
 import { produce } from 'immer'
 import { expect } from '@playwright/test'
 
+const baseLevelHandlers = [
+  rest.get(
+    'https://app.launchdarkly.com/api/v2/projects/:projectKey',
+    (req, res, ctx) => {
+      const { projectKey } = req.params
+
+      if (projectKey === 'my-project') {
+        return res(ctx.status(200), ctx.json(mockListProjects.items[0]))
+      } else if (projectKey === 'my-second-project') {
+        return res(ctx.status(200), ctx.json(mockListProjects.items[1]))
+      }
+    },
+  ),
+  rest.get(
+    'https://app.launchdarkly.com/api/v2/flags/:projectKey',
+    (req, res, ctx) => {
+      const { projectKey } = req.params
+
+      if (projectKey === 'my-project') {
+        return res(ctx.status(200), ctx.json(mockProjectFlags))
+      } else if (projectKey === 'my-second-project') {
+        const changedFlags = produce(mockProjectFlags, (draft) => {
+          // change the environment target for testing
+          draft.items[0].environments.test.on = true
+          // change the variation for testing
+          draft.items[0].defaults.offVariation = 0
+        })
+
+        return res(ctx.status(200), ctx.json(changedFlags))
+      }
+    },
+  ),
+]
+
 test.use({
-  mswHandlers: [
-    rest.get(
-      'https://app.launchdarkly.com/api/v2/projects/:projectKey',
-      (req, res, ctx) => {
-        const { projectKey } = req.params
-
-        if (projectKey === 'my-project') {
-          return res(ctx.status(200), ctx.json(mockListProjects.items[0]))
-        } else if (projectKey === 'my-second-project') {
-          return res(ctx.status(200), ctx.json(mockListProjects.items[1]))
-        }
-      },
-    ),
-    rest.get(
-      'https://app.launchdarkly.com/api/v2/flags/:projectKey',
-      (req, res, ctx) => {
-        const { projectKey } = req.params
-
-        if (projectKey === 'my-project') {
-          return res(ctx.status(200), ctx.json(mockProjectFlags))
-        } else if (projectKey === 'my-second-project') {
-          const changedFlags = produce(mockProjectFlags, (draft) => {
-            // change the environment target for testing
-            draft.items[0].environments.test.on = true
-            // change the variation for testing
-            draft.items[0].defaults.offVariation = 0
-          })
-
-          return res(ctx.status(200), ctx.json(changedFlags))
-        }
-      },
-    ),
-    // updating a target
-    // updating a variation
-    // todo handle and verify passing in the correct arguments when making updates
-    rest.patch(
-      `https://app.launchdarkly.com/api/v2/flags/my-second-project/my-flag`,
-      (req, res, ctx) => {
-        return res(ctx.status(200))
-      },
-    ),
-  ],
+  mswHandlers: [...baseLevelHandlers],
 })
 
 test.describe('copy page', () => {
@@ -82,7 +75,9 @@ test.describe('copy page', () => {
     page,
   }) => {
     await expect(
-      page.getByTestId('my-flag-test').getByRole('button', { name: '❌' }),
+      page
+        .getByTestId('my-flag-production')
+        .getByRole('button', { name: '✅' }),
     ).toBeVisible()
   })
 
@@ -106,39 +101,122 @@ test.describe('copy page', () => {
     ).toBeVisible()
   })
 
-  test('should update the target to match if a non-matching target button is clicked', async ({
-    page,
-  }) => {
-    await page
-      .getByTestId('my-flag-test')
-      .getByRole('button', { name: '❌' })
-      .click()
+  test.describe('updating target', () => {
+    test.use({
+      mswHandlers: [
+        ...googleFontsHandler,
+        ...baseLevelHandlers,
+        rest.patch(
+          `https://app.launchdarkly.com/api/v2/flags/my-second-project/:featureFlagKey`,
+          async (req, res, ctx) => {
+            const json = await req.json()
 
-    await expect(
-      page.getByTestId('my-flag-test').getByRole('button', { name: '✅' }),
-    ).toBeVisible()
+            expect(json).toMatchObject({
+              comment: expect.any(String),
+              environmentKey: 'test',
+              instructions: [
+                {
+                  kind: 'turnFlagOff',
+                },
+              ],
+            })
+            return res(ctx.status(200))
+          },
+        ),
+      ],
+    })
 
-    await expect(
-      page.getByText('"my-flag" is now "false" in "test"'),
-    ).toBeVisible()
+    test('should update the target to match if a non-matching target button is clicked', async ({
+      page,
+    }) => {
+      await expect(page.getByTestId('my-flag-test')).toHaveAttribute(
+        'title',
+        "The value in project one is 'Off', the value in project two is 'On'",
+      )
+
+      await page
+        .getByTestId('my-flag-test')
+        .getByRole('button', { name: '❌' })
+        .click()
+
+      await expect(
+        page.getByTestId('my-flag-test').getByRole('button', { name: '✅' }),
+      ).toBeVisible()
+
+      await expect(page.getByTestId('my-flag-test')).toHaveAttribute(
+        'title',
+        "The value in project one is 'Off', the value in project two is 'Off'",
+      )
+
+      await expect(
+        page.getByText('"my-flag" is now "false" in "test"'),
+      ).toBeVisible()
+    })
   })
 
-  test('should update the variation to match if a non-matching variation button is clicked', async ({
-    page,
-  }) => {
-    await page
-      .getByTestId('my-flag-offVariation')
-      .getByRole('button', { name: '❌' })
-      .click()
+  test.describe('updating variation', () => {
+    test.use({
+      mswHandlers: [
+        ...googleFontsHandler,
+        ...baseLevelHandlers,
+        rest.patch(
+          `https://app.launchdarkly.com/api/v2/flags/my-second-project/:featureFlagKey`,
+          async (req, res, ctx) => {
+            const json = await req.json()
+            const { featureFlagKey } = req.params
 
-    await expect(
-      page
+            // proceed to get the first project variation to see if second project is called with the correct value
+            const firstProjectVariation = mockProjectFlags.items.find(
+              (item) => {
+                return item.name === featureFlagKey
+              },
+            )
+            const variationIndex = firstProjectVariation?.defaults.offVariation
+
+            expect(json).toMatchObject({
+              comment: expect.any(String),
+              instructions: [
+                {
+                  kind: 'updateDefaultVariation',
+                  offVariationValue:
+                    firstProjectVariation?.variations[variationIndex as number]
+                      .value,
+                },
+              ],
+            })
+            return res(ctx.status(200))
+          },
+        ),
+      ],
+    })
+
+    test('should update the variation to match if a non-matching variation button is clicked', async ({
+      page,
+    }) => {
+      await expect(page.getByTestId('my-flag-offVariation')).toHaveAttribute(
+        'title',
+        "The value in project one is 'false', the value in project two is 'true'",
+      )
+
+      await page
         .getByTestId('my-flag-offVariation')
-        .getByRole('button', { name: '✅' }),
-    ).toBeVisible()
+        .getByRole('button', { name: '❌' })
+        .click()
 
-    await expect(
-      page.getByText('Variation "off" is now "false" for flag "my-flag"'),
-    ).toBeVisible()
+      await expect(
+        page
+          .getByTestId('my-flag-offVariation')
+          .getByRole('button', { name: '✅' }),
+      ).toBeVisible()
+
+      await expect(page.getByTestId('my-flag-offVariation')).toHaveAttribute(
+        'title',
+        "The value in project one is 'false', the value in project two is 'false'",
+      )
+
+      await expect(
+        page.getByText('Variation "off" is now "false" for flag "my-flag"'),
+      ).toBeVisible()
+    })
   })
 })
