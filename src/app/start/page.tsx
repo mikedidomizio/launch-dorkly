@@ -4,6 +4,7 @@ import { redirect } from 'next/navigation'
 import { listProjects } from '@/app/api/listProjects'
 import { GitHubImage } from '@/components/GitHubLink'
 import { ErrorAlert } from '@/components/Alerts'
+import { DisclaimerLink } from '@/components/DisclaimerLink'
 
 const readableErrorMessage = (error: string) => {
   switch (error) {
@@ -67,6 +68,9 @@ export default function Page({
         )}
         <form action={setCookie}>
           <ol className="list-decimal list-inside">
+            <li>
+              Read the <DisclaimerLink />
+            </li>
             <li>
               Create an access token in{' '}
               <Link
