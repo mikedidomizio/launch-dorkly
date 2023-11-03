@@ -28,8 +28,10 @@ test.use({
           return res(ctx.status(200), ctx.json(mockProjectFlags))
         } else if (projectKey === 'my-second-project') {
           const changedFlags = produce(mockProjectFlags, (draft) => {
-            // @ts-ignore
+            // change the environment target for testing
             draft.items[0].environments.test.on = true
+            // change the variation for testing
+            draft.items[0].defaults.offVariation = 0
           })
 
           return res(ctx.status(200), ctx.json(changedFlags))
@@ -54,7 +56,7 @@ test.describe('copy page', () => {
     )
   })
 
-  test('should list which project it is copying from and copying to', async ({
+  test('should display which project it is copying from and copying to', async ({
     page,
   }) => {
     await expect(
@@ -62,7 +64,9 @@ test.describe('copy page', () => {
     ).toBeVisible()
   })
 
-  test('should list feature flags targets that do match', async ({ page }) => {
+  test('should display feature flags targets that do match', async ({
+    page,
+  }) => {
     await expect(
       page
         .getByTestId('my-flag-production-matches')
@@ -70,13 +74,43 @@ test.describe('copy page', () => {
     ).toBeVisible()
   })
 
-  test("should list feature flags targets that don't match", async ({
+  test("should display feature flags targets that don't match", async ({
     page,
   }) => {
     await expect(
       page
         .getByTestId('my-flag-test-not-match')
         .getByRole('button', { name: '❌' }),
+    ).toBeVisible()
+  })
+
+  test('should display feature flags variants that do match', async ({
+    page,
+  }) => {
+    await expect(
+      page
+        .getByTestId('my-flag-onVariation')
+        .getByRole('button', { name: '✅' }),
+    ).toBeVisible()
+  })
+
+  test("should display feature flags variants that don't match", async ({
+    page,
+  }) => {
+    await expect(
+      page
+        .getByTestId('my-flag-offVariation')
+        .getByRole('button', { name: '❌' }),
+    ).toBeVisible()
+  })
+
+  test('should display feature flags variants that do match', async ({
+    page,
+  }) => {
+    await expect(
+      page
+        .getByTestId('my-flag-onVariation')
+        .getByRole('button', { name: '✅' }),
     ).toBeVisible()
   })
 })
