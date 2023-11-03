@@ -71,39 +71,30 @@ export const TargetsMatch = ({
   const boolToLabel = (bool: boolean) => (bool ? 'On' : 'Off')
 
   return (
-    <>
-      <EnvironmentsColumns
-        environments={item.environments}
-        column={(environmentKey, values) => {
-          return values.on === getOnValue(environmentKey, item.key) ? (
-            <div
-              data-testid={`${item.key}-${environmentKey}-matches`}
-              title={`The value in project one is '${boolToLabel(
-                values.on,
-              )}', the value in project two is '${boolToLabel(
-                getOnValue(environmentKey, item.key),
-              )}`}
-            >
+    <EnvironmentsColumns
+      environments={item.environments}
+      column={(environmentKey, values) => {
+        return (
+          <div
+            data-testid={`${item.key}-${environmentKey}`}
+            title={`The value in project one is '${boolToLabel(
+              values.on,
+            )}', the value in project two is '${boolToLabel(
+              getOnValue(environmentKey, item.key),
+            )}`}
+          >
+            {values.on === getOnValue(environmentKey, item.key) ? (
               <DoesMatch />
-            </div>
-          ) : (
-            <div
-              data-testid={`${item.key}-${environmentKey}-not-match`}
-              title={`The value in project one is '${boolToLabel(
-                values.on,
-              )}', the value in project two is '${boolToLabel(
-                getOnValue(environmentKey, item.key),
-              )}`}
-            >
+            ) : (
               <DoesNotMatch
                 onClick={() =>
                   handleMatchFirstProject(environmentKey, item.key, values.on)
                 }
               />
-            </div>
-          )
-        }}
-      ></EnvironmentsColumns>
-    </>
+            )}
+          </div>
+        )
+      }}
+    ></EnvironmentsColumns>
   )
 }

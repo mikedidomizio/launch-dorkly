@@ -69,7 +69,7 @@ test.describe('copy page', () => {
   }) => {
     await expect(
       page
-        .getByTestId('my-flag-production-matches')
+        .getByTestId('my-flag-production')
         .getByRole('button', { name: '✅' }),
     ).toBeVisible()
   })
@@ -78,9 +78,7 @@ test.describe('copy page', () => {
     page,
   }) => {
     await expect(
-      page
-        .getByTestId('my-flag-test-not-match')
-        .getByRole('button', { name: '❌' }),
+      page.getByTestId('my-flag-test').getByRole('button', { name: '❌' }),
     ).toBeVisible()
   })
 
