@@ -51,11 +51,6 @@ test.use({
 
 test.describe('copy page', () => {
   test.beforeEach(async ({ page, context }, testInfo) => {
-    // todo don't need to commit
-    page.on('console', (msg) => {
-      console.log(`Console text: "${msg.text()}"`)
-    })
-
     await context.addCookies([
       { name: 'LD_TOKEN', value: '1234567890', url: 'http://localhost' },
     ])
