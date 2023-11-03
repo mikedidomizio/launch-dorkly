@@ -38,6 +38,14 @@ test.use({
         }
       },
     ),
+    // updating a target
+    // updating a variation
+    rest.patch(
+      `https://app.launchdarkly.com/api/v2/flags/my-second-project/my-flag`,
+      (req, res, ctx) => {
+        return res(ctx.status(200))
+      },
+    ),
   ],
 })
 
@@ -102,13 +110,39 @@ test.describe('copy page', () => {
     ).toBeVisible()
   })
 
-  test('should display feature flags variants that do match', async ({
+  test('should update the target to match if a non-matching target button is clicked', async ({
     page,
   }) => {
+    await page
+      .getByTestId('my-flag-test')
+      .getByRole('button', { name: '❌' })
+      .click()
+
+    await expect(
+      page.getByTestId('my-flag-test').getByRole('button', { name: '✅' }),
+    ).toBeVisible()
+
+    await expect(
+      page.getByText('"my-flag" is now "false" in "test"'),
+    ).toBeVisible()
+  })
+
+  test('should update the variation to match if a non-matching variation button is clicked', async ({
+    page,
+  }) => {
+    await page
+      .getByTestId('my-flag-offVariation')
+      .getByRole('button', { name: '❌' })
+      .click()
+
     await expect(
       page
-        .getByTestId('my-flag-onVariation')
+        .getByTestId('my-flag-offVariation')
         .getByRole('button', { name: '✅' }),
+    ).toBeVisible()
+
+    await expect(
+      page.getByText('Variation "off" is now "false" for flag "my-flag"'),
     ).toBeVisible()
   })
 })
