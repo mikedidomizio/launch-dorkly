@@ -40,6 +40,7 @@ test.use({
     ),
     // updating a target
     // updating a variation
+    // todo handle and verify passing in the correct arguments when making updates
     rest.patch(
       `https://app.launchdarkly.com/api/v2/flags/my-second-project/my-flag`,
       (req, res, ctx) => {
