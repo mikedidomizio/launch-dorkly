@@ -81,7 +81,7 @@ export const TargetsMatch = ({
               values.on,
             )}', the value in project two is '${boolToLabel(
               getOnValue(environmentKey, item.key),
-            )}`}
+            )}'`}
           >
             {values.on === getOnValue(environmentKey, item.key) ? (
               <DoesMatch />
