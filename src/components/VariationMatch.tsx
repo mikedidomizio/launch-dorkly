@@ -93,7 +93,6 @@ export const VariationMatch = ({
     variation: number,
     variations: VariationElement[],
   ): VariationElementValue => {
-    console.log(variations[variation].value)
     return variations[variation].value
   }
 
