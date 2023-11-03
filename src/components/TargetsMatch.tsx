@@ -76,9 +76,19 @@ export const TargetsMatch = ({
         environments={item.environments}
         column={(environmentKey, values) => {
           return values.on === getOnValue(environmentKey, item.key) ? (
-            <DoesMatch />
+            <div
+              data-testid={`${item.key}-${environmentKey}-matches`}
+              title={`The value in project one is '${boolToLabel(
+                values.on,
+              )}', the value in project two is '${boolToLabel(
+                getOnValue(environmentKey, item.key),
+              )}`}
+            >
+              <DoesMatch />
+            </div>
           ) : (
             <div
+              data-testid={`${item.key}-${environmentKey}-not-match`}
               title={`The value in project one is '${boolToLabel(
                 values.on,
               )}', the value in project two is '${boolToLabel(

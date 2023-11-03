@@ -3,6 +3,7 @@ import { rest, test } from './mocks/global.mocks'
 import { mockListProjects } from './mocks/listProjects.mocks'
 
 import { produce } from 'immer'
+import { expect } from '@playwright/test'
 
 test.use({
   mswHandlers: [
@@ -27,7 +28,8 @@ test.use({
           return res(ctx.status(200), ctx.json(mockProjectFlags))
         } else if (projectKey === 'my-second-project') {
           const changedFlags = produce(mockProjectFlags, (draft) => {
-            draft.items[0].environments.test.on = false
+            // @ts-ignore
+            draft.items[0].environments.test.on = true
           })
 
           return res(ctx.status(200), ctx.json(changedFlags))
@@ -54,5 +56,27 @@ test.describe('copy page', () => {
 
   test('should list which project it is copying from and copying to', async ({
     page,
-  }) => {})
+  }) => {
+    await expect(
+      page.getByRole('heading', { name: 'My Project ➡ My Second Project' }),
+    ).toBeVisible()
+  })
+
+  test('should list feature flags targets that do match', async ({ page }) => {
+    await expect(
+      page
+        .getByTestId('my-flag-production-matches')
+        .getByRole('button', { name: '✅' }),
+    ).toBeVisible()
+  })
+
+  test("should list feature flags targets that don't match", async ({
+    page,
+  }) => {
+    await expect(
+      page
+        .getByTestId('my-flag-test-not-match')
+        .getByRole('button', { name: '❌' }),
+    ).toBeVisible()
+  })
 })
