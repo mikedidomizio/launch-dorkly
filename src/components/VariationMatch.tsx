@@ -105,16 +105,17 @@ export const VariationMatch = ({
   return (
     <>
       <td className="text-center">
-        {item.defaults.onVariation === onVariation ? (
-          <DoesMatch />
-        ) : (
-          <div
-            title={`The value in project one is '${getVariationNameFromIndex(
-              item.defaults.onVariation,
-            )}', the value in project two is '${getVariationNameFromIndex(
-              onVariation,
-            )}'`}
-          >
+        <div
+          data-testid={`${item.key}-onVariation`}
+          title={`The value in project one is '${getVariationNameFromIndex(
+            item.defaults.onVariation,
+          )}', the value in project two is '${getVariationNameFromIndex(
+            onVariation,
+          )}'`}
+        >
+          {item.defaults.onVariation === onVariation ? (
+            <DoesMatch />
+          ) : (
             <DoesNotMatch
               onClick={() =>
                 handleMatchFirstProjectVariation(
@@ -127,20 +128,21 @@ export const VariationMatch = ({
                 )
               }
             />
-          </div>
-        )}
+          )}
+        </div>
       </td>
       <td className="text-center">
-        {item.defaults.offVariation === offVariation ? (
-          <DoesMatch />
-        ) : (
-          <div
-            title={`The value in project one is '${getVariationNameFromIndex(
-              item.defaults.offVariation,
-            )}', the value in project two is '${getVariationNameFromIndex(
-              offVariation,
-            )}'`}
-          >
+        <div
+          data-testid={`${item.key}-offVariation`}
+          title={`The value in project one is '${getVariationNameFromIndex(
+            item.defaults.offVariation,
+          )}', the value in project two is '${getVariationNameFromIndex(
+            offVariation,
+          )}'`}
+        >
+          {item.defaults.offVariation === offVariation ? (
+            <DoesMatch />
+          ) : (
             <DoesNotMatch
               onClick={() =>
                 handleMatchFirstProjectVariation(
@@ -153,8 +155,8 @@ export const VariationMatch = ({
                 )
               }
             />
-          </div>
-        )}
+          )}
+        </div>
       </td>
     </>
   )
