@@ -99,21 +99,66 @@ test.describe('copy page', () => {
     ).toBeVisible()
   })
 
-  test.skip('should update the target to match if a non-matching target button is clicked', async ({
-    page,
-  }) => {
-    await page
-      .getByTestId('my-flag-test')
-      .getByRole('button', { name: '❌' })
-      .click()
+  test.describe('updating target', () => {
+    test.use({
+      mswHandlers: [
+        ...googleFontsHandler,
+        ...baseLevelHandlers,
+        rest.patch(
+          `https://app.launchdarkly.com/api/v2/flags/my-second-project/:featureFlagKey`,
+          async (req, res, ctx) => {
+            const json = await req.json()
+            const { featureFlagKey } = req.params
 
-    await expect(
-      page.getByTestId('my-flag-test').getByRole('button', { name: '✅' }),
-    ).toBeVisible()
+            // proceed to get the first project variation to see if second project is called with the correct value
+            const firstProjectVariation = mockProjectFlags.items.find(
+              (item) => {
+                return item.name === featureFlagKey
+              },
+            )
+            const variationIndex = firstProjectVariation?.defaults.offVariation
 
-    await expect(
-      page.getByText('"my-flag" is now "false" in "test"'),
-    ).toBeVisible()
+            expect(json).toMatchObject({
+              comment: expect.any(String),
+              environmentKey: 'test',
+              instructions: [
+                {
+                  kind: 'turnFlagOff',
+                },
+              ],
+            })
+            return res(ctx.status(200))
+          },
+        ),
+      ],
+    })
+
+    test('should update the target to match if a non-matching target button is clicked', async ({
+      page,
+    }) => {
+      await expect(page.getByTestId('my-flag-test')).toHaveAttribute(
+        'title',
+        "The value in project one is 'Off', the value in project two is 'On'",
+      )
+
+      await page
+        .getByTestId('my-flag-test')
+        .getByRole('button', { name: '❌' })
+        .click()
+
+      await expect(
+        page.getByTestId('my-flag-test').getByRole('button', { name: '✅' }),
+      ).toBeVisible()
+
+      await expect(page.getByTestId('my-flag-test')).toHaveAttribute(
+        'title',
+        "The value in project one is 'Off', the value in project two is 'Off'",
+      )
+
+      await expect(
+        page.getByText('"my-flag" is now "false" in "test"'),
+      ).toBeVisible()
+    })
   })
 
   test.describe('updating variation', () => {
