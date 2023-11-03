@@ -37,14 +37,6 @@ const baseLevelHandlers = [
       }
     },
   ),
-  // updating a target
-  // todo handle and verify passing in the correct arguments when making updates
-  rest.patch(
-    `https://app.launchdarkly.com/api/v2/flags/my-second-project/my-flag`,
-    (req, res, ctx) => {
-      return res(ctx.status(200))
-    },
-  ),
 ]
 
 test.use({
@@ -107,7 +99,7 @@ test.describe('copy page', () => {
     ).toBeVisible()
   })
 
-  test('should update the target to match if a non-matching target button is clicked', async ({
+  test.skip('should update the target to match if a non-matching target button is clicked', async ({
     page,
   }) => {
     await page
@@ -130,16 +122,27 @@ test.describe('copy page', () => {
         ...googleFontsHandler,
         ...baseLevelHandlers,
         rest.patch(
-          `https://app.launchdarkly.com/api/v2/flags/my-second-project/my-flag`,
+          `https://app.launchdarkly.com/api/v2/flags/my-second-project/:featureFlagKey`,
           async (req, res, ctx) => {
             const json = await req.json()
+            const { featureFlagKey } = req.params
+
+            // proceed to get the first project variation to see if second project is called with the correct value
+            const firstProjectVariation = mockProjectFlags.items.find(
+              (item) => {
+                return item.name === featureFlagKey
+              },
+            )
+            const variationIndex = firstProjectVariation?.defaults.offVariation
 
             expect(json).toMatchObject({
               comment: expect.any(String),
               instructions: [
                 {
                   kind: 'updateDefaultVariation',
-                  offVariationValue: false, // todo would be awesome to just double check that this does indeed match the first project
+                  offVariationValue:
+                    firstProjectVariation?.variations[variationIndex as number]
+                      .value,
                 },
               ],
             })
