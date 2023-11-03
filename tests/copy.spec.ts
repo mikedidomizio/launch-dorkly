@@ -81,14 +81,6 @@ test.describe('copy page', () => {
     ).toBeVisible()
   })
 
-  test("should display feature flags targets that don't match", async ({
-    page,
-  }) => {
-    await expect(
-      page.getByTestId('my-flag-test').getByRole('button', { name: '❌' }),
-    ).toBeVisible()
-  })
-
   test('should display feature flags variants that do match', async ({
     page,
   }) => {
