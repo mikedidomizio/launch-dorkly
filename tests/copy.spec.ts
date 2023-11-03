@@ -118,15 +118,6 @@ test.describe('copy page', () => {
           `https://app.launchdarkly.com/api/v2/flags/my-second-project/:featureFlagKey`,
           async (req, res, ctx) => {
             const json = await req.json()
-            const { featureFlagKey } = req.params
-
-            // proceed to get the first project variation to see if second project is called with the correct value
-            const firstProjectVariation = mockProjectFlags.items.find(
-              (item) => {
-                return item.name === featureFlagKey
-              },
-            )
-            const variationIndex = firstProjectVariation?.defaults.offVariation
 
             expect(json).toMatchObject({
               comment: expect.any(String),
