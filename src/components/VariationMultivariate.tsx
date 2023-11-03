@@ -1,5 +1,4 @@
-import { Defaults, Item } from '@/types/listFlags.types'
-import { boolean } from 'zod'
+import { Item, VariationElementValue } from '@/types/listFlags.types'
 import { useParams } from 'next/navigation'
 import { useState } from 'react'
 import toast from 'react-hot-toast'
@@ -8,8 +7,10 @@ import { updateVariation } from '@/app/api/updateVariation'
 import { handleLdErrorResponse } from '@/helpers/handleLdErrorResponse'
 
 export const VariationMultivariate = ({ item }: { item: Item }) => {
-  const getMappedVariationValue = (variationArrayIndex: number): string => {
-    return itemState.variations[variationArrayIndex].value as string
+  const getMappedVariationValue = (
+    variationArrayIndex: number,
+  ): VariationElementValue => {
+    return itemState.variations[variationArrayIndex].value
   }
 
   const params = useParams()
@@ -60,7 +61,7 @@ export const VariationMultivariate = ({ item }: { item: Item }) => {
       <td className="text-center max-w-[50px]">
         {/** On **/}
         <select
-          value={onState}
+          value={'' + onState}
           className="select select-bordered w-full max-w-xs"
           onChange={(e) =>
             changeVariation(itemState.key, 'onVariationValue', e.target.value)
@@ -78,7 +79,7 @@ export const VariationMultivariate = ({ item }: { item: Item }) => {
       <td className="text-center max-w-[50px]">
         {/** Off **/}
         <select
-          value={offState}
+          value={'' + offState}
           className="select select-bordered w-full max-w-xs"
           onChange={(e) =>
             changeVariation(itemState.key, 'offVariationValue', e.target.value)
