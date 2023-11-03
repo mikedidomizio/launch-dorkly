@@ -73,7 +73,7 @@ test.describe('copy page', () => {
   }) => {
     await expect(
       page
-        .getByTestId('my-flag-production-matches')
+        .getByTestId('my-flag-production')
         .getByRole('button', { name: '✅' }),
     ).toBeVisible()
   })
