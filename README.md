@@ -17,13 +17,16 @@ This is a WIP but:
 - Compare settings from one LD project to another
   - With the ability to update the second project with original project's targets/variations
 
-## ⚠️ Before using this project
+## ⚠️ Disclaimer
 
-This project takes zero responsibility of unintended or destructive changes to your LaunchDarkly setup.
-This project isn't intended to manage everything LaunchDarkly but just a UI on top of the API calls.
+This project is currently a work in progress and works very well, but still takes zero responsibility of unintended or destructive 
+changes to your LaunchDarkly setup.  There is no promise of continued maintenance on the project at this time.
 <br/>
+The safest approach to using is is using a READER token, no changes can be made to your setup.  
 <br/>
-Use this project at your own risk.
+With a WRITER token, no actions are taken without user action.
+<br/>
+This disclaimer may change but for now use this project at your own risk.
 
 ### List of things this project can currently do
 
