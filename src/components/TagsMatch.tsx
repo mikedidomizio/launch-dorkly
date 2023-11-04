@@ -117,18 +117,18 @@ export const TagsMatch = ({
         )
       })}
 
-      <br />
-      {tagsSeparatedState.missingInFirst.map((tagMissing) => {
-        return (
-          <div
-            title="This tag is missing in the first project"
-            key={tagMissing}
-            className="badge bg-red-400 text-white"
-          >
-            {tagMissing}
-          </div>
-        )
-      })}
+      {/*<br />*/}
+      {/*{tagsSeparatedState.missingInFirst.map((tagMissing) => {*/}
+      {/*  return (*/}
+      {/*    <div*/}
+      {/*      title="This tag is missing in the first project"*/}
+      {/*      key={tagMissing}*/}
+      {/*      className="badge bg-red-400 text-white"*/}
+      {/*    >*/}
+      {/*      {tagMissing}*/}
+      {/*    </div>*/}
+      {/*  )*/}
+      {/*})}*/}
     </>
   )
 }
