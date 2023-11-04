@@ -9,8 +9,6 @@ import { expect } from '@playwright/test'
 // todo copy flag string
 // todo copy flag boolean
 // todo copy flag json
-// todo copy tag to second project
-// todo copy tag to first project should probably be removed, only go one way
 
 // todo if variations don't perfect align, don't allow
 
@@ -33,9 +31,17 @@ const baseLevelHandlers = [
       const { projectKey } = req.params
 
       if (projectKey === 'my-project') {
-        return res(ctx.status(200), ctx.json(mockProjectFlags))
+        const changedFlagsFirstProject = produce(mockProjectFlags, (draft) => {
+          draft.items.push({
+            ...draft.items[0],
+            name: 'flag-that-doesnt-exist-in-second-project',
+            key: 'flag-that-doesnt-exist-in-second-project',
+          })
+        })
+
+        return res(ctx.status(200), ctx.json(changedFlagsFirstProject))
       } else if (projectKey === 'my-second-project') {
-        const changedFlags = produce(mockProjectFlags, (draft) => {
+        const changedFlagsSecondProject = produce(mockProjectFlags, (draft) => {
           // change the environment target for testing
           draft.items[0].environments.test.on = true
           // change the variation for testing
@@ -46,16 +52,50 @@ const baseLevelHandlers = [
 
           // add tag to second project
           draft.items[2].tags.push('tag for second project')
+
+          draft.items.push({
+            ...draft.items[0],
+            name: 'flag-that-doesnt-exist-in-first-project',
+            key: 'flag-that-doesnt-exist-in-first-project',
+          })
         })
 
-        return res(ctx.status(200), ctx.json(changedFlags))
+        return res(ctx.status(200), ctx.json(changedFlagsSecondProject))
       }
+    },
+  ),
+  rest.post(
+    `https://app.launchdarkly.com/api/v2/flags/:projectKey`,
+    async (req, res, ctx) => {
+      const json = await req.json()
+      const itemToCheckThatMatches = mockProjectFlags.items[0]
+
+      expect(json).toMatchObject({
+        clientSideAvailability: {
+          usingEnvironmentId:
+            itemToCheckThatMatches.clientSideAvailability.usingEnvironmentId,
+          usingMobileKey:
+            itemToCheckThatMatches.clientSideAvailability.usingMobileKey,
+        },
+        customProperties: itemToCheckThatMatches.customProperties,
+        defaults: {
+          offVariation: itemToCheckThatMatches.defaults.offVariation,
+          onVariation: itemToCheckThatMatches.defaults.onVariation,
+        },
+        description: itemToCheckThatMatches.description,
+        key: 'flag-that-doesnt-exist-in-second-project',
+        name: 'flag-that-doesnt-exist-in-second-project',
+        temporary: itemToCheckThatMatches.temporary,
+        variations: itemToCheckThatMatches.variations,
+      })
+
+      return res(ctx.status(201))
     },
   ),
 ]
 
 test.use({
-  mswHandlers: [...baseLevelHandlers],
+  mswHandlers: [...baseLevelHandlers, ...googleFontsHandler],
 })
 
 test.describe('copy page', () => {
@@ -118,10 +158,37 @@ test.describe('copy page', () => {
     })
   })
 
+  test('should allow copy flag to second project if flag does not exist in second project', async ({
+    page,
+  }) => {
+    await expect(
+      page.getByText(
+        'The following flag(s) exists in My Project and are missing in My Second Project',
+      ),
+    ).toBeVisible()
+
+    await expect(
+      page.getByText(
+        'flag-that-doesnt-exist-in-second-project - Copy flag to My Second Project',
+      ),
+    ).toBeVisible()
+
+    await expect(
+      page.getByRole('cell', {
+        name: 'Flag does not exist for flag-that-doesnt-exist-in-second-project',
+      }),
+    ).toBeVisible()
+
+    await page
+      .getByRole('button', { name: 'Copy flag to My Second Project' })
+      .click()
+
+    // page refreshes at this point
+  })
+
   test.describe('updating target', () => {
     test.use({
       mswHandlers: [
-        ...googleFontsHandler,
         ...baseLevelHandlers,
         rest.patch(
           `https://app.launchdarkly.com/api/v2/flags/my-second-project/:featureFlagKey`,
@@ -192,7 +259,6 @@ test.describe('copy page', () => {
   test.describe('updating variation', () => {
     test.use({
       mswHandlers: [
-        ...googleFontsHandler,
         ...baseLevelHandlers,
         rest.patch(
           `https://app.launchdarkly.com/api/v2/flags/my-second-project/:featureFlagKey`,

@@ -29,10 +29,6 @@ const ListMissingFlags = ({
   projectKey: string
   projectName: string
 }) => {
-  if (!missingFlags.length) {
-    return null
-  }
-
   return (
     <WarningAlert>
       The following flag(s) exists in {existIn} and are missing in {projectName}
@@ -85,18 +81,20 @@ export const CompareAvailableFlagsBetweenProjects = ({
 
   return (
     <div className="grid gap-y-6">
-      <ListMissingFlags
-        projectKey={projectOneKey}
-        projectName={projectOneName}
-        existIn={projectTwoName}
-        missingFlags={results.missingFromProjectOne}
-      />
-      <ListMissingFlags
-        projectKey={projectTwoKey}
-        projectName={projectTwoName}
-        existIn={projectOneName}
-        missingFlags={results.missingFromProjectTwo}
-      />
+      {/*<ListMissingFlags*/}
+      {/*  projectKey={projectOneKey}*/}
+      {/*  projectName={projectOneName}*/}
+      {/*  existIn={projectTwoName}*/}
+      {/*  missingFlags={results.missingFromProjectOne}*/}
+      {/*/>*/}
+      {results.missingFromProjectTwo ? (
+        <ListMissingFlags
+          projectKey={projectTwoKey}
+          projectName={projectTwoName}
+          existIn={projectOneName}
+          missingFlags={results.missingFromProjectTwo}
+        />
+      ) : null}
     </div>
   )
 }
