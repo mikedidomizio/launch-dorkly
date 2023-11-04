@@ -71,7 +71,7 @@ export const VariationMatch = ({
   }
 
   // todo only fully supporting boolean/string
-  if (item.kind !== Kind.Boolean && item.kind !== Kind.Multivariate) {
+  if (item.kind !== 'boolean' && item.kind !== 'multivariate') {
     return null
   }
 

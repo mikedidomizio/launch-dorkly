@@ -5,9 +5,14 @@ import { DoesMatch } from '@/components/DoesMatch'
 import { DoesNotMatch } from '@/components/DoesNotMatch'
 import { ManageFlagDescription } from '@/components/ManageFlagDescription'
 import { TagsMatch } from '@/components/TagsMatch'
+import { ReactNode } from 'react'
 
-const CannotCompare = ({ featureFlagKey }: { featureFlagKey: string }) => {
-  return <>Could not compare for FF key: {featureFlagKey}</>
+const CannotCompare = ({ children }: { children: ReactNode | string }) => {
+  return (
+    <tr>
+      <td>{children}</td>
+    </tr>
+  )
 }
 
 const getItemByKey = (items: Item[], key: string) => {
@@ -21,7 +26,6 @@ export const FlagsComparisonTable = ({
   items1: Item[]
   items2: Item[]
 }) => {
-
   if (!items1.length) {
     return <>No flags for first project</>
   }
@@ -66,19 +70,22 @@ export const FlagsComparisonTable = ({
       <tbody>
         {items1.map((item, index: number) => {
           const foundItem2 = getItemByKey(items2, item.key)
+          let errorMessage: string | null = null
 
-          if (
-            !foundItem2 ||
-            item.key !== foundItem2.key ||
-            item.kind !== foundItem2.kind
-          ) {
-            return (
-              <tr key={item.key}>
-                <td>
-                  <CannotCompare featureFlagKey={item.key} />
-                </td>
-              </tr>
-            )
+          if (!foundItem2) {
+            errorMessage = `Flag does not exist for ${item.name}`
+          }
+
+          if (item.key !== foundItem2?.key && !errorMessage) {
+            errorMessage = `Flag keys don't align for ${item.name}`
+          }
+
+          if (item.kind !== foundItem2?.kind && !errorMessage) {
+            errorMessage = `Feature flag kind type does not match for ${item.name}`
+          }
+
+          if (errorMessage || !foundItem2) {
+            return <CannotCompare key={item.key}>{errorMessage}</CannotCompare>
           }
 
           return (

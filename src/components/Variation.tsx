@@ -11,12 +11,12 @@ export const Variation = ({ item }: { item: Item }) => {
     throw new Error('expects to be under route with parameter')
   }
 
-  if (item.kind === Kind.Multivariate) {
+  if (item.kind === 'multivariate') {
     return <VariationMultivariate item={item} />
   }
 
   // todo too complicated for now to handle non boolean types
-  if (item.kind !== Kind.Boolean) {
+  if (item.kind !== 'boolean') {
     return null
   }
 

@@ -5,6 +5,15 @@ import { mockListProjects } from './mocks/listProjects.mocks'
 import { produce } from 'immer'
 import { expect } from '@playwright/test'
 
+// todo copy flag number
+// todo copy flag string
+// todo copy flag boolean
+// todo copy flag json
+// todo copy tag to second project
+// todo copy tag to first project should probably be removed, only go one way
+
+// todo if variations don't perfect align, don't allow
+
 const baseLevelHandlers = [
   rest.get(
     'https://app.launchdarkly.com/api/v2/projects/:projectKey',
@@ -31,6 +40,12 @@ const baseLevelHandlers = [
           draft.items[0].environments.test.on = true
           // change the variation for testing
           draft.items[0].defaults.offVariation = 0
+
+          // update kind of another item
+          draft.items[1].kind = 'multivariate'
+
+          // add tag to second project
+          draft.items[2].tags.push('tag for second project')
         })
 
         return res(ctx.status(200), ctx.json(changedFlags))
@@ -53,52 +68,54 @@ test.describe('copy page', () => {
     )
   })
 
-  test('should display which project it is copying from and copying to', async ({
-    page,
-  }) => {
-    await expect(
-      page.getByRole('heading', { name: 'My Project ➡ My Second Project' }),
-    ).toBeVisible()
-  })
+  test.describe('general', () => {
+    test('should display which project it is copying from and copying to', async ({
+      page,
+    }) => {
+      await expect(
+        page.getByRole('heading', { name: 'My Project ➡ My Second Project' }),
+      ).toBeVisible()
+    })
 
-  test('should display feature flags targets that do match', async ({
-    page,
-  }) => {
-    await expect(
-      page
-        .getByTestId('my-flag-production')
-        .getByRole('button', { name: '✅' }),
-    ).toBeVisible()
-  })
+    test('should display feature flags targets that do match', async ({
+      page,
+    }) => {
+      await expect(
+        page
+          .getByTestId('my-flag-production')
+          .getByRole('button', { name: '✅' }),
+      ).toBeVisible()
+    })
 
-  test("should display feature flags targets that don't match", async ({
-    page,
-  }) => {
-    await expect(
-      page
-        .getByTestId('my-flag-production')
-        .getByRole('button', { name: '✅' }),
-    ).toBeVisible()
-  })
+    test("should display feature flags targets that don't match", async ({
+      page,
+    }) => {
+      await expect(
+        page
+          .getByTestId('my-flag-production')
+          .getByRole('button', { name: '✅' }),
+      ).toBeVisible()
+    })
 
-  test('should display feature flags variants that do match', async ({
-    page,
-  }) => {
-    await expect(
-      page
-        .getByTestId('my-flag-onVariation')
-        .getByRole('button', { name: '✅' }),
-    ).toBeVisible()
-  })
+    test('should display feature flags variants that do match', async ({
+      page,
+    }) => {
+      await expect(
+        page
+          .getByTestId('my-flag-onVariation')
+          .getByRole('button', { name: '✅' }),
+      ).toBeVisible()
+    })
 
-  test("should display feature flags variants that don't match", async ({
-    page,
-  }) => {
-    await expect(
-      page
-        .getByTestId('my-flag-offVariation')
-        .getByRole('button', { name: '❌' }),
-    ).toBeVisible()
+    test("should display feature flags variants that don't match", async ({
+      page,
+    }) => {
+      await expect(
+        page
+          .getByTestId('my-flag-offVariation')
+          .getByRole('button', { name: '❌' }),
+      ).toBeVisible()
+    })
   })
 
   test.describe('updating target', () => {
@@ -124,6 +141,24 @@ test.describe('copy page', () => {
           },
         ),
       ],
+    })
+
+    test('should not be allowed if kind type does not match', async ({
+      page,
+    }) => {
+      await expect(
+        page.getByTestId('my-flag-2-production').getByRole('button'),
+      ).not.toBeVisible()
+
+      await expect(
+        page.getByTestId('my-flag-2-test').getByRole('button'),
+      ).not.toBeVisible()
+
+      await expect(
+        page.getByRole('cell', {
+          name: 'Feature flag kind type does not match for my-flag-2',
+        }),
+      ).toBeVisible()
     })
 
     test('should update the target to match if a non-matching target button is clicked', async ({
@@ -188,6 +223,24 @@ test.describe('copy page', () => {
           },
         ),
       ],
+    })
+
+    test('should not be allowed if kind type does not match', async ({
+      page,
+    }) => {
+      await expect(
+        page.getByTestId('my-flag-2-offVariation').getByRole('button'),
+      ).not.toBeVisible()
+
+      await expect(
+        page.getByTestId('my-flag-2-onVariation').getByRole('button'),
+      ).not.toBeVisible()
+
+      await expect(
+        page.getByRole('cell', {
+          name: 'Feature flag kind type does not match for my-flag-2',
+        }),
+      ).toBeVisible()
     })
 
     test('should update the variation to match if a non-matching variation button is clicked', async ({
