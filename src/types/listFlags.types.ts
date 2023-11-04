@@ -13,10 +13,7 @@ export interface Self {
   type: SelfType
 }
 
-export enum SelfType {
-  ApplicationJSON = 'application/json',
-  TextHTML = 'text/html',
-}
+export type SelfType = 'application/json' | 'text/html'
 
 export interface Item {
   _links: ItemLinks
@@ -56,10 +53,7 @@ export interface Maintainer {
   role: Role
 }
 
-export enum Role {
-  Admin = 'admin',
-  Writer = 'writer',
-}
+export type Role = 'admin' | 'writer' | 'owner'
 
 export interface ClientSideAvailability {
   usingEnvironmentId: boolean
@@ -105,10 +99,7 @@ export interface Experiments {
   items: any[]
 }
 
-export enum Kind {
-  Boolean = 'boolean',
-  Multivariate = 'multivariate', // string
-}
+export type Kind = 'boolean' | 'multivariate'
 
 export interface VariationElement {
   _id: string

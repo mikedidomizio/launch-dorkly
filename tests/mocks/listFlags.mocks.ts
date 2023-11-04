@@ -1,4 +1,6 @@
-export const mockProjectFlags = {
+import { ListFlagsTypes } from '@/types/listFlags.types'
+
+export const mockProjectFlags: ListFlagsTypes = {
   _links: {
     self: {
       href: '/api/v2/flags/default?d=1695318110107&summary=true',
