@@ -38,7 +38,7 @@ export const mockProjectFlags: ListFlagsTypes = {
       creationDate: 1694721999396,
       customProperties: {},
       defaults: { offVariation: 1, onVariation: 0 },
-      description: '',
+      description: 'This is my description',
       environments: {
         production: {
           _environmentName: 'Production',
