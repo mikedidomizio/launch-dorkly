@@ -184,6 +184,8 @@ test.describe('copy page', () => {
       .click()
 
     // page refreshes at this point
+    // to prevent a error thrown by next via playwright we have this here
+    await page.waitForEvent('response')
   })
 
   test.describe('updating target', () => {
