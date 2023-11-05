@@ -20,7 +20,7 @@ export const LaunchDarklyPromise = async <T>(
     }
 
     if (method === 'getProject') {
-      return api[method](param, options, (error: Error, data: T) => {
+      api[method](param, options, (error: Error, data: T) => {
         if (error) {
           console.log(error)
           reject(error)
