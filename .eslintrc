@@ -1,0 +1,7 @@
+{
+  "extends": "next/core-web-vitals",
+  "plugins": ["no-only-tests"],
+  "rules": {
+    "no-only-tests/no-only-tests": "error"
+  }
+}
