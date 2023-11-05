@@ -13,6 +13,7 @@ import { expect } from '@playwright/test'
 // todo if variations don't perfect align, don't allow
 
 const baseLevelHandlers = [
+  ...googleFontsHandler,
   rest.get(
     'https://app.launchdarkly.com/api/v2/projects/:projectKey',
     (req, res, ctx) => {
@@ -106,6 +107,32 @@ test.describe('copy page', () => {
     await page.goto(
       'http://localhost:3000/copy/my-project/to/my-second-project',
     )
+  })
+
+  test.describe('when flags are aligned for both projects', () => {
+    test.use({
+      mswHandlers: [
+        ...[
+          rest.get(
+            'https://app.launchdarkly.com/api/v2/flags/:projectKey',
+            (req, res, ctx) => {
+              return res(ctx.status(200), ctx.json(mockProjectFlags))
+            },
+          ),
+        ],
+        ...baseLevelHandlers,
+      ],
+    })
+
+    test('should not show copy flag to second project alert if flags are aligned', async ({
+      page,
+    }) => {
+      await expect(
+        page.getByText(
+          'The following flag(s) exists in My Project and are missing in My Second Project',
+        ),
+      ).not.toBeVisible()
+    })
   })
 
   test.describe('general', () => {

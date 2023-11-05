@@ -87,7 +87,7 @@ export const CompareAvailableFlagsBetweenProjects = ({
       {/*  existIn={projectTwoName}*/}
       {/*  missingFlags={results.missingFromProjectOne}*/}
       {/*/>*/}
-      {results.missingFromProjectTwo ? (
+      {results.missingFromProjectTwo.length ? (
         <ListMissingFlags
           projectKey={projectTwoKey}
           projectName={projectTwoName}
