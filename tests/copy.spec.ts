@@ -47,11 +47,6 @@ const baseLevelHandlers = [
         const changedFlagsSecondProject = produce(mockProjectFlags, (draft) => {
           // change the environment target for testing
           draft.items[0].environments.test.on = true
-          // change the variation for testing
-          draft.items[0].defaults.offVariation = 0
-
-          // update kind of another item
-          draft.items[1].kind = 'multivariate'
 
           // add tag to second project
           draft.items[2].tags.push('tag for second project')
@@ -61,6 +56,14 @@ const baseLevelHandlers = [
             name: 'flag-that-doesnt-exist-in-first-project',
             key: 'flag-that-doesnt-exist-in-first-project',
           })
+
+          // todo duplication of below handlers
+          // change the variation for testing
+          draft.items[0].defaults.offVariation = 0
+
+          // todo duplication of below handlers
+          // update kind of another item
+          draft.items[1].kind = 'multivariate'
         })
 
         return res(ctx.status(200), ctx.json(changedFlagsSecondProject))
@@ -308,6 +311,7 @@ test.describe('copy page', () => {
                 baseObj,
                 (draft) => {
                   // find a flag with json in name
+                  // then add another variant to it
                   const jsonFlagIndex = draft.items.findIndex((item) =>
                     item.name.includes('json'),
                   )
@@ -321,6 +325,13 @@ test.describe('copy page', () => {
                     name: 'added-variation',
                     value: { foo: 'bar' },
                   })
+
+                  // change the variation for testing
+                  draft.items[0].defaults.offVariation = 0
+
+                  // todo should get item by flag name instead of array index
+                  // update kind of another item
+                  draft.items[1].kind = 'multivariate'
                 },
               )
 

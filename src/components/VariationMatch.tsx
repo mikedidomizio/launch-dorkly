@@ -144,8 +144,12 @@ export const VariationMatch = ({
 
   if (!thoroughCheckVariationsAlign(item, items2)) {
     return (
-      <td data-testid={`${item.key}-cantVariation`}>
-        Cannot change variations, do not align between feature flags
+      <td
+        colSpan={2}
+        className="text-center"
+        data-testid={`${item.key}-cantVariation`}
+      >
+        Cannot change variations, feature flags variations do not align
       </td>
     )
   }
