@@ -101,7 +101,7 @@ const baseLevelHandlers = [
 ]
 
 test.use({
-  mswHandlers: [...baseLevelHandlers, ...googleFontsHandler],
+  mswHandlers: [...baseLevelHandlers],
 })
 
 test.describe('copy page', () => {
