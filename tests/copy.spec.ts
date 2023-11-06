@@ -4,6 +4,8 @@ import { mockListProjects } from './__mocks__/listProjects.mocks'
 
 import { produce } from 'immer'
 import { expect } from '@playwright/test'
+import { listFlagsNumberItemMock } from './__mocks__/listFlags-number.mock'
+import { listFlagsJsonItemMock } from './__mocks__/listFlags-json.mock'
 
 // todo copy flag number
 // todo copy flag string
@@ -288,7 +290,47 @@ test.describe('copy page', () => {
   test.describe('updating variation', () => {
     test.use({
       mswHandlers: [
-        ...baseLevelHandlers,
+        rest.get(
+          'https://app.launchdarkly.com/api/v2/flags/:projectKey',
+          (req, res, ctx) => {
+            const { projectKey } = req.params
+
+            const baseObj = {
+              ...mockProjectFlags,
+              items: [...mockProjectFlags.items, listFlagsJsonItemMock],
+            }
+
+            // todo what about the other way where first one has more?
+            if (projectKey === 'my-project') {
+              return res(ctx.status(200), ctx.json(baseObj))
+            } else if (projectKey === 'my-second-project') {
+              const updatedWithAdditionalVariation = produce(
+                baseObj,
+                (draft) => {
+                  // find a flag with json in name
+                  const jsonFlagIndex = draft.items.findIndex((item) =>
+                    item.name.includes('json'),
+                  )
+
+                  if (jsonFlagIndex < 0) {
+                    throw new Error('Cannot find flag with JSON in name')
+                  }
+
+                  draft.items[jsonFlagIndex].variations.push({
+                    _id: '',
+                    name: 'added-variation',
+                    value: { foo: 'bar' },
+                  })
+                },
+              )
+
+              return res(
+                ctx.status(200),
+                ctx.json(updatedWithAdditionalVariation),
+              )
+            }
+          },
+        ),
         rest.patch(
           `https://app.launchdarkly.com/api/v2/flags/my-second-project/:featureFlagKey`,
           async (req, res, ctx) => {
@@ -317,7 +359,14 @@ test.describe('copy page', () => {
             return res(ctx.status(200))
           },
         ),
+        ...baseLevelHandlers,
       ],
+    })
+
+    test("should not allow variation changes if JSON flag variations don't align", async ({
+      page,
+    }) => {
+      await expect(page.getByTestId('json-flag-cantVariation')).toBeVisible()
     })
 
     test('should not be allowed if kind type does not match', async ({
