@@ -24,6 +24,7 @@ export interface Item {
   creationDate: number
   customProperties: CustomProperties
   defaults: Defaults
+  deprecated: boolean
   description: string
   environments: Record<string, Environment>
   experiments: Experiments
@@ -76,6 +77,7 @@ export interface Environment {
   on: boolean
   salt: string
   sel: string
+  targets: any[] // todo better than this
   trackEvents: boolean
   trackEventsFallthrough: boolean
   version: number
@@ -108,4 +110,4 @@ export interface VariationElement {
   description?: string
 }
 
-export type VariationElementValue = boolean | string | number
+export type VariationElementValue = boolean | string | number | object

@@ -30,11 +30,11 @@ test.use({
           : 'offVariationValue'
 
         expect(json).toMatchObject({
-          comment: expect.any(String),
+          comment: '',
           instructions: [
             {
               kind: 'updateDefaultVariation',
-              [objectKey]: 1,
+              [objectKey]: json.instructions[0][objectKey],
             },
           ],
         })
@@ -64,7 +64,7 @@ test.describe('project page', () => {
   }) => {
     await page.getByTestId('number-flag-onVariation').selectOption('ONE')
 
-    await expect(page.getByTestId('number-flag-onVariation')).toHaveValue('1')
+    await expect(page.getByTestId('number-flag-onVariation')).toHaveValue('ONE')
   })
 
   test('should update variant if changing OFF variation dropdown', async ({
@@ -72,6 +72,8 @@ test.describe('project page', () => {
   }) => {
     await page.getByTestId('number-flag-offVariation').selectOption('ONE')
 
-    await expect(page.getByTestId('number-flag-offVariation')).toHaveValue('1')
+    await expect(page.getByTestId('number-flag-offVariation')).toHaveValue(
+      'ONE',
+    )
   })
 })

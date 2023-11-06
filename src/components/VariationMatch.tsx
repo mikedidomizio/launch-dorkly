@@ -14,6 +14,34 @@ import toast from 'react-hot-toast'
 import { fetchToPromise } from '@/helpers/fetchToPromise'
 import { handleLdErrorResponse } from '@/helpers/handleLdErrorResponse'
 
+const thoroughCheckVariationsAlign = (item: Item, items2: Item[]): boolean => {
+  const foundItem2 = items2.find((item2) => item2.key === item.key)
+
+  if (
+    item.name !== foundItem2?.name ||
+    item.kind !== foundItem2.kind ||
+    item.variations.length !== foundItem2?.variations.length
+  ) {
+    return false
+  }
+
+  if (foundItem2) {
+    const result = item.variations.reduce((acc, cur, index) => {
+      if (cur.name !== foundItem2.variations[index].name) {
+        acc = false
+      }
+
+      return acc
+    }, true)
+
+    if (!result) {
+      return false
+    }
+  }
+
+  return true
+}
+
 export const VariationMatch = ({
   item,
   items2,
@@ -96,12 +124,37 @@ export const VariationMatch = ({
     return variations[variation].value
   }
 
-  const getVariationNameFromIndex = (
-    variationIndex: number,
-  ): VariationElementValue => {
-    return item.variations[variationIndex].value
+  const getVariationNameFromIndex = (variationIndex: number): string => {
+    if (!item.variations[variationIndex]) {
+      // this means that the second project has a variation that doesn't exist in the first
+      throw new Error("Variations don't align")
+    }
+
+    if (item.variations[variationIndex].name) {
+      return item.variations[variationIndex].name as string
+    }
+
+    // non json feature-flags won't have a name, but will have a value
+    if (typeof item.variations[variationIndex].value !== undefined) {
+      return item.variations[variationIndex].value as string
+    }
+
+    throw new Error('Could not get name from index')
   }
 
+  if (!thoroughCheckVariationsAlign(item, items2)) {
+    return (
+      <td
+        colSpan={2}
+        className="text-center"
+        data-testid={`${item.key}-cantVariation`}
+      >
+        Cannot change variations, feature flags variations do not align
+      </td>
+    )
+  }
+
+  // todo cannot match on the onVariation and the offVariation because the defaults might be different, these are just index numbers
   return (
     <>
       <td className="text-center">
