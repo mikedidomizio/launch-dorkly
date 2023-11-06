@@ -9,6 +9,10 @@ test.use({
     rest.post('/start', (req, res, ctx) => {
       return res(ctx.status(200))
     }),
+    // quiets redirect logging a redirect error
+    rest.head('http://localhost:3000', (req, res, ctx) => {
+      return res(ctx.status(200), ctx.body(''))
+    }),
     rest.get(
       'https://app.launchdarkly.com/api/v2/projects',
       (req, res, ctx) => {
