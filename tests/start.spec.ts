@@ -1,9 +1,10 @@
-import { rest, test } from './__mocks__/global.mocks'
+import { googleFontsHandler, rest, test } from './__mocks__/global.mocks'
 import { ListProjects } from '@/types/listProjects.types'
 import { mockListProjects } from './__mocks__/listProjects.mocks'
 
 test.use({
   mswHandlers: [
+    ...googleFontsHandler,
     // set the cookie request
     rest.post('/start', (req, res, ctx) => {
       return res(ctx.status(200))
