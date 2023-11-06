@@ -101,6 +101,11 @@ export const VariationMatch = ({
       return item.variations[variationIndex].name as string
     }
 
+    // non json feature-flags won't have a name, but will have a value
+    if (typeof item.variations[variationIndex].value !== undefined) {
+      return item.variations[variationIndex].value as string
+    }
+
     throw new Error('Could not get name from index')
   }
 
