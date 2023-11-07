@@ -1,11 +1,10 @@
-import { googleFontsHandler, rest, test } from './__mocks__/global.mocks'
+import { rest, test } from './__mocks__/global'
 import { expect } from '@playwright/test'
 import { mockProjectFlags } from './__mocks__/listFlags.mocks'
 import { listFlagsNumberItemMock } from './__mocks__/listFlags-number.mock'
 
 test.use({
   mswHandlers: [
-    ...googleFontsHandler,
     rest.get(
       'https://app.launchdarkly.com/api/v2/flags/:projectKey',
       (req, res, ctx) => {

@@ -1,5 +1,5 @@
 import { mockProjectFlags } from './__mocks__/listFlags.mocks'
-import { googleFontsHandler, rest, test } from './__mocks__/global.mocks'
+import { rest, test } from './__mocks__/global'
 import { mockListProjects } from './__mocks__/listProjects.mocks'
 
 import { produce } from 'immer'
@@ -11,10 +11,7 @@ import { listFlagsJsonItemMock } from './__mocks__/listFlags-json.mock'
 // todo copy flag boolean
 // todo copy flag json
 
-// todo if variations don't perfect align, don't allow
-
 const baseLevelHandlers = [
-  ...googleFontsHandler,
   rest.get(
     'https://app.launchdarkly.com/api/v2/projects/:projectKey',
     (req, res, ctx) => {
