@@ -1,5 +1,5 @@
 'use client'
-import { Item, Kind } from '@/types/listFlags.types'
+import { Item } from '@/types/listFlags.types'
 import { useParams } from 'next/navigation'
 import { VariationBoolean } from '@/components/VariationBoolean'
 import { VariationMultivariate } from '@/components/VariationMultivariate'

@@ -1,8 +1,5 @@
 import { googleFontsHandler, rest, test } from './__mocks__/global.mocks'
-import { ListProjects } from '@/types/listProjects.types'
 import { expect } from '@playwright/test'
-import { mockListProjects } from './__mocks__/listProjects.mocks'
-import { produce } from 'immer'
 import { mockProjectFlags } from './__mocks__/listFlags.mocks'
 import { listFlagsNumberItemMock } from './__mocks__/listFlags-number.mock'
 
