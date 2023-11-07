@@ -1,0 +1,5 @@
+This file with CI prevents an error thrown
+
+In CI set the following env var `NEXT_FONT_GOOGLE_MOCKED_RESPONSES=ABSOLUTE_PATH_TO_THIS_FILE`
+This makes font loader find a local file and prevents error when `.next/static/media` doesn't have font files
+(https://github.com/vercel/next.js/blob/canary/packages/font/src/google/fetch-font-file.ts#L8)
