@@ -5,9 +5,6 @@ on:
   pull_request:
     branches: [main]
 
-env:
-  NEXT_FONT_GOOGLE_MOCKED_RESPONSES: ${GITHUB_WORKSPACE}/tests/__mocks__/mockFont.woff
-
 jobs:
   test:
     name: 'Playwright E2E'
@@ -24,10 +21,10 @@ jobs:
         run: npx playwright install --with-deps
       - name: Run Playwright tests
         # This is to mock the Google font, which throws an error with this Playwright setup/next@14.0.1
-        # due to `./.next/static/media directory not existing in dev mode (only after running build)
-        # The dirty fix was to mock the file to something locally within this repo.
+        # due to `./.next/static/media directory not existing in dev mode (only exists after running build)
+        # The quick fix was to mock the file(s) to something locally within this repo.
         env:
-          NEXT_FONT_GOOGLE_MOCKED_RESPONSES: /${{ github.workspace }}/tests/__mocks__/mockFont.js
+          NEXT_FONT_GOOGLE_MOCKED_RESPONSES: ${{ github.workspace }}/tests/__mocks__/mockFont.js
         run: npx playwright test
       - uses: actions/upload-artifact@v3
         if: always()
