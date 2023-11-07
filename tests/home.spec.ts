@@ -1,11 +1,10 @@
-import { googleFontsHandler, rest, test } from './__mocks__/global.mocks'
+import { rest, test } from './__mocks__/global'
 import { ListProjects } from '@/types/listProjects.types'
 import { expect } from '@playwright/test'
 import { mockListProjects } from './__mocks__/listProjects.mocks'
 
 test.use({
   mswHandlers: [
-    ...googleFontsHandler,
     rest.get(
       'https://app.launchdarkly.com/api/v2/projects',
       (req, res, ctx) => {
