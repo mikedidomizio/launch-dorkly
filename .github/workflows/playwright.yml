@@ -26,9 +26,8 @@ jobs:
         # This is to mock the Google font, which throws an error with this Playwright setup/next@14.0.1
         # due to `./.next/static/media directory not existing in dev mode (only after running build)
         # The dirty fix was to mock the file to something locally within this repo.
-        # It was downloaded from https://www.dwsamplefiles.com/download-woff-sample-files/.
         env:
-          NEXT_FONT_GOOGLE_MOCKED_RESPONSES: ${{ github.workspace }}/tests/__mocks__/mockFont.woff
+          NEXT_FONT_GOOGLE_MOCKED_RESPONSES: ${{ github.workspace }}/tests/__mocks__/mockFont.woff2
         run: npx playwright test
       - uses: actions/upload-artifact@v3
         if: always()
