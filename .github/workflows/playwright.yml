@@ -4,6 +4,7 @@ on:
     branches: [main]
   pull_request:
     branches: [main]
+
 jobs:
   test:
     name: 'Playwright E2E'
@@ -19,10 +20,17 @@ jobs:
       - name: Install Playwright Browsers
         run: npx playwright install --with-deps
       - name: Run Playwright tests
+        # This is to mock the Google font, which throws an error with this Playwright setup/next@14.0.1
+        # due to `./.next/static/media directory not existing in dev mode (only exists after running build)
+        # The quick fix was to mock the file(s) to something locally within this repo.
+        env:
+          NEXT_FONT_GOOGLE_MOCKED_RESPONSES: ${{ github.workspace }}/tests/__mocks__/mockFont.js
         run: npx playwright test
       - uses: actions/upload-artifact@v3
         if: always()
         with:
           name: playwright-report
+          # directory will be empty if tests pass
+          # https://github.com/microsoft/playwright/issues/10072
           path: test-results/
           retention-days: 10
