@@ -2,7 +2,7 @@
 
 An attempted different approach to a LaunchDarkly UI
 
-[Deployed Demo](https://launchdorkly.vercel.app/)
+[Production Deployment](https://launchdorkly.vercel.app/)
 
 ## Description
 
