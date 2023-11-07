@@ -22,11 +22,15 @@ jobs:
         run: npm ci
       - name: Install Playwright Browsers
         run: npx playwright install --with-deps
+      - name: Set env to bypass downloading fonts
+        run: echo "NEXT_FONT_GOOGLE_MOCKED_RESPONSES=$(${GITHUB_WORKSPACE}/tests/__mocks__mockFont.woff)" >> $GITHUB_ENV
       - name: Run Playwright tests
         run: npx playwright test
       - uses: actions/upload-artifact@v3
         if: always()
         with:
           name: playwright-report
+          # directory will be empty if tests pass
+          # https://github.com/microsoft/playwright/issues/10072
           path: test-results/
           retention-days: 10
