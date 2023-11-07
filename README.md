@@ -61,16 +61,20 @@ npm run dev
 
 The screenshots below is a comparison of the feature flags dashboard
 
-| LaunchDarkly | LaunchDorkly |
-| - |--------------|
-| ![img.png](readme-assets/darkly-feature-flags-dashboard.png) | ![img.png](readme-assets/dorkly-feature-flags-dashboard.png) |
+| LaunchDarkly                                                            | LaunchDorkly                                                            |
+|-------------------------------------------------------------------------|-------------------------------------------------------------------------|
+| ![img.png](readme-assets/darkly-feature-flags-dashboard-2023-11-06.png) | ![img.png](readme-assets/dorkly-feature-flags-dashboard-2023-11-06.png) |
 
 Want to compare targets/variations against two projects, across multiple environments?
 
-That can be done!
+![img.png](readme-assets/dorkly-copy-project.png)
 
-ℹ️ No screenshot of the table yet, below picture is just of the dropdowns 😅
+By some simple clicks you can copy targets/variations from one project to another.
 
-You can individually quickly copy settings from one project to another with simple clicks
+The project for safety reasons blocks copying flags if certain attributes don't align like feature flag kind,
+variations.
 
-![img.png](readme-assets/dorkly-home.png)
+Buttons to copy flags from one project to another
+
+![img.png](readme-assets/dorkly-copy-missing-flag.png)
+
