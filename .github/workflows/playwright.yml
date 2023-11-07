@@ -27,7 +27,7 @@ jobs:
         # due to `./.next/static/media directory not existing in dev mode (only after running build)
         # The dirty fix was to mock the file to something locally within this repo.
         env:
-          NEXT_FONT_GOOGLE_MOCKED_RESPONSES: ${{ github.workspace }}/tests/__mocks__/mockFont.woff2
+          NEXT_FONT_GOOGLE_MOCKED_RESPONSES: /${{ github.workspace }}/tests/__mocks__/mockFont.js
         run: npx playwright test
       - uses: actions/upload-artifact@v3
         if: always()
