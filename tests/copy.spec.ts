@@ -4,7 +4,6 @@ import { mockListProjects } from './__mocks__/listProjects.mocks'
 
 import { produce } from 'immer'
 import { expect } from '@playwright/test'
-import { listFlagsNumberItemMock } from './__mocks__/listFlags-number.mock'
 import { listFlagsJsonItemMock } from './__mocks__/listFlags-json.mock'
 
 // todo copy flag number

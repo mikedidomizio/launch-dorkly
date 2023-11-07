@@ -2,7 +2,6 @@
 import { useState } from 'react'
 import {
   Item,
-  Kind,
   VariationElement,
   VariationElementValue,
 } from '@/types/listFlags.types'

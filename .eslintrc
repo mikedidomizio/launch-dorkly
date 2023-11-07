@@ -1,7 +1,13 @@
 {
   "extends": "next/core-web-vitals",
-  "plugins": ["no-only-tests"],
+  "plugins": ["no-only-tests", "unused-imports"],
   "rules": {
-    "no-only-tests/no-only-tests": "error"
+    "no-only-tests/no-only-tests": "error",
+    "no-unused-vars": "warn", // or "@typescript-eslint/no-unused-vars": "off",
+    "unused-imports/no-unused-imports": "error",
+    "unused-imports/no-unused-vars": [
+      "warn",
+      { "vars": "all", "varsIgnorePattern": "^_", "args": "after-used", "argsIgnorePattern": "^_" }
+    ]
   }
 }
