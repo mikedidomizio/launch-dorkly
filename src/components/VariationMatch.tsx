@@ -14,15 +14,24 @@ import toast from 'react-hot-toast'
 import { fetchToPromise } from '@/helpers/fetchToPromise'
 import { handleLdErrorResponse } from '@/helpers/handleLdErrorResponse'
 
-const thoroughCheckVariationsAlign = (item: Item, items2: Item[]): boolean => {
+type VariationsDontAlign = 'name' | 'kind' | 'length'
+
+const thoroughCheckVariationsAlign = (
+  item: Item,
+  items2: Item[],
+): VariationsDontAlign | null => {
   const foundItem2 = items2.find((item2) => item2.key === item.key)
 
-  if (
-    item.name !== foundItem2?.name ||
-    item.kind !== foundItem2.kind ||
-    item.variations.length !== foundItem2?.variations.length
-  ) {
-    return false
+  if (item.name !== foundItem2?.name) {
+    return 'name'
+  }
+
+  if (item.kind !== foundItem2.kind) {
+    return 'kind'
+  }
+
+  if (item.variations.length !== foundItem2?.variations.length) {
+    return 'length'
   }
 
   if (foundItem2) {
@@ -35,11 +44,11 @@ const thoroughCheckVariationsAlign = (item: Item, items2: Item[]): boolean => {
     }, true)
 
     if (!result) {
-      return false
+      return 'name'
     }
   }
 
-  return true
+  return null
 }
 
 export const VariationMatch = ({
@@ -142,12 +151,30 @@ export const VariationMatch = ({
     throw new Error('Could not get name from index')
   }
 
-  if (!thoroughCheckVariationsAlign(item, items2)) {
+  const isMisaligned = thoroughCheckVariationsAlign(item, items2)
+
+  if (isMisaligned) {
+    let title = ''
+    switch (isMisaligned) {
+      case 'name':
+        title = "Name values don't match in variants"
+        break
+      case 'kind':
+        title = "Kind type don't match in variants"
+        break
+      case 'length':
+        title = 'Number of variants does not match in variants'
+        break
+      default:
+        throw new Error('Could not get title for misaligned variant')
+    }
+
     return (
       <td
         colSpan={2}
         className="text-center"
         data-testid={`${item.key}-cantVariation`}
+        title={title}
       >
         Cannot change variations, feature flags variations do not align
       </td>
