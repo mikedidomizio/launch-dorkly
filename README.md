@@ -6,16 +6,11 @@ An attempted different approach to a LaunchDarkly UI
 
 ## Description
 
-The purpose of this project is to give easier control and visibility of some basic LaunchDarkly project configurations.
+The purpose of this project is to give a different UI for LaunchDarkly - easier control and visibility of some basic LaunchDarkly project configurations.
 
-### List of what this project can do
-
-This is a WIP but:
-
-- Give you the target status of all project feature flags on one screen
-  - With the ability to toggle them in a single click
-- Compare settings from one LD project to another
-  - With the ability to update the second project with original project's targets/variations
+| LaunchDarkly                                                            | LaunchDorkly                                                            |
+|-------------------------------------------------------------------------|-------------------------------------------------------------------------|
+| ![img.png](readme-assets/darkly-feature-flags-dashboard-2023-11-06.png) | ![img.png](readme-assets/dorkly-feature-flags-dashboard-2023-11-06.png) |
 
 ## ⚠️ Disclaimer
 
@@ -40,12 +35,6 @@ npm run dev
 ```
 
 ### Screenshots
-
-The screenshots below is a comparison of the feature flags dashboard
-
-| LaunchDarkly                                                            | LaunchDorkly                                                            |
-|-------------------------------------------------------------------------|-------------------------------------------------------------------------|
-| ![img.png](readme-assets/darkly-feature-flags-dashboard-2023-11-06.png) | ![img.png](readme-assets/dorkly-feature-flags-dashboard-2023-11-06.png) |
 
 Want to compare targets/variations against two projects, across multiple environments?
 
