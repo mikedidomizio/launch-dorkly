@@ -170,7 +170,7 @@ test.describe('copy page', () => {
     }) => {
       await expect(
         page
-          .getByTestId('my-flag-onVariation')
+          .getByTestId('my-flag-onVariation-canVariation')
           .getByRole('button', { name: '✅' }),
       ).toBeVisible()
     })
@@ -180,7 +180,7 @@ test.describe('copy page', () => {
     }) => {
       await expect(
         page
-          .getByTestId('my-flag-offVariation')
+          .getByTestId('my-flag-offVariation-canVariation')
           .getByRole('button', { name: '❌' }),
       ).toBeVisible()
     })
@@ -373,7 +373,12 @@ test.describe('copy page', () => {
     test("should not allow variation changes if JSON flag variations don't align", async ({
       page,
     }) => {
-      await expect(page.getByTestId('json-flag-cantVariation')).toBeVisible()
+      await expect(
+        page.getByTestId('json-flag-onVariation-cantVariation'),
+      ).toBeVisible()
+      await expect(
+        page.getByTestId('json-flag-offVariation-cantVariation'),
+      ).toBeVisible()
     })
 
     test('should not be allowed if kind type does not match', async ({
@@ -397,23 +402,27 @@ test.describe('copy page', () => {
     test('should update the variation to match if a non-matching variation button is clicked', async ({
       page,
     }) => {
-      await expect(page.getByTestId('my-flag-offVariation')).toHaveAttribute(
+      await expect(
+        page.getByTestId('my-flag-offVariation-canVariation'),
+      ).toHaveAttribute(
         'title',
         "The value in project one is 'false', the value in project two is 'true'",
       )
 
       await page
-        .getByTestId('my-flag-offVariation')
+        .getByTestId('my-flag-offVariation-canVariation')
         .getByRole('button', { name: '❌' })
         .click()
 
       await expect(
         page
-          .getByTestId('my-flag-offVariation')
+          .getByTestId('my-flag-offVariation-canVariation')
           .getByRole('button', { name: '✅' }),
       ).toBeVisible()
 
-      await expect(page.getByTestId('my-flag-offVariation')).toHaveAttribute(
+      await expect(
+        page.getByTestId('my-flag-offVariation-canVariation'),
+      ).toHaveAttribute(
         'title',
         "The value in project one is 'false', the value in project two is 'false'",
       )
