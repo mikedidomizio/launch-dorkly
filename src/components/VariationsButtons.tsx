@@ -135,13 +135,13 @@ export const VariationsButtons = ({
 
   if (!thoroughCheckVariationsAlign(item, items2)) {
     return (
-      <td
-        colSpan={2}
+      <div
+        title="Cannot change variations, feature flags variations do not align"
         className="text-center"
         data-testid={`${item.key}-${type}-cantVariation`}
       >
-        Cannot change variations, feature flags variations do not align
-      </td>
+        ⚠️
+      </div>
     )
   }
 
