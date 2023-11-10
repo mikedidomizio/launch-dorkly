@@ -40,7 +40,7 @@ const thoroughCheckVariationsAlign = (item: Item, items2: Item[]): boolean => {
   return true
 }
 
-export const VariationsButtons = ({
+export const VariationsMatchButtons = ({
   item,
   items2,
   type,
@@ -137,7 +137,6 @@ export const VariationsButtons = ({
     return (
       <div
         title="Cannot change variations, feature flags variations do not align"
-        className="text-center"
         data-testid={`${item.key}-${type}-cantVariation`}
       >
         ⚠️
