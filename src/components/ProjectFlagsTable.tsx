@@ -1,8 +1,15 @@
 import { Item } from '@/types/listFlags.types'
 import { Targets } from '@/components/Targets'
 import { Variation } from '@/components/Variation'
+import Link from 'next/link'
 
-export const ProjectFlagsTable = ({ items }: { items: Item[] }) => {
+export const ProjectFlagsTable = ({
+  items,
+  projectName,
+}: {
+  items: Item[]
+  projectName: string
+}) => {
   if (!items[0]) {
     return <>No flags for this project</>
   }
@@ -38,7 +45,9 @@ export const ProjectFlagsTable = ({ items }: { items: Item[] }) => {
         {items.map((item, index: number) => {
           return (
             <tr key={index}>
-              <td>{item.name}</td>
+              <td>
+                <Link href={`${projectName}/${item.name}`}>{item.name}</Link>
+              </td>
               <td>{item.key}</td>
               <Targets item={item} />
               <Variation item={item} />
