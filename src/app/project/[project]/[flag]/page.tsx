@@ -1,5 +1,8 @@
 import Layout from '@/components/Layout'
 import { getFlag } from '@/app/api/getFlag'
+// todo this is not 100% accurate of a type from this endpoint, but gets us most of the way there
+import { Item as Flag } from '@/types/listFlags.types'
+import { AuditHistory } from '@/components/AuditHistory'
 
 type ServerParamsFlagPage = {
   flag: string
@@ -21,14 +24,14 @@ export default async function Page({
 }: {
   params: ServerParamsFlagPage
 }) {
-  const flagData = await getFlag(params.project, params.flag)
-
-  console.log(flagData)
+  const flagDataResponse = await getFlag(params.project, params.flag)
+  const flagData: Flag = await flagDataResponse.json()
 
   return (
     <Layout>
       <h2 className="heading-2 prose prose-lg">{params.project}</h2>
-      {params.flag}
+      {flagData.name} {flagData.description}
+      <AuditHistory projectKey={params.project} featureFlag={params.flag} />
     </Layout>
   )
 }
