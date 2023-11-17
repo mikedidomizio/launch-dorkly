@@ -1,6 +1,6 @@
 'use client'
 import { useState } from 'react'
-import { Item } from '@/types/listFlags.types'
+import { Environment, Item } from '@/types/listFlags.types'
 import { DoesNotMatch } from '@/components/DoesNotMatch'
 import { DoesMatch } from '@/components/DoesMatch'
 import { useParams } from 'next/navigation'
@@ -78,7 +78,7 @@ export const TargetsMatch = ({
         values,
       }: {
         environmentKey: string
-        values: { on: boolean; off: boolean }
+        values: Environment
       }) => {
         return (
           <div
