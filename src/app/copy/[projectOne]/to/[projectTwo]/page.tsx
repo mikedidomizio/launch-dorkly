@@ -17,11 +17,11 @@ export async function generateMetadata({
   }
 }
 
-export default async function Page({
-  params,
-}: {
+type PageProps = {
   params: { projectOne: string; projectTwo: string }
-}) {
+}
+
+export default async function Page({ params }: PageProps) {
   const [project1Data, project2Data] = await Promise.allSettled([
     _getProject(params.projectOne),
     _getProject(params.projectTwo),

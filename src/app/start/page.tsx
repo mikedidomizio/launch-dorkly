@@ -17,11 +17,11 @@ const readableErrorMessage = (error: string) => {
 
 const oneHour = 60 * 60 * 1000
 
-export default function Page({
-  searchParams,
-}: {
+type PageProps = {
   searchParams: { error?: string }
-}) {
+}
+
+export default function Page({ searchParams }: PageProps) {
   async function setCookie(formData: FormData) {
     'use server'
     const token = formData.get('accessToken')

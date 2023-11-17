@@ -13,11 +13,11 @@ export async function generateMetadata({
   }
 }
 
-export default async function Page({
-  params,
-}: {
+type PageProps = {
   params: { project: string }
-}) {
+}
+
+export default async function Page({ params }: PageProps) {
   const flags = await _listProjectFlags(params.project)
   flags.items.sort(sortItemsByName)
 
