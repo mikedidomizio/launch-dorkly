@@ -1,7 +1,7 @@
 import { cookies } from 'next/headers'
 import { NextResponse } from 'next/server'
 
-export const listProjectFlags = async (projectKey: string) => {
+export const _listProjectFlags = async (projectKey: string) => {
   const cookieStore = cookies()
   const token = cookieStore.get('LD_TOKEN')
 

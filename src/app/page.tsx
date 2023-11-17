@@ -3,11 +3,11 @@ import { CopyProjectsDropdowns } from '@/components/CopyProjectsDropdowns'
 import Layout from '@/components/Layout'
 import { Project } from '@/types/listProjects.types'
 import { sortItemsByName } from '@/helpers/sortItemsByName'
-import { listProjects } from '@/app/api/listProjects'
+import { _listProjects } from '@/app/api/_listProjects'
 import { redirect } from 'next/navigation'
 
 export default async function Page() {
-  const response = await listProjects()
+  const response = await _listProjects()
 
   if (response) {
     const projects = await response.json()

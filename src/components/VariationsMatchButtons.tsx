@@ -7,7 +7,7 @@ import {
 } from '@/types/listFlags.types'
 import toast from 'react-hot-toast'
 import { fetchToPromise } from '@/helpers/fetchToPromise'
-import { updateVariation } from '@/app/api/updateVariation'
+import { _updateVariation } from '@/app/api/_updateVariation'
 import { handleLdErrorResponse } from '@/helpers/handleLdErrorResponse'
 import { useParams } from 'next/navigation'
 import { useState } from 'react'
@@ -75,7 +75,7 @@ export const VariationsMatchButtons = ({
 
     await toast.promise(
       fetchToPromise(
-        updateVariation(
+        _updateVariation(
           params.projectTwo as string,
           featureFlagKey,
           variation,

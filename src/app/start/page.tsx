@@ -1,7 +1,7 @@
 import Link from 'next/link'
 import { cookies } from 'next/headers'
 import { redirect } from 'next/navigation'
-import { listProjects } from '@/app/api/listProjects'
+import { _listProjects } from '@/app/api/_listProjects'
 import { GitHubImage } from '@/components/GitHubLink'
 import { ErrorAlert } from '@/components/Alerts'
 import { DisclaimerLink } from '@/components/DisclaimerLink'
@@ -28,7 +28,7 @@ export default function Page({
 
     if (token && typeof token === 'string') {
       // the purpose of the following is that if we can't get the projects, the token is probably not good
-      const projects = await listProjects(token)
+      const projects = await _listProjects(token)
 
       if (projects) {
         cookies().set({

@@ -5,7 +5,7 @@ import { DoesNotMatch } from '@/components/DoesNotMatch'
 import { DoesMatch } from '@/components/DoesMatch'
 import { useParams } from 'next/navigation'
 import { EnvironmentsColumns } from '@/components/EnvironmentsColumns'
-import { updateTarget } from '@/app/api/updateTarget'
+import { _updateTarget } from '@/app/api/_updateTarget'
 import toast from 'react-hot-toast'
 import { fetchToPromise } from '@/helpers/fetchToPromise'
 import { handleLdErrorResponse } from '@/helpers/handleLdErrorResponse'
@@ -31,7 +31,7 @@ export const TargetsMatch = ({
   ) => {
     await toast.promise(
       fetchToPromise(
-        updateTarget(environment, featureFlagKey, projectTwo as string, value),
+        _updateTarget(environment, featureFlagKey, projectTwo as string, value),
       ),
       {
         loading: 'Changing',

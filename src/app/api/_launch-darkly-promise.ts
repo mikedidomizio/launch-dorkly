@@ -1,6 +1,6 @@
 const LaunchDarklyApi = require('launchdarkly-api')
 
-export const LaunchDarklyPromise = async <T>(
+export const _launchDarklyPromise = async <T>(
   token: string,
   ldApi: 'AccessTokensApi' | 'ProjectsApi',
   method: 'getProjects' | 'getProject' | 'getTokens',
