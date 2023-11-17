@@ -40,8 +40,6 @@ export const VariationMultivariate = ({ item }: { item: Item }) => {
     // where value can be boolean, or even object, which aren't supported as a value of select[option]
     variationName: string,
   ) => {
-    // seems to be a way to differentiate between string and number types, even if string is "1"
-    const isNumber = !isNaN(item.variations[0].value as any)
     const variationMessage = variation === 'onVariationValue' ? 'on' : 'off'
     const variationValue = getVariationValueFromName(variationName)
 

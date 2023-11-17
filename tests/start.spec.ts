@@ -22,10 +22,7 @@ test.use({
 })
 
 test.describe('start page', () => {
-  test('should redirect the user with a valid token', async ({
-    page,
-    context,
-  }) => {
+  test('should redirect the user with a valid token', async ({ page }) => {
     await page.goto('http://localhost:3000')
     await page.getByPlaceholder('LaunchDarkly Access Token').type('1234567890')
     await page.getByRole('button', { name: 'Submit' }).click()

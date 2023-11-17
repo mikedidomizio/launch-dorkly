@@ -101,7 +101,7 @@ test.use({
 })
 
 test.describe('copy page', () => {
-  test.beforeEach(async ({ page, context }, testInfo) => {
+  test.beforeEach(async ({ page, context }) => {
     await context.addCookies([
       { name: 'LD_TOKEN', value: '1234567890', url: 'http://localhost' },
     ])

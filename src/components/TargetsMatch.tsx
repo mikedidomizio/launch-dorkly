@@ -73,7 +73,13 @@ export const TargetsMatch = ({
   return (
     <EnvironmentsColumns
       environments={item.environments}
-      column={(environmentKey, values) => {
+      Column={({
+        environmentKey,
+        values,
+      }: {
+        environmentKey: string
+        values: { on: boolean; off: boolean }
+      }) => {
         return (
           <div
             data-testid={`${item.key}-${environmentKey}`}
