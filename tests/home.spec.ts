@@ -15,14 +15,14 @@ test.use({
 })
 
 test.describe('home page', () => {
-  test.beforeEach(async ({ page, context }, testInfo) => {
+  test.beforeEach(async ({ page, context }) => {
     await context.addCookies([
       { name: 'LD_TOKEN', value: '1234567890', url: 'http://localhost' },
     ])
     await page.goto('http://localhost:3000')
   })
 
-  test('should list all the projects as links', async ({ page, context }) => {
+  test('should list all the projects as links', async ({ page }) => {
     await expect(page.getByRole('link', { name: 'My Project' })).toBeVisible()
     await expect(
       page.getByRole('link', { name: 'My Second Project' }),
@@ -31,7 +31,6 @@ test.describe('home page', () => {
 
   test('should redirect the user to the copy page if both dropdowns selected', async ({
     page,
-    context,
   }) => {
     const [firstDropdown, secondDropdown] = await page
       .getByRole('combobox')

@@ -1,12 +1,15 @@
-import { ReactNode } from 'react'
+import { ComponentType } from 'react'
 import { clsx } from 'clsx'
 import { Environment } from '@/types/listFlags.types'
 
 export const EnvironmentsColumns = ({
-  column,
+  Column,
   environments,
 }: {
-  column: (environmentKey: string, values: Environment) => ReactNode
+  Column: ComponentType<{
+    environmentKey: string
+    values: any
+  }>
   environments: Record<string, Environment>
 }) => {
   const environmentsEntries = Object.entries(environments)
@@ -26,7 +29,7 @@ export const EnvironmentsColumns = ({
             )}
             key={index}
           >
-            {column(environmentKey, values)}
+            <Column environmentKey={environmentKey} values={values} />
           </td>
         )
       })}

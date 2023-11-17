@@ -52,7 +52,7 @@ export default async function Page({
         projectCopyToName={project2Data.value.name}
       />
       <CompareAvailableFlagsBetweenProjects
-        projectOneKey={params.projectOne}
+        _projectOneKey={params.projectOne}
         projectOneItems={project1.items}
         projectOneName={project1Data.value.name}
         projectTwoKey={params.projectTwo}

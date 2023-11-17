@@ -68,7 +68,7 @@ export const FlagsComparisonTable = ({
         </tr>
       </thead>
       <tbody>
-        {items1.map((item, index: number) => {
+        {items1.map((item) => {
           const foundItem2 = getItemByKey(items2, item.key)
           let errorMessage: string | null = null
 

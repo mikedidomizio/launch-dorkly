@@ -57,7 +57,13 @@ export const Targets = ({ item }: { item: Item }) => {
     <>
       <EnvironmentsColumns
         environments={itemState.environments}
-        column={(environmentKey, values) => {
+        Column={({
+          environmentKey,
+          values,
+        }: {
+          environmentKey: string
+          values: { on: boolean; off: boolean }
+        }) => {
           return (
             <input
               type="checkbox"

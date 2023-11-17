@@ -63,14 +63,14 @@ const ListMissingFlags = ({
 }
 
 export const CompareAvailableFlagsBetweenProjects = ({
-  projectOneKey,
+  _projectOneKey,
   projectOneItems,
   projectOneName,
   projectTwoKey,
   projectTwoItems,
   projectTwoName,
 }: {
-  projectOneKey: string
+  _projectOneKey: string
   projectOneItems: Item[]
   projectOneName: string
   projectTwoKey: string
