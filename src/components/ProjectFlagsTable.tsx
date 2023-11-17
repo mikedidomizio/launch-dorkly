@@ -1,6 +1,6 @@
 import { Item } from '@/types/listFlags.types'
-import { Targets } from '@/components/Targets'
-import { Variation } from '@/components/Variation'
+import { Targets } from '@/components/Targets/Targets'
+import { Variation } from '@/components/Variations/Variation'
 
 export const ProjectFlagsTable = ({ items }: { items: Item[] }) => {
   if (!items[0]) {

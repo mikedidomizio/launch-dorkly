@@ -1,6 +1,6 @@
-import { TargetsMatch } from '@/components/TargetsMatch'
+import { TargetsMatch } from '@/components/Targets/TargetsMatch'
 import { Item } from '@/types/listFlags.types'
-import { VariationMatch } from '@/components/VariationMatch'
+import { VariationMatch } from '@/components/Variations/VariationMatch'
 import { DoesMatch } from '@/components/DoesMatch'
 import { DoesNotMatch } from '@/components/DoesNotMatch'
 import { ManageFlagDescription } from '@/components/ManageFlagDescription'
