@@ -1,10 +1,10 @@
 import { cookies } from 'next/headers'
-import { LaunchDarklyPromise } from '@/app/api/launch-darkly-promise'
+import { _launchDarklyPromise } from '@/app/api/_launch-darkly-promise'
 import { ListProjects } from '@/types/listProjects.types'
 import { NextResponse } from 'next/server'
 
 const fetchFn = async (token: string): Promise<NextResponse<ListProjects>> => {
-  const ldResponse = await LaunchDarklyPromise<ListProjects>(
+  const ldResponse = await _launchDarklyPromise<ListProjects>(
     token,
     'ProjectsApi',
     'getProjects',
@@ -14,7 +14,7 @@ const fetchFn = async (token: string): Promise<NextResponse<ListProjects>> => {
   return NextResponse.json<ListProjects>(ldResponse)
 }
 
-export const listProjects = async (
+export const _listProjects = async (
   cookie?: string,
 ): Promise<NextResponse<ListProjects> | null> => {
   if (cookie) {

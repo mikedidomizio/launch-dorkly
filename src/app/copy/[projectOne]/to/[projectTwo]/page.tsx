@@ -3,9 +3,9 @@ import { ListFlagsTypes } from '@/types/listFlags.types'
 import Layout from '@/components/Layout'
 import { CopyProjectToProjectHeader } from '@/components/CopyProjectToProjectHeader'
 import { CompareAvailableFlagsBetweenProjects } from '@/components/CompareAvailableFlagsBetweenProjects'
-import { listProjectFlags } from '@/app/api/listProjectFlags'
+import { _listProjectFlags } from '@/app/api/_listProjectFlags'
 import { sortItemsByName } from '@/helpers/sortItemsByName'
-import { getProject } from '@/app/api/getProject'
+import { _getProject } from '@/app/api/_getProject'
 
 export async function generateMetadata({
   params,
@@ -23,8 +23,8 @@ export default async function Page({
   params: { projectOne: string; projectTwo: string }
 }) {
   const [project1Data, project2Data] = await Promise.allSettled([
-    getProject(params.projectOne),
-    getProject(params.projectTwo),
+    _getProject(params.projectOne),
+    _getProject(params.projectTwo),
   ])
 
   if (
@@ -38,8 +38,8 @@ export default async function Page({
 
   const [project1, project2]: [ListFlagsTypes, ListFlagsTypes] =
     await Promise.all([
-      listProjectFlags(params.projectOne),
-      listProjectFlags(params.projectTwo),
+      _listProjectFlags(params.projectOne),
+      _listProjectFlags(params.projectTwo),
     ])
 
   project1.items.sort(sortItemsByName)

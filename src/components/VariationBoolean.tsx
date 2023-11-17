@@ -1,7 +1,7 @@
 'use client'
 import toast from 'react-hot-toast'
 import { fetchToPromise } from '@/helpers/fetchToPromise'
-import { updateVariation } from '@/app/api/updateVariation'
+import { _updateVariation } from '@/app/api/_updateVariation'
 import { handleLdErrorResponse } from '@/helpers/handleLdErrorResponse'
 import { Defaults, Item } from '@/types/listFlags.types'
 import { useState } from 'react'
@@ -23,7 +23,7 @@ export const VariationBoolean = ({ item }: { item: Item }) => {
 
     await toast.promise(
       fetchToPromise(
-        updateVariation(
+        _updateVariation(
           params.project as string,
           featureFlagKey,
           variation,
