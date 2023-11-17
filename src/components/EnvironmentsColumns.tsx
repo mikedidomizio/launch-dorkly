@@ -8,7 +8,7 @@ export const EnvironmentsColumns = ({
 }: {
   Column: ComponentType<{
     environmentKey: string
-    values: any
+    values: Environment
   }>
   environments: Record<string, Environment>
 }) => {

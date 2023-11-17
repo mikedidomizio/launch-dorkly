@@ -1,5 +1,5 @@
 'use client'
-import { Item } from '@/types/listFlags.types'
+import { Environment, Item } from '@/types/listFlags.types'
 import { useParams } from 'next/navigation'
 import { useState } from 'react'
 import { EnvironmentsColumns } from '@/components/EnvironmentsColumns'
@@ -62,7 +62,7 @@ export const Targets = ({ item }: { item: Item }) => {
           values,
         }: {
           environmentKey: string
-          values: { on: boolean; off: boolean }
+          values: Environment
         }) => {
           return (
             <input
