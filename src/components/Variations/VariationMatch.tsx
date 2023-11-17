@@ -1,7 +1,7 @@
 'use client'
 import { Item } from '@/types/listFlags.types'
 import { useParams } from 'next/navigation'
-import { VariationsMatchButtons } from '@/components/VariationsMatchButtons'
+import { VariationsMatchButtons } from '@/components/Variations/VariationsMatchButtons'
 
 export const VariationMatch = ({
   item,

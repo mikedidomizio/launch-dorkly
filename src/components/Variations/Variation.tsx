@@ -1,8 +1,8 @@
 'use client'
 import { Item } from '@/types/listFlags.types'
 import { useParams } from 'next/navigation'
-import { VariationBoolean } from '@/components/VariationBoolean'
-import { VariationMultivariate } from '@/components/VariationMultivariate'
+import { VariationBoolean } from '@/components/Variations/VariationBoolean'
+import { VariationMultivariate } from '@/components/Variations/VariationMultivariate'
 
 export const Variation = ({ item }: { item: Item }) => {
   const params = useParams()
