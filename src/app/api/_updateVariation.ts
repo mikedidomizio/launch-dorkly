@@ -1,4 +1,4 @@
-export const updateVariation = async (
+export const _updateVariation = async (
   project: string,
   featureFlagKey: string,
   variation: string,

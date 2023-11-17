@@ -3,7 +3,7 @@ import { Item } from '@/types/listFlags.types'
 import { useParams } from 'next/navigation'
 import { useState } from 'react'
 import { EnvironmentsColumns } from '@/components/EnvironmentsColumns'
-import { updateTarget } from '@/app/api/updateTarget'
+import { _updateTarget } from '@/app/api/_updateTarget'
 import toast from 'react-hot-toast'
 import { fetchToPromise } from '@/helpers/fetchToPromise'
 import { handleLdErrorResponse } from '@/helpers/handleLdErrorResponse'
@@ -23,7 +23,7 @@ export const Targets = ({ item }: { item: Item }) => {
   ) => {
     await toast.promise(
       fetchToPromise(
-        updateTarget(
+        _updateTarget(
           environment,
           featureFlagKey,
           params.project as string,

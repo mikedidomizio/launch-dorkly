@@ -1,4 +1,4 @@
-export const updateTarget = async (
+export const _updateTarget = async (
   environment: string,
   featureFlagKey: string,
   project: string,

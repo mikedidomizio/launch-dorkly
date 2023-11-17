@@ -3,7 +3,7 @@ import { useParams } from 'next/navigation'
 import { useState } from 'react'
 import toast from 'react-hot-toast'
 import { fetchToPromise } from '@/helpers/fetchToPromise'
-import { updateVariation } from '@/app/api/updateVariation'
+import { _updateVariation } from '@/app/api/_updateVariation'
 import { handleLdErrorResponse } from '@/helpers/handleLdErrorResponse'
 
 export const VariationMultivariate = ({ item }: { item: Item }) => {
@@ -47,7 +47,7 @@ export const VariationMultivariate = ({ item }: { item: Item }) => {
 
     await toast.promise(
       fetchToPromise(
-        updateVariation(
+        _updateVariation(
           params.project as string,
           featureFlagKey,
           variation,

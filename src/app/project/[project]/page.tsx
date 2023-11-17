@@ -1,6 +1,6 @@
 import Layout from '@/components/Layout'
 import { ProjectFlagsTable } from '@/components/ProjectFlagsTable'
-import { listProjectFlags } from '@/app/api/listProjectFlags'
+import { _listProjectFlags } from '@/app/api/_listProjectFlags'
 import { sortItemsByName } from '@/helpers/sortItemsByName'
 
 export async function generateMetadata({
@@ -18,7 +18,7 @@ export default async function Page({
 }: {
   params: { project: string }
 }) {
-  const flags = await listProjectFlags(params.project)
+  const flags = await _listProjectFlags(params.project)
   flags.items.sort(sortItemsByName)
 
   return (
