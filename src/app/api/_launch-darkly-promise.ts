@@ -1,5 +1,18 @@
 const LaunchDarklyApi = require('launchdarkly-api')
 
+const handleLDApiClientResponse =
+  (
+    resolve: (_data: any | PromiseLike<any>) => void,
+    reject: (_error?: any) => void,
+  ) =>
+  <T>(error: Error, data: T) => {
+    if (error) {
+      reject(error)
+    } else {
+      resolve(data)
+    }
+  }
+
 export const _launchDarklyPromise = async <T>(
   token: string,
   ldApi: 'AccessTokensApi' | 'ProjectsApi',
@@ -20,23 +33,9 @@ export const _launchDarklyPromise = async <T>(
     }
 
     if (method === 'getProject') {
-      api[method](param, options, (error: Error, data: T) => {
-        if (error) {
-          console.log(error)
-          reject(error)
-        } else {
-          resolve(data)
-        }
-      })
+      api[method](param, options, handleLDApiClientResponse(resolve, reject))
     }
 
-    api[method](param, (error: Error, data: T) => {
-      if (error) {
-        console.log(error)
-        reject(error)
-      } else {
-        resolve(data)
-      }
-    })
+    api[method](param, handleLDApiClientResponse(resolve, reject))
   })
 }
