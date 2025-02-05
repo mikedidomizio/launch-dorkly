@@ -1,21 +1,26 @@
-import { rest, test } from './__mocks__/global'
-import { ListProjects } from '@/types/listProjects.types'
+import { test } from 'next/experimental/testmode/playwright'
 import { expect } from '@playwright/test'
 import { mockListProjects } from './__mocks__/listProjects.mocks'
 
-test.use({
-  mswHandlers: [
-    rest.get(
-      'https://app.launchdarkly.com/api/v2/projects',
-      (req, res, ctx) => {
-        return res(ctx.status(200), ctx.json<ListProjects>(mockListProjects))
-      },
-    ),
-  ],
-})
+const reusableFetch = (next) => {
+  next.onFetch((request) => {
+    if (request.url === 'https://app.launchdarkly.com/api/v2/projects') {
+      return new Response(
+        JSON.stringify(mockListProjects),
+        {
+          headers: {
+            'Content-Type': 'application/json',
+          },
+        }
+      )
+    }
+    return 'abort'
+  })
+}
 
 test.describe('home page', () => {
-  test.beforeEach(async ({ page, context }) => {
+  test.beforeEach(async ({ page, context, next }) => {
+    reusableFetch(next)
     await context.addCookies([
       { name: 'LD_TOKEN', value: '1234567890', url: 'http://localhost' },
     ])
