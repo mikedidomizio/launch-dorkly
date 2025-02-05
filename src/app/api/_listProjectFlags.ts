@@ -2,7 +2,7 @@ import { cookies } from 'next/headers'
 import { NextResponse } from 'next/server'
 
 export const _listProjectFlags = async (projectKey: string) => {
-  const cookieStore = cookies()
+  const cookieStore = await cookies()
   const token = cookieStore.get('LD_TOKEN')
 
   if (!token || !token.value) {

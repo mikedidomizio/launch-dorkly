@@ -1,4 +1,4 @@
-import { rest, test } from 'next/experimental/testmode/playwright/msw'
+import { rest } from 'next/experimental/testmode/playwright/msw'
 
 // Area for anything needed to be handled for all test suites
 

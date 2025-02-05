@@ -2,7 +2,7 @@ import { NextResponse } from 'next/server'
 import { cookies } from 'next/headers'
 
 export async function PATCH(req: Request) {
-  const cookieStore = cookies()
+  const cookieStore = await cookies()
   const token = cookieStore.get('LD_TOKEN')
 
   const { featureFlagKey, project, variation, value } = await req.json()

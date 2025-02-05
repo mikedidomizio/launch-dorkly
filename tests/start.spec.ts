@@ -1,28 +1,37 @@
-import { rest, test } from './__mocks__/global'
-import { ListProjects } from '@/types/listProjects.types'
+import { test, expect } from 'next/experimental/testmode/playwright'
+// import { ListProjects } from '@/types/listProjects.types'
 import { mockListProjects } from './__mocks__/listProjects.mocks'
 
-test.use({
-  mswHandlers: [
-    // set the cookie request
-    rest.post('/start', (req, res, ctx) => {
-      return res(ctx.status(200))
-    }),
-    // quiets redirect logging a redirect error
-    rest.head('http://localhost:3000', (req, res, ctx) => {
-      return res(ctx.status(200), ctx.body(''))
-    }),
-    rest.get(
-      'https://app.launchdarkly.com/api/v2/projects',
-      (req, res, ctx) => {
-        return res(ctx.status(200), ctx.json<ListProjects>(mockListProjects))
-      },
-    ),
-  ],
-})
-
 test.describe('start page', () => {
-  test('should redirect the user with a valid token', async ({ page }) => {
+
+  test('should redirect the user with a valid token', async ({ page, next }) => {
+    next.onFetch((request) => {
+      if (request.url === 'http://localhost:3000') {
+        return new Response(
+          '',
+          {
+            headers: {
+              'Content-Type': 'application/text',
+            },
+          }
+        )
+      } else if (request.url === 'https://app.launchdarkly.com/api/v2/projects') {
+        return new Response(
+          JSON.stringify(mockListProjects),
+          {
+            headers: {
+              'Content-Type': 'application/json',
+            },
+          }
+        )
+      } else if (request.url === '/start') {
+        return new Response(
+          ''
+        )
+      }
+      return 'abort'
+    })
+
     await page.goto('http://localhost:3000')
     await page.getByPlaceholder('LaunchDarkly Access Token').type('1234567890')
     await page.getByRole('button', { name: 'Submit' }).click()

@@ -21,17 +21,20 @@ type PageProps = {
   searchParams: { error?: string }
 }
 
-export default function Page({ searchParams }: PageProps) {
+export default async function Page(props: PageProps) {
+  const searchParams = await props.searchParams
+
   async function setCookie(formData: FormData) {
     'use server'
     const token = formData.get('accessToken')
 
     if (token && typeof token === 'string') {
+      const cookieStore = await cookies()
       // the purpose of the following is that if we can't get the projects, the token is probably not good
       const projects = await _listProjects(token)
 
       if (projects) {
-        cookies().set({
+        cookieStore.set({
           name: 'LD_TOKEN',
           value: token,
           // the token is set for one hour just because if someone were to use this
@@ -42,7 +45,7 @@ export default function Page({ searchParams }: PageProps) {
         redirect('/')
       }
 
-      cookies().delete('LD_TOKEN')
+      cookieStore.delete('LD_TOKEN')
       redirect('/start?error=fetchProjects')
     }
   }
