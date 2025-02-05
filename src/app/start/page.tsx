@@ -79,7 +79,7 @@ export default function Page({ searchParams }: PageProps) {
               >
                 LaunchDarkly
               </Link>
-              , or use an existing one
+              &nbsp;with API version &quot;20220603&quot;
               <br />
               (It can be a <strong>READER</strong> access token)
             </li>
