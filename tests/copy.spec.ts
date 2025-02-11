@@ -227,6 +227,7 @@ test.describe('copy page', () => {
       }),
     ).toBeVisible()
 
+    // todo this test is broken in that the API call 500s
     await page
       .getByRole('button', { name: 'Copy flag to My Second Project' })
       .click()

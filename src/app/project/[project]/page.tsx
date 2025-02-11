@@ -6,24 +6,27 @@ import { sortItemsByName } from '@/helpers/sortItemsByName'
 export async function generateMetadata({
   params,
 }: {
-  params: { project: string }
+  params: Promise<{ project: string }>
 }) {
+  const { project } = await params
   return {
-    title: `LaunchDorkly | ${params.project}`,
+    title: `LaunchDorkly | ${project}`,
   }
 }
 
 type PageProps = {
-  params: { project: string }
+  params: Promise<{ project: string }>
 }
 
 export default async function Page({ params }: PageProps) {
-  const flags = await _listProjectFlags(params.project)
+  const { project } = await params
+
+  const flags = await _listProjectFlags(project)
   flags.items.sort(sortItemsByName)
 
   return (
     <Layout>
-      <h2 className="heading-2 prose prose-lg">{params.project}</h2>
+      <h2 className="heading-2 prose prose-lg">{project}</h2>
       <ProjectFlagsTable items={flags.items} />
     </Layout>
   )

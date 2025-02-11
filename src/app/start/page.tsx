@@ -18,7 +18,7 @@ const readableErrorMessage = (error: string) => {
 const oneHour = 60 * 60 * 1000
 
 type PageProps = {
-  searchParams: { error?: string }
+  searchParams: Promise<{ error?: string }>
 }
 
 export default async function Page(props: PageProps) {
