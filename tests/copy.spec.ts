@@ -2,7 +2,7 @@ import { mockProjectFlags } from './__mocks__/listFlags.mocks'
 import { mockListProjects } from './__mocks__/listProjects.mocks'
 
 import { produce } from 'immer'
-import { listFlagsJsonItemMock } from './__mocks__/listFlags-json.mock'
+import { listFlagsJsonItemMock } from './__mocks__/listFlags-json.mocks'
 
 import {
   test,

@@ -3,7 +3,7 @@ import path from 'path'
 
 export default defineConfig({
   testDir: path.join(__dirname, 'tests'),
-  testMatch: /.*\.ts/,
+  testMatch: /.*\.spec\.ts/,
   webServer: {
     command: 'npm run dev',
     url: 'http://localhost:3000',

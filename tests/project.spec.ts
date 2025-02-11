@@ -6,7 +6,7 @@ import {
 } from 'next/experimental/testmode/playwright/msw'
 
 import { mockProjectFlags } from './__mocks__/listFlags.mocks'
-import { listFlagsNumberItemMock } from './__mocks__/listFlags-number.mock'
+import { listFlagsNumberItemMock } from './__mocks__/listFlags-number.mocks'
 
 test.use({
   mswHandlers: [
