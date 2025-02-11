@@ -1,43 +1,49 @@
-import { rest, test } from './__mocks__/global'
-import { expect } from '@playwright/test'
+import {
+  test,
+  expect,
+  http, HttpResponse, passthrough,
+} from 'next/experimental/testmode/playwright/msw'
+
+
 import { mockProjectFlags } from './__mocks__/listFlags.mocks'
 import { listFlagsNumberItemMock } from './__mocks__/listFlags-number.mock'
 
 test.use({
   mswHandlers: [
-    rest.get(
-      'https://app.launchdarkly.com/api/v2/flags/:projectKey',
-      (req, res, ctx) => {
-        return res(
-          ctx.status(200),
-          ctx.json({
-            ...mockProjectFlags,
-            items: [...mockProjectFlags.items, listFlagsNumberItemMock],
-          }),
-        )
-      },
-    ),
-    rest.patch(
-      `https://app.launchdarkly.com/api/v2/flags/default/number-flag`,
-      async (req, res, ctx) => {
-        const json = await req.json()
+    [
+    http.get('https://app.launchdarkly.com/api/v2/flags/:projectKey', () => {
+      return HttpResponse.json({
+        ...mockProjectFlags,
+        items: [...mockProjectFlags.items, listFlagsNumberItemMock],
+      })
+    }),
+      http.patch(
+        `https://app.launchdarkly.com/api/v2/flags/default/number-flag`, async ({ request }) => {
+          const json = await request.json()
 
-        const objectKey = json.instructions[0].onVariationValue
-          ? 'onVariationValue'
-          : 'offVariationValue'
+          if (typeof json === 'object' && json !== null && 'instructions' in json && Array.isArray(json.instructions)) {
+            const objectKey = json.instructions[0].onVariationValue
+              ? 'onVariationValue'
+              : 'offVariationValue'
 
-        expect(json).toMatchObject({
-          comment: '',
-          instructions: [
-            {
-              kind: 'updateDefaultVariation',
-              [objectKey]: json.instructions[0][objectKey],
-            },
-          ],
-        })
-        return res(ctx.status(200))
-      },
-    ),
+            expect(json).toMatchObject({
+              comment: '',
+              instructions: [
+                {
+                  kind: 'updateDefaultVariation',
+                  [objectKey]: json.instructions[0][objectKey],
+                },
+              ],
+            })
+
+            return HttpResponse.text('')
+          } else {
+            throw new Error('Improper request body')
+          }
+        },
+      ),
+    ],
+    { scope: 'test' }, // or 'worker'
   ],
 })
 
