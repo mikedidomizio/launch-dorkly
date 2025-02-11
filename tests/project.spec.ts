@@ -1,9 +1,9 @@
 import {
   test,
   expect,
-  http, HttpResponse,
+  http,
+  HttpResponse,
 } from 'next/experimental/testmode/playwright/msw'
-
 
 import { mockProjectFlags } from './__mocks__/listFlags.mocks'
 import { listFlagsNumberItemMock } from './__mocks__/listFlags-number.mock'
@@ -11,17 +11,23 @@ import { listFlagsNumberItemMock } from './__mocks__/listFlags-number.mock'
 test.use({
   mswHandlers: [
     [
-    http.get('https://app.launchdarkly.com/api/v2/flags/:projectKey', () => {
-      return HttpResponse.json({
-        ...mockProjectFlags,
-        items: [...mockProjectFlags.items, listFlagsNumberItemMock],
-      })
-    }),
+      http.get('https://app.launchdarkly.com/api/v2/flags/:projectKey', () => {
+        return HttpResponse.json({
+          ...mockProjectFlags,
+          items: [...mockProjectFlags.items, listFlagsNumberItemMock],
+        })
+      }),
       http.patch(
-        `https://app.launchdarkly.com/api/v2/flags/default/number-flag`, async ({ request }) => {
+        `https://app.launchdarkly.com/api/v2/flags/default/number-flag`,
+        async ({ request }) => {
           const json = await request.json()
 
-          if (typeof json === 'object' && json !== null && 'instructions' in json && Array.isArray(json.instructions)) {
+          if (
+            typeof json === 'object' &&
+            json !== null &&
+            'instructions' in json &&
+            Array.isArray(json.instructions)
+          ) {
             const objectKey = json.instructions[0].onVariationValue
               ? 'onVariationValue'
               : 'offVariationValue'

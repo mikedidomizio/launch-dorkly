@@ -1,26 +1,29 @@
-import { test } from 'next/experimental/testmode/playwright'
-import { expect } from '@playwright/test'
+import {
+  expect,
+  test,
+  http,
+  HttpResponse,
+} from 'next/experimental/testmode/playwright/msw'
+
 import { mockListProjects } from './__mocks__/listProjects.mocks'
 
-const reusableFetch = (next) => {
-  next.onFetch((request) => {
-    if (request.url === 'https://app.launchdarkly.com/api/v2/projects') {
-      return new Response(
-        JSON.stringify(mockListProjects),
-        {
+test.use({
+  mswHandlers: [
+    [
+      http.get('https://app.launchdarkly.com/api/v2/projects', () => {
+        return HttpResponse.json(mockListProjects, {
           headers: {
             'Content-Type': 'application/json',
           },
-        }
-      )
-    }
-    return 'abort'
-  })
-}
+        })
+      }),
+    ],
+    { scope: 'test' }, // or 'worker'
+  ],
+})
 
 test.describe('home page', () => {
-  test.beforeEach(async ({ page, context, next }) => {
-    reusableFetch(next)
+  test.beforeEach(async ({ page, context }) => {
     await context.addCookies([
       { name: 'LD_TOKEN', value: '1234567890', url: 'http://localhost' },
     ])
