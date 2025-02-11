@@ -1,10 +1,15 @@
 import { mockProjectFlags } from './__mocks__/listFlags.mocks'
-import { rest, test } from './__mocks__/global'
 import { mockListProjects } from './__mocks__/listProjects.mocks'
 
 import { produce } from 'immer'
-import { expect } from '@playwright/test'
-import { listFlagsJsonItemMock } from './__mocks__/listFlags-json.mock'
+import { listFlagsJsonItemMock } from './__mocks__/listFlags-json.mocks'
+
+import {
+  test,
+  expect,
+  http,
+  HttpResponse,
+} from 'next/experimental/testmode/playwright/msw'
 
 // todo copy flag number
 // todo copy flag string
@@ -12,22 +17,26 @@ import { listFlagsJsonItemMock } from './__mocks__/listFlags-json.mock'
 // todo copy flag json
 
 const baseLevelHandlers = [
-  rest.get(
+  http.get(
     'https://app.launchdarkly.com/api/v2/projects/:projectKey',
-    (req, res, ctx) => {
-      const { projectKey } = req.params
+    ({ params }) => {
+      const { projectKey } = params
 
       if (projectKey === 'my-project') {
-        return res(ctx.status(200), ctx.json(mockListProjects.items[0]))
+        return HttpResponse.json(mockListProjects.items[0], {
+          status: 200,
+        })
       } else if (projectKey === 'my-second-project') {
-        return res(ctx.status(200), ctx.json(mockListProjects.items[1]))
+        return HttpResponse.json(mockListProjects.items[1], {
+          status: 200,
+        })
       }
     },
   ),
-  rest.get(
+  http.get(
     'https://app.launchdarkly.com/api/v2/flags/:projectKey',
-    (req, res, ctx) => {
-      const { projectKey } = req.params
+    ({ params }) => {
+      const { projectKey } = params
 
       if (projectKey === 'my-project') {
         const changedFlagsFirstProject = produce(mockProjectFlags, (draft) => {
@@ -38,7 +47,7 @@ const baseLevelHandlers = [
           })
         })
 
-        return res(ctx.status(200), ctx.json(changedFlagsFirstProject))
+        return HttpResponse.json(changedFlagsFirstProject)
       } else if (projectKey === 'my-second-project') {
         const changedFlagsSecondProject = produce(mockProjectFlags, (draft) => {
           // change the environment target for testing
@@ -62,14 +71,16 @@ const baseLevelHandlers = [
           draft.items[1].kind = 'multivariate'
         })
 
-        return res(ctx.status(200), ctx.json(changedFlagsSecondProject))
+        return HttpResponse.json(changedFlagsSecondProject, {
+          status: 200,
+        })
       }
     },
   ),
-  rest.post(
+  http.post(
     `https://app.launchdarkly.com/api/v2/flags/:projectKey`,
-    async (req, res, ctx) => {
-      const json = await req.json()
+    async ({ request }) => {
+      const json = await request.json()
       const itemToCheckThatMatches = mockProjectFlags.items[0]
 
       expect(json).toMatchObject({
@@ -91,13 +102,19 @@ const baseLevelHandlers = [
         variations: itemToCheckThatMatches.variations,
       })
 
-      return res(ctx.status(201))
+      // todo http code
+      return HttpResponse.json(null, {
+        status: 201,
+      })
     },
   ),
 ]
 
 test.use({
-  mswHandlers: [...baseLevelHandlers],
+  mswHandlers: [
+    [...baseLevelHandlers],
+    { scope: 'test' }, // or 'worker'
+  ],
 })
 
 test.describe('copy page', () => {
@@ -113,15 +130,18 @@ test.describe('copy page', () => {
   test.describe('when flags are aligned for both projects', () => {
     test.use({
       mswHandlers: [
-        ...[
-          rest.get(
+        [
+          http.get(
             'https://app.launchdarkly.com/api/v2/flags/:projectKey',
-            (req, res, ctx) => {
-              return res(ctx.status(200), ctx.json(mockProjectFlags))
+            () => {
+              return HttpResponse.json(mockProjectFlags, {
+                status: 200,
+              })
             },
           ),
+          ...baseLevelHandlers,
         ],
-        ...baseLevelHandlers,
+        { scope: 'test' }, // or 'worker'
       ],
     })
 
@@ -207,6 +227,7 @@ test.describe('copy page', () => {
       }),
     ).toBeVisible()
 
+    // todo this test is broken in that the API call 500s
     await page
       .getByRole('button', { name: 'Copy flag to My Second Project' })
       .click()
@@ -219,24 +240,29 @@ test.describe('copy page', () => {
   test.describe('updating target', () => {
     test.use({
       mswHandlers: [
-        ...baseLevelHandlers,
-        rest.patch(
-          `https://app.launchdarkly.com/api/v2/flags/my-second-project/:featureFlagKey`,
-          async (req, res, ctx) => {
-            const json = await req.json()
+        [
+          ...baseLevelHandlers,
+          http.patch(
+            `https://app.launchdarkly.com/api/v2/flags/my-second-project/:featureFlagKey`,
+            async ({ request }) => {
+              const json = await request.json()
 
-            expect(json).toMatchObject({
-              comment: expect.any(String),
-              environmentKey: 'test',
-              instructions: [
-                {
-                  kind: 'turnFlagOff',
-                },
-              ],
-            })
-            return res(ctx.status(200))
-          },
-        ),
+              expect(json).toMatchObject({
+                comment: expect.any(String),
+                environmentKey: 'test',
+                instructions: [
+                  {
+                    kind: 'turnFlagOff',
+                  },
+                ],
+              })
+              return HttpResponse.json(null, {
+                status: 200,
+              })
+            },
+          ),
+        ],
+        { scope: 'test' }, // or 'worker'
       ],
     })
 
@@ -289,84 +315,92 @@ test.describe('copy page', () => {
   test.describe('updating variation', () => {
     test.use({
       mswHandlers: [
-        rest.get(
-          'https://app.launchdarkly.com/api/v2/flags/:projectKey',
-          (req, res, ctx) => {
-            const { projectKey } = req.params
+        [
+          http.get(
+            'https://app.launchdarkly.com/api/v2/flags/:projectKey',
+            ({ params }) => {
+              const { projectKey } = params
 
-            const baseObj = {
-              ...mockProjectFlags,
-              items: [...mockProjectFlags.items, listFlagsJsonItemMock],
-            }
+              const baseObj = {
+                ...mockProjectFlags,
+                items: [...mockProjectFlags.items, listFlagsJsonItemMock],
+              }
 
-            // todo what about the other way where first one has more?
-            if (projectKey === 'my-project') {
-              return res(ctx.status(200), ctx.json(baseObj))
-            } else if (projectKey === 'my-second-project') {
-              const updatedWithAdditionalVariation = produce(
-                baseObj,
-                (draft) => {
-                  // find a flag with json in name
-                  // then add another variant to it
-                  const jsonFlagIndex = draft.items.findIndex((item) =>
-                    item.name.includes('json'),
-                  )
+              // todo what about the other way where first one has more?
+              if (projectKey === 'my-project') {
+                return HttpResponse.json(baseObj, {
+                  status: 200,
+                })
+              } else if (projectKey === 'my-second-project') {
+                const updatedWithAdditionalVariation = produce(
+                  baseObj,
+                  (draft) => {
+                    // find a flag with json in name
+                    // then add another variant to it
+                    const jsonFlagIndex = draft.items.findIndex((item) =>
+                      item.name.includes('json'),
+                    )
 
-                  if (jsonFlagIndex < 0) {
-                    throw new Error('Cannot find flag with JSON in name')
-                  }
+                    if (jsonFlagIndex < 0) {
+                      throw new Error('Cannot find flag with JSON in name')
+                    }
 
-                  draft.items[jsonFlagIndex].variations.push({
-                    _id: '',
-                    name: 'added-variation',
-                    value: { foo: 'bar' },
-                  })
+                    draft.items[jsonFlagIndex].variations.push({
+                      _id: '',
+                      name: 'added-variation',
+                      value: { foo: 'bar' },
+                    })
 
-                  // change the variation for testing
-                  draft.items[0].defaults.offVariation = 0
+                    // change the variation for testing
+                    draft.items[0].defaults.offVariation = 0
 
-                  // todo should get item by flag name instead of array index
-                  // update kind of another item
-                  draft.items[1].kind = 'multivariate'
+                    // todo should get item by flag name instead of array index
+                    // update kind of another item
+                    draft.items[1].kind = 'multivariate'
+                  },
+                )
+
+                return HttpResponse.json(updatedWithAdditionalVariation, {
+                  status: 200,
+                })
+              }
+            },
+          ),
+          http.patch(
+            `https://app.launchdarkly.com/api/v2/flags/my-second-project/:featureFlagKey`,
+            async ({ params, request }) => {
+              const json = await request.json()
+              const { featureFlagKey } = params
+
+              // proceed to get the first project variation to see if second project is called with the correct value
+              const firstProjectVariation = mockProjectFlags.items.find(
+                (item) => {
+                  return item.name === featureFlagKey
                 },
               )
+              const variationIndex =
+                firstProjectVariation?.defaults.offVariation
 
-              return res(
-                ctx.status(200),
-                ctx.json(updatedWithAdditionalVariation),
-              )
-            }
-          },
-        ),
-        rest.patch(
-          `https://app.launchdarkly.com/api/v2/flags/my-second-project/:featureFlagKey`,
-          async (req, res, ctx) => {
-            const json = await req.json()
-            const { featureFlagKey } = req.params
-
-            // proceed to get the first project variation to see if second project is called with the correct value
-            const firstProjectVariation = mockProjectFlags.items.find(
-              (item) => {
-                return item.name === featureFlagKey
-              },
-            )
-            const variationIndex = firstProjectVariation?.defaults.offVariation
-
-            expect(json).toMatchObject({
-              comment: expect.any(String),
-              instructions: [
-                {
-                  kind: 'updateDefaultVariation',
-                  offVariationValue:
-                    firstProjectVariation?.variations[variationIndex as number]
-                      .value,
-                },
-              ],
-            })
-            return res(ctx.status(200))
-          },
-        ),
-        ...baseLevelHandlers,
+              expect(json).toMatchObject({
+                comment: expect.any(String),
+                instructions: [
+                  {
+                    kind: 'updateDefaultVariation',
+                    offVariationValue:
+                      firstProjectVariation?.variations[
+                        variationIndex as number
+                      ].value,
+                  },
+                ],
+              })
+              return HttpResponse.json(null, {
+                status: 200,
+              })
+            },
+          ),
+          ...baseLevelHandlers,
+        ],
+        { scope: 'test' }, // or 'worker'
       ],
     })
 

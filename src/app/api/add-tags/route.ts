@@ -3,7 +3,7 @@ import { cookies } from 'next/headers'
 import { allSet } from '@/helpers/allSet'
 
 export async function PATCH(req: Request) {
-  const cookieStore = cookies()
+  const cookieStore = await cookies()
   const token = cookieStore.get('LD_TOKEN')
 
   const { featureFlagKey, projectKey, tags } = await req.json()

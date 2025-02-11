@@ -9,13 +9,13 @@ An attempted different approach to a LaunchDarkly UI
 The purpose of this project is to give a different UI for LaunchDarkly - easier control and visibility of some basic LaunchDarkly project configurations.
 
 | LaunchDarkly                                                            | LaunchDorkly                                                            |
-|-------------------------------------------------------------------------|-------------------------------------------------------------------------|
+| ----------------------------------------------------------------------- | ----------------------------------------------------------------------- |
 | ![img.png](readme-assets/darkly-feature-flags-dashboard-2023-11-06.png) | ![img.png](readme-assets/dorkly-feature-flags-dashboard-2023-11-06.png) |
 
 ## ⚠️ Disclaimer
 
-This project is currently a work in progress and works very well, but still takes zero responsibility of unintended or destructive 
-changes to your LaunchDarkly setup.  There is no promise of continued maintenance on the project at this time.
+This project is currently a work in progress and works very well, but still takes zero responsibility of unintended or destructive
+changes to your LaunchDarkly setup. There is no promise of continued maintenance on the project at this time.
 <br/>
 The safest approach to using is is using a READER token, no changes can be made to your setup.  
 <br/>
@@ -48,4 +48,3 @@ variations.
 It has the ability to copy flags from one project to another
 
 ![img.png](readme-assets/dorkly-copy-missing-flag.png)
-

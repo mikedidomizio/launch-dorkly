@@ -10,21 +10,23 @@ import { _getProject } from '@/app/api/_getProject'
 export async function generateMetadata({
   params,
 }: {
-  params: { projectOne: string; projectTwo: string }
+  params: Promise<{ projectOne: string; projectTwo: string }>
 }) {
+  const { projectOne, projectTwo } = await params
   return {
-    title: `LaunchDorkly | ${params.projectOne} ➡ ${params.projectTwo}`,
+    title: `LaunchDorkly | ${projectOne} ➡ ${projectTwo}`,
   }
 }
 
 type PageProps = {
-  params: { projectOne: string; projectTwo: string }
+  params: Promise<{ projectOne: string; projectTwo: string }>
 }
 
 export default async function Page({ params }: PageProps) {
+  const { projectOne, projectTwo } = await params
   const [project1Data, project2Data] = await Promise.allSettled([
-    _getProject(params.projectOne),
-    _getProject(params.projectTwo),
+    _getProject(projectOne),
+    _getProject(projectTwo),
   ])
 
   if (
@@ -38,8 +40,8 @@ export default async function Page({ params }: PageProps) {
 
   const [project1, project2]: [ListFlagsTypes, ListFlagsTypes] =
     await Promise.all([
-      _listProjectFlags(params.projectOne),
-      _listProjectFlags(params.projectTwo),
+      _listProjectFlags(projectOne),
+      _listProjectFlags(projectTwo),
     ])
 
   project1.items.sort(sortItemsByName)
@@ -52,10 +54,10 @@ export default async function Page({ params }: PageProps) {
         projectCopyToName={project2Data.value.name}
       />
       <CompareAvailableFlagsBetweenProjects
-        _projectOneKey={params.projectOne}
+        _projectOneKey={projectOne}
         projectOneItems={project1.items}
         projectOneName={project1Data.value.name}
-        projectTwoKey={params.projectTwo}
+        projectTwoKey={projectTwo}
         projectTwoItems={project2.items}
         projectTwoName={project2Data.value.name}
       />

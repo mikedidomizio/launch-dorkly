@@ -1,16 +1,24 @@
-import { rest, test } from './__mocks__/global'
-import { ListProjects } from '@/types/listProjects.types'
-import { expect } from '@playwright/test'
+import {
+  expect,
+  test,
+  http,
+  HttpResponse,
+} from 'next/experimental/testmode/playwright/msw'
+
 import { mockListProjects } from './__mocks__/listProjects.mocks'
 
 test.use({
   mswHandlers: [
-    rest.get(
-      'https://app.launchdarkly.com/api/v2/projects',
-      (req, res, ctx) => {
-        return res(ctx.status(200), ctx.json<ListProjects>(mockListProjects))
-      },
-    ),
+    [
+      http.get('https://app.launchdarkly.com/api/v2/projects', () => {
+        return HttpResponse.json(mockListProjects, {
+          headers: {
+            'Content-Type': 'application/json',
+          },
+        })
+      }),
+    ],
+    { scope: 'test' }, // or 'worker'
   ],
 })
 
