@@ -1,40 +1,38 @@
-import { test } from 'next/experimental/testmode/playwright'
+import {
+  test,
+  http, HttpResponse,
+} from 'next/experimental/testmode/playwright/msw'
+
 import { mockListProjects } from './__mocks__/listProjects.mocks'
 
-const reusableFetch = (next) => {
-  next.onFetch((request) => {
-    if (request.url === 'http://localhost:3000') {
-      return new Response(
-        '',
-        {
+test.use({
+  mswHandlers: [
+    [
+      http.get('http://localhost:3000', () => {
+        return HttpResponse.text('', {
           headers: {
             'Content-Type': 'application/text',
           },
-        }
-      )
-    } else if (request.url === 'https://app.launchdarkly.com/api/v2/projects') {
-      return new Response(
-        JSON.stringify(mockListProjects),
-        {
+        })
+      }),
+      http.get('https://app.launchdarkly.com/api/v2/projects', () => {
+        return HttpResponse.json(mockListProjects, {
           headers: {
             'Content-Type': 'application/json',
-          },
-        }
-      )
-    } else if (request.url === '/start') {
-      return new Response(
-        ''
-      )
-    }
-    return 'abort'
-  })
-}
+          }
+        })
+      }),
+      http.get('/start', () => {
+        return HttpResponse.text('')
+      })
+    ],
+    { scope: 'test' }, // or 'worker'
+  ],
+})
 
 test.describe('start page', () => {
 
-  test('should redirect the user with a valid token', async ({ page, next }) => {
-    reusableFetch(next)
-
+  test('should redirect the user with a valid token', async ({ page }) => {
     await page.goto('http://localhost:3000')
     await page.getByPlaceholder('LaunchDarkly Access Token').type('1234567890')
     await page.getByRole('button', { name: 'Submit' }).click()

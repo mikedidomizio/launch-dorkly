@@ -1,7 +1,7 @@
 import {
   test,
   expect,
-  http, HttpResponse, passthrough,
+  http, HttpResponse,
 } from 'next/experimental/testmode/playwright/msw'
 
 
