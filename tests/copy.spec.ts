@@ -180,8 +180,8 @@ test.describe('copy page', () => {
     }) => {
       await expect(
         page
-          .getByTestId('my-flag-production')
-          .getByRole('button', { name: '✅' }),
+          .getByTestId('my-flag-test')
+          .getByRole('button', { name: '❌' }),
       ).toBeVisible()
     })
 
@@ -235,6 +235,7 @@ test.describe('copy page', () => {
     // page refreshes at this point
     // to prevent a error thrown by next via playwright we have this here
     await page.waitForEvent('response')
+    await expect(page.getByText('Refreshing page')).toBeVisible()
   })
 
   test.describe('updating target', () => {
