@@ -4,7 +4,7 @@ import { cookies } from 'next/headers'
 const forbiddenEnvironments = ['production', 'prod']
 
 export async function PATCH(req: Request) {
-  const cookieStore = cookies()
+  const cookieStore = await cookies()
   const token = cookieStore.get('LD_TOKEN')
 
   const { environment, featureFlagKey, project, value } = await req.json()

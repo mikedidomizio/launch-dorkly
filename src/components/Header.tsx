@@ -5,7 +5,8 @@ import { redirect } from 'next/navigation'
 export const Header = () => {
   async function removeCookie() {
     'use server'
-    cookies().delete('LD_TOKEN')
+    const cookie = await cookies()
+    cookie.delete('LD_TOKEN')
     redirect('/start')
   }
 

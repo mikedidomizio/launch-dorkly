@@ -1,23 +1,33 @@
-import { rest, test } from './__mocks__/global'
-import { ListProjects } from '@/types/listProjects.types'
+import {
+  test,
+  http,
+  HttpResponse,
+} from 'next/experimental/testmode/playwright/msw'
+
 import { mockListProjects } from './__mocks__/listProjects.mocks'
 
 test.use({
   mswHandlers: [
-    // set the cookie request
-    rest.post('/start', (req, res, ctx) => {
-      return res(ctx.status(200))
-    }),
-    // quiets redirect logging a redirect error
-    rest.head('http://localhost:3000', (req, res, ctx) => {
-      return res(ctx.status(200), ctx.body(''))
-    }),
-    rest.get(
-      'https://app.launchdarkly.com/api/v2/projects',
-      (req, res, ctx) => {
-        return res(ctx.status(200), ctx.json<ListProjects>(mockListProjects))
-      },
-    ),
+    [
+      http.get('http://localhost:3000', () => {
+        return HttpResponse.text('', {
+          headers: {
+            'Content-Type': 'application/text',
+          },
+        })
+      }),
+      http.get('https://app.launchdarkly.com/api/v2/projects', () => {
+        return HttpResponse.json(mockListProjects, {
+          headers: {
+            'Content-Type': 'application/json',
+          },
+        })
+      }),
+      http.get('/start', () => {
+        return HttpResponse.text('')
+      }),
+    ],
+    { scope: 'test' }, // or 'worker'
   ],
 })
 
