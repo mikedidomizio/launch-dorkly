@@ -21,7 +21,7 @@ export const _listProjects = async (
     return fetchFn(cookie)
   }
 
-  const cookieStore = cookies()
+  const cookieStore = await cookies()
   const token = cookieStore.get('LD_TOKEN')
 
   if (token) {
