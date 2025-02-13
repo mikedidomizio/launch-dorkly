@@ -2,6 +2,7 @@ import { Item } from '@/types/listFlags.types'
 
 import { WarningAlert } from '@/components/Alerts'
 import { CreateFlagButton } from '@/components/CreateFlagButton'
+import {CopyAllFlagsButton} from "@/components/CopyAllFlagsButton";
 
 function getMissingItems(projectOneItems: Item[], projectTwoItems: Item[]) {
   const missingFromProjectTwo = projectOneItems.filter((item) => {
@@ -58,6 +59,7 @@ const ListMissingFlags = ({
           )
         })}
       </ul>
+      <CopyAllFlagsButton projectToCopyFrom={existIn} projectToCopyTo={projectName}>Copy all missing flags to second project</CopyAllFlagsButton>
     </WarningAlert>
   )
 }
